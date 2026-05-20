@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Return to Performance — DPT Physical Therapy</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh;}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0f766e 0%,#134e4a 100%);}
+.login-card{background:#fff;border-radius:16px;padding:40px;width:440px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.login-logo{width:52px;height:52px;background:#f0fdf4;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:20px;}
+.login-card h1{font-size:24px;font-weight:700;margin-bottom:4px;}
+.login-card .sub{color:#64748b;font-size:14px;margin-bottom:28px;}
+.login-divider{display:flex;align-items:center;gap:12px;color:#cbd5e1;font-size:12px;margin:20px 0;}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:#e2e8f0;}
+
+/* MAIN APP */
+#app{display:none;height:100vh;flex-direction:column;}
+.topbar{background:#fff;border-bottom:1px solid #e2e8f0;height:52px;display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.topbar-logo{display:flex;align-items:center;gap:10px;}
+.topbar-logo .icon{width:32px;height:32px;background:#0f766e;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;}
+.topbar-logo .name{font-weight:700;font-size:15px;}
+.topbar-logo .org{font-size:11px;color:#94a3b8;}
+.mode-badge{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;background:#f0fdf4;color:#0f766e;border:1px solid #bbf7d0;}
+.mode-badge.clinician{background:#fef3c7;color:#92400e;border-color:#fde68a;}
+.mode-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.patient-chip{font-size:12px;color:#64748b;padding:4px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;}
+
+/* LAYOUT */
+.layout{display:flex;height:calc(100vh - 52px);}
+.sidebar{width:210px;background:#fff;border-right:1px solid #e2e8f0;padding:16px 0;flex-shrink:0;overflow-y:auto;}
+.sidebar-section{padding:0 12px;margin-bottom:4px;}
+.sidebar-label{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;padding:8px 8px 4px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;cursor:pointer;font-size:13px;color:#475569;transition:all .15s;user-select:none;}
+.nav-item:hover{background:#f8fafc;color:#1e293b;}
+.nav-item.active{background:#f0fdfa;color:#0f766e;font-weight:600;}
+.nav-item .shortcut{font-size:10px;color:#cbd5e1;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;padding:1px 5px;margin-left:auto;font-family:monospace;}
+.nav-item.active .shortcut{color:#5eead4;background:#f0fdfa;border-color:#99f6e4;}
+.nav-item .lock-icon{font-size:10px;color:#cbd5e1;margin-left:auto;}
+.sidebar-sep{height:1px;background:#f1f5f9;margin:8px 12px;}
+
+/* MAIN CONTENT */
+main{flex:1;overflow-y:auto;padding:28px 32px;}
+.view{display:none;}
+.view.active{display:block;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:#0f766e;color:#fff;}
+.btn-primary:hover{background:#0d5f58;}
+.btn-outline{background:#fff;color:#0f766e;border:1.5px solid #0f766e;}
+.btn-outline:hover{background:#f0fdfa;}
+.btn-ghost{background:transparent;color:#64748b;border:1px solid #e2e8f0;}
+.btn-ghost:hover{background:#f8fafc;color:#1e293b;}
+.btn-danger{background:#fff;color:#dc2626;border:1px solid #fecaca;}
+.btn-danger:hover{background:#fef2f2;}
+.btn-sm{padding:5px 11px;font-size:12px;}
+.btn-xs{padding:3px 8px;font-size:11px;}
+
+/* INPUTS */
+input,select,textarea{background:#fff;border:1.5px solid #e2e8f0;border-radius:7px;color:#1e293b;padding:8px 11px;font-size:13px;font-family:inherit;transition:border-color .15s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.1);}
+textarea{resize:vertical;}
+label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;}
+.form-row{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.form-row .field{flex:1;min-width:160px;}
+.field input,.field select,.field textarea{width:100%;}
+
+/* CARDS */
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.card-title{font-size:13px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;}
+.section-title{font-size:20px;font-weight:700;margin-bottom:4px;}
+.section-sub{font-size:13px;color:#64748b;margin-bottom:24px;}
+
+/* PHASE HERO CARD */
+.phase-hero{border-radius:14px;padding:28px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden;}
+.phase-hero::after{content:'';position:absolute;right:-30px;top:-30px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08);}
+.phase-hero .eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;opacity:.75;margin-bottom:8px;}
+.phase-hero h2{font-size:26px;font-weight:800;margin-bottom:4px;}
+.phase-hero .intent{font-size:14px;opacity:.85;margin-bottom:20px;}
+.phase-hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.hero-stat{background:rgba(255,255,255,.15);border-radius:8px;padding:12px;}
+.hero-stat .h-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;opacity:.7;margin-bottom:4px;}
+.hero-stat .h-value{font-size:14px;font-weight:700;}
+
+/* PHASE INFO CARDS */
+.phase-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.info-card{background:#fff;border-radius:10px;padding:16px;border:1px solid #e2e8f0;}
+.info-card .ic-label{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.info-card .ic-label.green{color:#10b981;}
+.info-card .ic-label.amber{color:#f59e0b;}
+.info-card p{font-size:13px;color:#374151;line-height:1.6;}
+
+/* CARDIO PILLS */
+.cardio-pill{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1.5px solid #0f766e;color:#0f766e;margin:3px;}
+
+/* WORKOUT PREVIEW */
+.workout-preview{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:12px;}
+.wp-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.wp-title{font-size:15px;font-weight:700;}
+.wp-today{background:#f59e0b;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.wp-type-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;}
+.type-strength{background:#f0fdfa;color:#0f766e;border:1px solid #99f6e4;}
+.type-recovery{background:#eff6ff;color:#3b82f6;border:1px solid #bfdbfe;}
+.type-power{background:#fff7ed;color:#ea580c;border:1px solid #fed7aa;}
+
+/* EXERCISE TABLE */
+.ex-table{width:100%;border-collapse:collapse;font-size:12px;}
+.ex-table th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #f1f5f9;}
+.ex-table td{padding:9px 10px;border-bottom:1px solid #f8fafc;vertical-align:middle;}
+.ex-table tr:last-child td{border-bottom:none;}
+.ex-table tr:hover td{background:#f8fafc;}
+.ex-order{font-size:11px;font-weight:700;color:#0f766e;background:#f0fdfa;padding:2px 7px;border-radius:4px;}
+.ex-intent{color:#94a3b8;font-style:italic;}
+.ex-table input{background:transparent;border:none;color:#1e293b;padding:1px 3px;font-size:12px;border-radius:4px;}
+.ex-table input:focus{background:#f0fdfa;border:1px solid #0f766e;outline:none;}
+.ex-table select{background:transparent;border:none;color:#1e293b;font-size:12px;padding:1px 3px;}
+.ex-table .edit-input{width:100%;min-width:100px;}
+
+/* CALENDAR */
+.cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.cal-nav h3{font-size:16px;font-weight:700;}
+.cal-btn{width:30px;height:30px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:#64748b;}
+.cal-btn:hover{background:#f8fafc;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day-header{text-align:center;font-size:11px;font-weight:700;color:#94a3b8;padding:6px 0;}
+.cal-cell{border-radius:8px;padding:8px 6px;min-height:72px;background:#f8fafc;border:1px solid transparent;cursor:pointer;transition:all .15s;}
+.cal-cell:hover{border-color:#0f766e;background:#f0fdfa;}
+.cal-cell.today{background:#0f766e;color:#fff;}
+.cal-cell.today .cal-date{color:#fff;}
+.cal-cell.today .cal-wk{color:rgba(255,255,255,.7);}
+.cal-cell.other-month{opacity:.3;}
+.cal-cell.p1-cell{border-left:3px solid #3b82f6;}
+.cal-cell.p2-cell{border-left:3px solid #10b981;}
+.cal-cell.p3-cell{border-left:3px solid #f59e0b;}
+.cal-cell.p4-cell{border-left:3px solid #ef4444;}
+.cal-date{font-size:14px;font-weight:700;margin-bottom:2px;}
+.cal-wk{font-size:9px;color:#94a3b8;margin-bottom:4px;}
+.cal-badge{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px;margin:1px 0;}
+.cal-badge.a{background:#0f766e;color:#fff;}
+.cal-badge.b{background:#0f766e;color:#fff;}
+.cal-badge.rec{background:#eff6ff;color:#3b82f6;}
+.cal-badge.rest{color:#94a3b8;background:none;}
+.cal-badge.logged{background:#f59e0b;color:#fff;}
+.cal-legend{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#64748b;}
+.leg-dot{width:10px;height:10px;border-radius:2px;}
+
+/* SESSION LOG */
+.session-ex-block{background:#f8fafc;border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid #f1f5f9;}
+.seb-name{font-size:14px;font-weight:700;margin-bottom:2px;}
+.seb-meta{font-size:11px;color:#94a3b8;margin-bottom:10px;}
+.sets-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;}
+.set-box{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.set-num{font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;}
+.set-inputs{display:flex;gap:3px;}
+.set-input{width:50px;text-align:center;font-size:12px;padding:5px 3px;border-radius:6px;}
+.set-prev{font-size:9px;color:#94a3b8;text-align:center;}
+
+/* PROTOCOL */
+.proto-badge{display:inline-flex;align-items:center;gap:6px;background:#fef9ee;border:1px solid #fde68a;border-radius:20px;padding:4px 12px;font-size:11px;color:#92400e;margin:3px;}
+.proto-badge .pb-remove{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:14px;line-height:1;padding:0 0 0 4px;}
+.common-pill{padding:4px 10px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;font-size:11px;cursor:pointer;color:#475569;margin:3px;transition:all .15s;}
+.common-pill:hover{border-color:#0f766e;color:#0f766e;background:#f0fdfa;}
+
+/* SUMMARY */
+.summary-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;font-family:'Courier New',monospace;font-size:12px;line-height:1.8;white-space:pre-wrap;color:#374151;min-height:300px;max-height:55vh;overflow-y:auto;}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:200;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:14px;padding:28px;width:500px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal h3{font-size:17px;font-weight:700;margin-bottom:16px;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+
+/* ALERTS */
+.alert{padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px;}
+.alert-amber{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+.alert-teal{background:#f0fdfa;border:1px solid #99f6e4;color:#0f766e;}
+.alert-red{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;}
+
+/* PHASE COLORS */
+.ph1{border-left:4px solid #3b82f6;}
+.ph2{border-left:4px solid #10b981;}
+.ph3{border-left:4px solid #f59e0b;}
+.ph4{border-left:4px solid #ef4444;}
+.ph1-text{color:#3b82f6;}.ph2-text{color:#10b981;}.ph3-text{color:#f59e0b;}.ph4-text{color:#ef4444;}
+
+/* EDIT PROGRAM */
+.workout-block{background:#fff;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:14px;overflow:hidden;}
+.wb-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #f1f5f9;background:#fafafa;}
+.wb-bar input{background:transparent;border:none;font-size:15px;font-weight:700;color:#1e293b;flex:1;}
+.wb-bar input:focus{outline:none;border-bottom:2px solid #0f766e;}
+.wb-desc input{font-size:12px;color:#64748b;font-weight:400;}
+.wb-body{padding:16px;}
+
+/* GRID HELPERS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.spacer{flex:1;}
+.mt8{margin-top:8px;}.mt16{margin-top:16px;}.mb8{margin-bottom:8px;}.mb16{margin-bottom:16px;}
+.sep{border:none;border-top:1px solid #f1f5f9;margin:16px 0;}
+.text-muted{color:#94a3b8;}
+.text-sm{font-size:12px;}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+.pill-green{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.pill-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.pill-amber{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.pill-red{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
+
+/* PATIENT DROPDOWN (topbar, clinician only) */
+.pt-select-wrap{display:none;align-items:center;gap:6px;}
+.pt-select-wrap select{background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;padding:4px 10px;font-size:12px;color:#1e293b;max-width:180px;}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.kpi-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px 16px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.kpi-value{font-size:30px;font-weight:800;line-height:1;margin-bottom:2px;}
+.kpi-label{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;}
+.kpi-sub{font-size:11px;color:#64748b;margin-top:4px;}
+.kpi-bar{height:4px;border-radius:2px;background:#e2e8f0;margin-top:8px;overflow:hidden;}
+.kpi-bar-fill{height:100%;border-radius:2px;background:#0f766e;transition:width .4s;}
+.kpi-green{color:#10b981;}.kpi-amber{color:#f59e0b;}.kpi-red{color:#ef4444;}.kpi-blue{color:#3b82f6;}.kpi-teal{color:#0f766e;}
+
+/* LSI CHART */
+.lsi-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.lsi-name{font-size:12px;font-weight:600;color:#374151;min-width:170px;flex-shrink:0;}
+.lsi-bar-bg{flex:1;height:22px;background:#f1f5f9;border-radius:6px;position:relative;overflow:hidden;}
+.lsi-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:700;color:#fff;transition:width .4s;}
+.lsi-target-line{position:absolute;top:0;bottom:0;width:2px;background:#0f766e;opacity:.5;}
+.lsi-pct{font-size:13px;font-weight:700;min-width:44px;text-align:right;}
+.lsi-date{font-size:10px;color:#94a3b8;min-width:72px;}
+.lsi-empty{font-size:12px;color:#94a3b8;font-style:italic;padding:8px 0;}
+
+/* OUTCOME MEASURES TABLE */
+.om-table{width:100%;border-collapse:collapse;font-size:12px;}
+.om-table th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;border-bottom:1px solid #f1f5f9;}
+.om-table td{padding:9px 10px;border-bottom:1px solid #f8fafc;vertical-align:middle;}
+.om-table tr:last-child td{border-bottom:none;}
+
+/* TAXONOMY */
+.tax-body-section{margin-bottom:10px;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;}
+.tax-bp-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:#fafafa;cursor:pointer;font-size:13px;font-weight:700;user-select:none;}
+.tax-bp-header:hover{background:#f1f5f9;}
+.tax-body{padding:12px 16px;}
+.tax-intent-label{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin:10px 0 5px;}
+.tax-ex-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f8fafc;border-radius:7px;margin-bottom:4px;}
+.tax-ex-name{font-size:13px;font-weight:600;flex:1;}
+.tax-ex-meta{font-size:11px;color:#94a3b8;}
+.tax-ph-dot{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;font-size:9px;font-weight:800;color:#fff;margin:0 1px;}
+
+/* RECENT SESSIONS LIST */
+.session-hist-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f8fafc;font-size:12px;}
+.session-hist-row:last-child{border-bottom:none;}
+.sh-date{font-weight:700;min-width:90px;}
+.sh-phase{color:#94a3b8;}
+.sh-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.sh-score{font-size:11px;color:#64748b;}
+
+@media(max-width:768px){.kpi-grid{grid-template-columns:1fr 1fr;}.g2,.g3,.phase-info-grid,.phase-hero-grid{grid-template-columns:1fr;}.sidebar{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;pointer-events:none;">✓ Link copied!</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">➕</div>
+    <h1>Return to Performance</h1>
+    <p class="sub">DPT Physical Therapy — Rehab Program Tool</p>
+    <div>
+      <label>PATIENT ACCESS CODE</label>
+      <input type="text" id="pt-code-input" placeholder="e.g. ALEX001" style="width:100%;margin-bottom:10px;text-transform:uppercase;" onkeydown="if(event.key==='Enter')enterPatientCode()">
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="enterPatientCode()">Open My Program →</button>
+      <div id="pt-code-error" class="alert alert-red" style="display:none;margin-top:10px;">Code not found. Ask your clinician to send you your patient link.</div>
+    </div>
+    <div class="login-divider">or</div>
+    <div>
+      <label>CLINICIAN PASSWORD</label>
+      <input type="password" id="pw-input" placeholder="Enter password" style="width:100%;margin-bottom:10px;" onkeydown="if(event.key==='Enter')enterClinician()">
+      <button class="btn btn-outline" style="width:100%;justify-content:center;padding:11px;" onclick="enterClinician()">Clinician Login</button>
+      <div id="pw-error" class="alert alert-red" style="display:none;margin-top:10px;">Incorrect password. Try again.</div>
+      <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:12px;">Default password: <strong style="color:#1e293b;">DPT2026</strong> · change in Settings</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <header class="topbar">
+    <div class="topbar-logo">
+      <div class="icon">DPT</div>
+      <div><div class="name">Return to Performance</div><div class="org">DPT Physical Therapy</div></div>
+    </div>
+    <div id="mode-badge" class="mode-badge">Client View</div>
+    <div class="pt-select-wrap" id="pt-select-wrap">
+      <select id="pt-select" onchange="switchPatient(+this.value)" style="max-width:160px;"></select>
+      <button class="btn btn-ghost btn-sm" onclick="copyPatientLink()" title="Copy shareable patient link">🔗 Share</button>
+      <button class="btn btn-ghost btn-sm" onclick="openModal('add-patient-modal')">+ Patient</button>
+    </div>
+    <div class="topbar-right">
+      <span class="patient-chip" id="top-patient">No patient set</span>
+      <button class="btn btn-ghost btn-sm" id="lock-btn" onclick="lockApp()">Lock</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <div class="nav-item active" id="nav-home" onclick="show('home')">🏠 Home <span class="shortcut">H</span></div>
+        <div class="nav-item" id="nav-calendar" onclick="show('calendar')">📅 Calendar <span class="shortcut">C</span></div>
+        <div class="nav-item" id="nav-phases" onclick="show('phases')">🎯 Phases <span class="shortcut">P</span></div>
+        <div class="nav-item" id="nav-workouts" onclick="show('workouts')">💪 Workouts <span class="shortcut">W</span></div>
+        <div class="nav-item" id="nav-cardio" onclick="show('cardio')">🚴 Cardio <span class="shortcut">O</span></div>
+        <div class="nav-item" id="nav-session" onclick="show('session')">📋 Session Log <span class="shortcut">L</span></div>
+      </div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-section" id="clinician-nav" style="display:none">
+        <div class="sidebar-label">Clinician</div>
+        <div class="nav-item" id="nav-overview" onclick="show('overview')">📊 Overview <span class="shortcut">V</span></div>
+        <div class="nav-item" id="nav-edit" onclick="show('edit')">✏️ Edit Program <span class="shortcut">E</span></div>
+        <div class="nav-item" id="nav-protocol" onclick="show('protocol')">🏥 Surgeon Protocol <span class="shortcut">S</span></div>
+        <div class="nav-item" id="nav-taxonomy" onclick="show('taxonomy')">🗂 Taxonomy DB <span class="shortcut">T</span></div>
+        <div class="nav-item" id="nav-summary" onclick="show('summary')">📄 Generate Summary <span class="shortcut">G</span></div>
+      </div>
+      <div class="sidebar-section" id="client-summary-nav">
+        <div class="sidebar-sep"></div>
+        <div class="nav-item" id="nav-summary-c" onclick="show('summary')">📄 Summary <span class="shortcut">G</span></div>
+      </div>
+    </nav>
+
+    <main id="main-content">
+
+      <!-- HOME -->
+      <div id="view-home" class="view active">
+        <div id="home-content"></div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div id="view-calendar" class="view">
+        <div class="section-title">Calendar</div>
+        <div class="section-sub">Click any day to log that session</div>
+        <div class="card">
+          <div class="cal-nav">
+            <button class="cal-btn" onclick="calPrev()">‹</button>
+            <h3 id="cal-month-label"></h3>
+            <button class="cal-btn" onclick="calNext()">›</button>
+            <div class="spacer"></div>
+            <button class="btn btn-ghost btn-sm" onclick="calGoToday()">Today</button>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div class="cal-legend">
+            <div class="leg-item"><div class="leg-dot" style="background:#3b82f6;"></div>Phase 1 (wk 1–4)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#10b981;"></div>Phase 2 (wk 5–11)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#f59e0b;"></div>Phase 3 (wk 12–22)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#ef4444;"></div>Phase 4 (wk 23–52)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#f59e0b;border-radius:50%;"></div>Logged session</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASES -->
+      <div id="view-phases" class="view">
+        <div class="section-title">Program Phases</div>
+        <div class="section-sub">Overview of all phases, goals, difficulties, and cardio options</div>
+        <div id="phases-content"></div>
+      </div>
+
+      <!-- WORKOUTS -->
+      <div id="view-workouts" class="view">
+        <div class="row mb16">
+          <div>
+            <div class="section-title">Workouts</div>
+            <div class="section-sub" style="margin:0;">Phase <span id="wk-phase-label">—</span> workouts</div>
+          </div>
+          <div class="spacer"></div>
+          <div id="workout-phase-tabs" class="row" style="gap:6px;"></div>
+        </div>
+        <div id="workouts-content"></div>
+      </div>
+
+      <!-- CARDIO -->
+      <div id="view-cardio" class="view">
+        <div class="section-title">Cardio Options</div>
+        <div class="section-sub">Phase-appropriate cardio for each stage of recovery</div>
+        <div id="cardio-content"></div>
+      </div>
+
+      <!-- SESSION LOG -->
+      <div id="view-session" class="view">
+        <div class="row mb16">
+          <div>
+            <div class="section-title">Session Log</div>
+            <div class="section-sub" style="margin:0;">Track weight, reps, and notes for each session</div>
+          </div>
+          <div class="spacer"></div>
+          <input type="date" id="session-date" onchange="renderSession()" style="width:auto;">
+          <button class="btn btn-ghost btn-sm" onclick="setToday()">Today</button>
+          <button class="btn btn-primary btn-sm" onclick="saveSession()">💾 Save Session</button>
+        </div>
+        <div id="session-content"></div>
+      </div>
+
+      <!-- OVERVIEW (CLINICIAN) -->
+      <div id="view-overview" class="view">
+        <div class="row mb16">
+          <div>
+            <div class="section-title">Patient Overview</div>
+            <div class="section-sub" style="margin:0;" id="ov-subtitle">Clinical dashboard</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="btn btn-ghost btn-sm" onclick="show('session')">+ Log Session</button>
+          <button class="btn btn-ghost btn-sm" onclick="openPatientInfoModal()">⚙ Patient Info</button>
+        </div>
+        <div class="kpi-grid" id="ov-kpis"></div>
+        <div class="g2" style="margin-bottom:16px;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">LSI Tracker</div>
+              <span style="font-size:11px;color:#94a3b8;">▌ = 90% return-to-sport target</span>
+            </div>
+            <div id="ov-lsi"><p class="lsi-empty">No bilateral outcome measure data yet.</p></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Outcome Measures</div>
+              <button class="btn btn-ghost btn-sm" onclick="openModal('add-om-modal')">+ Add Measure</button>
+            </div>
+            <table class="om-table">
+              <thead><tr><th>Measure</th><th>Latest (Inv / Contra)</th><th>Date</th><th></th></tr></thead>
+              <tbody id="ov-om-rows"></tbody>
+            </table>
+            <p id="ov-om-empty" style="font-size:12px;color:#94a3b8;font-style:italic;padding:8px 0;display:none;">No outcome measures recorded.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Sessions</div>
+            <span id="ov-total-sessions" style="font-size:11px;color:#94a3b8;"></span>
+          </div>
+          <div id="ov-sessions"><p style="font-size:12px;color:#94a3b8;font-style:italic;">No sessions logged yet.</p></div>
+        </div>
+      </div>
+
+      <!-- TAXONOMY DATABASE (CLINICIAN) -->
+      <div id="view-taxonomy" class="view">
+        <div class="row mb16">
+          <div>
+            <div class="section-title">Exercise Taxonomy</div>
+            <div class="section-sub" style="margin:0;">Phase-appropriate exercise library organised by body part and intention</div>
+          </div>
+          <div class="spacer"></div>
+          <button class="btn btn-primary btn-sm" onclick="openAddTaxModal()">+ Add Exercise</button>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div class="card-title" style="margin-bottom:8px;">FILTER BY PHASE</div>
+          <div id="tax-phase-filter" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+        </div>
+        <div id="tax-content"></div>
+      </div>
+
+      <!-- EDIT PROGRAM -->
+      <div id="view-edit" class="view">
+        <div class="row mb16">
+          <div>
+            <div class="section-title">Edit Program</div>
+            <div class="section-sub" style="margin:0;">Add, remove, or modify workouts and exercises per phase</div>
+          </div>
+          <div class="spacer"></div>
+          <div id="edit-phase-tabs" class="row" style="gap:6px;"></div>
+          <button class="btn btn-primary btn-sm" onclick="addWorkout()">+ Add Workout</button>
+        </div>
+        <div id="edit-phase-meta" class="card mb16"></div>
+        <div id="edit-workouts-content"></div>
+      </div>
+
+      <!-- SURGEON PROTOCOL -->
+      <div id="view-protocol" class="view">
+        <div class="section-title">Surgeon Protocol Overlay</div>
+        <div class="section-sub">Surgery-specific constraints that automatically modify phase rules and exercise recommendations</div>
+        <div class="g2">
+          <div>
+            <div class="card">
+              <div class="card-title" style="margin-bottom:14px;">Surgery Information</div>
+              <div class="form-row"><div class="field"><label>Surgery Type</label>
+                <select id="proto-type" onchange="saveProto()" style="width:100%;">
+                  <option value="">— Select —</option>
+                  <option>ACL Reconstruction</option><option>ACL Reconstruction + Meniscus Repair</option>
+                  <option>Meniscus Repair (Complex)</option><option>Meniscus Repair (Simple)</option>
+                  <option>Meniscectomy (Partial)</option><option>Total Knee Replacement</option>
+                  <option>Partial Knee Replacement</option><option>Hip Arthroscopy</option>
+                  <option>Total Hip Replacement</option><option>Shoulder Labrum Repair</option>
+                  <option>Rotator Cuff Repair</option><option>SLAP Repair</option>
+                  <option>Ankle Ligament Repair</option><option>Other</option>
+                </select></div></div>
+              <div class="form-row">
+                <div class="field"><label>Surgery Date</label><input type="date" id="proto-date" onchange="saveProto()"></div>
+                <div class="field"><label>Surgeon</label><input type="text" id="proto-surgeon" placeholder="Dr. Name" onchange="saveProto()"></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label>Weight Bearing</label>
+                  <select id="proto-wb" onchange="saveProto()" style="width:100%;">
+                    <option>Full Weight Bearing</option><option>Weight Bearing as Tolerated</option>
+                    <option>Partial Weight Bearing (50%)</option><option>Toe-Touch Weight Bearing</option>
+                    <option>Non-Weight Bearing</option></select></div>
+                <div class="field"><label>Brace</label>
+                  <select id="proto-brace" onchange="saveProto()" style="width:100%;">
+                    <option>No Brace</option><option>Hinged Knee Brace (0–90°)</option>
+                    <option>Hinged Knee Brace (Full ROM)</option><option>Locked in Extension</option>
+                    <option>Custom Protocol</option></select></div>
+              </div>
+              <div class="field"><label>ROM Restrictions / Notes</label>
+                <textarea id="proto-rom" rows="3" style="width:100%;" onchange="saveProto()" placeholder="e.g., 0–90° for first 6 weeks..."></textarea></div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="margin-bottom:12px;">Phase Timeline Overrides</div>
+              <p class="text-muted text-sm mb8">Override when each phase begins per surgeon's protocol.</p>
+              <div id="phase-overrides"></div>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-title" style="margin-bottom:12px;">Exercise Restrictions</div>
+              <div class="row mb8">
+                <input type="text" id="new-restriction" placeholder="e.g., No deep knee flexion past 90°" style="flex:1;">
+                <button class="btn btn-primary btn-sm" onclick="addRestriction()">+ Add</button>
+              </div>
+              <div id="restriction-tags" class="mb16"></div>
+              <div class="sep"></div>
+              <div class="card-title" style="margin-bottom:8px;">Quick Add</div>
+              <div id="common-restrictions"></div>
+            </div>
+            <div class="card">
+              <div class="card-title" style="margin-bottom:12px;">Protocol Impact</div>
+              <div id="protocol-impact"></div>
+              <div class="field mt8"><label>Additional Notes</label>
+                <textarea id="proto-notes" rows="4" style="width:100%;" onchange="saveProto()" placeholder="Follow-up dates, contact info..."></textarea></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATE SUMMARY -->
+      <div id="view-summary" class="view">
+        <div class="section-title">Generate Summary</div>
+        <div class="section-sub">Create an EMR-ready SOAP note or progress summary — copy and paste directly into your system</div>
+        <div class="g2">
+          <div>
+            <div class="card">
+              <div class="card-title" style="margin-bottom:14px;">Report Options</div>
+              <div class="form-row">
+                <div class="field"><label>Session Date</label><input type="date" id="sum-date" style="width:100%;"></div>
+                <div class="field"><label>Report Type</label>
+                  <select id="sum-type" style="width:100%;">
+                    <option value="soap">Single Session SOAP Note</option>
+                    <option value="progress">Progress Summary</option>
+                    <option value="discharge">Discharge Planning Note</option>
+                  </select></div>
+              </div>
+              <button class="btn btn-primary" onclick="generateSummary()" style="width:100%;justify-content:center;padding:11px;">⚡ Generate Summary</button>
+              <div class="sep"></div>
+              <div class="card-title" style="margin-bottom:12px;">Outcome Measures (optional)</div>
+              <div class="form-row">
+                <div class="field"><label>Quad Peak Force</label><input type="text" id="sum-qpeak" placeholder="Nm/kg"></div>
+                <div class="field"><label>Quad RFD</label><input type="text" id="sum-qrfd"></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label>Hamstring Peak</label><input type="text" id="sum-hpeak" placeholder="Nm/kg"></div>
+                <div class="field"><label>Hamstring RFD</label><input type="text" id="sum-hrfd"></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label>Trap Bar Squat</label><input type="text" id="sum-squat" placeholder="lbs"></div>
+                <div class="field"><label>Knee Flexion ROM</label><input type="text" id="sum-kflex" placeholder="°"></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="height:100%;">
+              <div class="card-header">
+                <div class="card-title">EMR Output</div>
+                <button class="btn btn-outline btn-sm" onclick="copySummary()">📋 Copy to Clipboard</button>
+              </div>
+              <div class="summary-box" id="summary-output">Select options and click Generate Summary.</div>
+              <div id="copy-confirm" style="display:none;color:#0f766e;font-size:12px;margin-top:8px;font-weight:600;">✓ Copied to clipboard!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Exercise Modal -->
+<div class="overlay" id="ex-modal">
+  <div class="modal">
+    <h3 id="ex-modal-title">Add Exercise</h3>
+    <div class="form-row">
+      <div class="field" style="max-width:75px;"><label>Order</label><input type="text" id="em-order" placeholder="A1"></div>
+      <div class="field"><label>Exercise Name</label><input type="text" id="em-name" placeholder="Exercise name"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Equipment</label>
+        <select id="em-equip" style="width:100%;">
+          <option>Bodyweight</option><option>Dumbbell</option><option>Barbell</option>
+          <option>Kettlebell</option><option>Resistance Machine</option><option>Cable</option>
+          <option>Resistance Band</option><option>Trap Bar</option><option>Plyo Box</option>
+          <option>Cardio Equipment</option><option>Partner</option><option>Other</option>
+        </select></div>
+      <div class="field" style="max-width:65px;"><label>Sets</label><input type="number" id="em-sets" value="3" min="1" max="10"></div>
+      <div class="field"><label>Reps/Time</label><input type="text" id="em-reps" placeholder="10-12"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Load</label><input type="text" id="em-load" placeholder="2 RIR / BW / 30 lb"></div>
+      <div class="field"><label>Rest</label><input type="text" id="em-rest" placeholder="90sec"></div>
+    </div>
+    <div class="field mb16"><label>Intent / Coaching Cue</label><input type="text" id="em-intent" placeholder="Slow and controlled"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('ex-modal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveExercise()">Save Exercise</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Patient Modal -->
+<div class="overlay" id="add-patient-modal">
+  <div class="modal">
+    <h3>Add New Patient</h3>
+    <div class="form-row">
+      <div class="field"><label>Patient Name</label><input type="text" id="np-name" placeholder="Full name"></div>
+      <div class="field"><label>Date of Birth</label><input type="date" id="np-dob"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Diagnosis</label><input type="text" id="np-dx" placeholder="e.g., ACL tear right knee"></div>
+      <div class="field"><label>Clinician</label><input type="text" id="np-clin" placeholder="Clinician name"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Program Start Date</label><input type="date" id="np-start"></div>
+      <div class="field"><label>Patient Access Code</label><input type="text" id="np-code" placeholder="e.g. ALEX001" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"></div>
+    </div>
+    <p style="font-size:11px;color:#94a3b8;margin:0 0 14px;">The access code is what the patient types to log in, or is embedded in their shareable link.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('add-patient-modal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="addPatient()">Create Patient</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Outcome Measure Modal -->
+<div class="overlay" id="add-om-modal">
+  <div class="modal">
+    <h3 id="add-om-title">Add Outcome Measure</h3>
+    <input type="hidden" id="om-edit-id">
+    <div class="form-row">
+      <div class="field"><label>Measure Name</label><input type="text" id="om-name" placeholder="e.g., Vertical Jump Height"></div>
+      <div class="field" style="max-width:100px;"><label>Unit</label><input type="text" id="om-unit" placeholder="cm / lbs / Nm/kg"></div>
+    </div>
+    <div class="field mb16"><label>Type</label>
+      <select id="om-bilateral" style="width:100%;">
+        <option value="bilateral">Bilateral (Involved + Contralateral → LSI)</option>
+        <option value="single">Single Value</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('add-om-modal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveOM()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add OM Value Modal -->
+<div class="overlay" id="add-omval-modal">
+  <div class="modal">
+    <h3 id="omval-title">Record Measurement</h3>
+    <input type="hidden" id="omval-om-id">
+    <div class="form-row">
+      <div class="field"><label>Date</label><input type="date" id="omval-date"></div>
+    </div>
+    <div class="form-row" id="omval-bilateral-fields">
+      <div class="field"><label>Involved Limb Value</label><input type="number" step="any" id="omval-inv" placeholder="0"></div>
+      <div class="field"><label>Contralateral Limb Value</label><input type="number" step="any" id="omval-contra" placeholder="0"></div>
+    </div>
+    <div class="field mb8" id="omval-single-field" style="display:none;"><label>Value</label><input type="number" step="any" id="omval-single" placeholder="0"></div>
+    <div class="field mb16"><label>Notes (optional)</label><input type="text" id="omval-notes" placeholder="Test conditions, clinician notes..."></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('add-omval-modal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveOMValue()">Record</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Taxonomy Exercise Modal -->
+<div class="overlay" id="add-tax-modal">
+  <div class="modal" style="width:560px;">
+    <h3 id="tax-modal-title">Add Exercise to Taxonomy</h3>
+    <input type="hidden" id="tax-edit-id">
+    <div class="form-row">
+      <div class="field"><label>Exercise Name</label><input type="text" id="tax-name" placeholder="Exercise name"></div>
+      <div class="field"><label>Equipment</label>
+        <select id="tax-equip" style="width:100%;">
+          <option>Bodyweight</option><option>Dumbbell</option><option>Barbell</option><option>Kettlebell</option>
+          <option>Resistance Machine</option><option>Cable</option><option>Resistance Band</option>
+          <option>Trap Bar</option><option>Plyo Box</option><option>Cardio Equipment</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Body Part</label>
+        <select id="tax-bp" style="width:100%;">
+          <option>Knee</option><option>Hip</option><option>Ankle / Foot</option><option>Core</option>
+          <option>Hamstring</option><option>Quadriceps</option><option>Upper Body</option><option>Full Body</option>
+        </select>
+      </div>
+      <div class="field"><label>Intention</label>
+        <select id="tax-intent" style="width:100%;">
+          <option>Mobility</option><option>Stability</option><option>Endurance</option>
+          <option>Coordination / NMR</option><option>Tendon Strength</option>
+          <option>Muscle Strength</option><option>Power</option>
+        </select>
+      </div>
+    </div>
+    <div class="field mb8"><label>Applicable Phases (check all that apply)</label>
+      <div class="row mt8" style="gap:12px;">
+        <label style="text-transform:none;font-size:13px;display:flex;align-items:center;gap:5px;"><input type="checkbox" id="tax-ph1" value="1"> Phase 1</label>
+        <label style="text-transform:none;font-size:13px;display:flex;align-items:center;gap:5px;"><input type="checkbox" id="tax-ph2" value="2"> Phase 2</label>
+        <label style="text-transform:none;font-size:13px;display:flex;align-items:center;gap:5px;"><input type="checkbox" id="tax-ph3" value="3"> Phase 3</label>
+        <label style="text-transform:none;font-size:13px;display:flex;align-items:center;gap:5px;"><input type="checkbox" id="tax-ph4" value="4"> Phase 4</label>
+      </div>
+    </div>
+    <div class="field mb16"><label>Description / Coaching Cues</label><textarea id="tax-desc" rows="2" style="width:100%;" placeholder="Key technique points, clinical rationale..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('add-tax-modal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveTaxExercise()">Save Exercise</button>
+    </div>
+  </div>
+</div>
+
+<!-- Patient Modal -->
+<div class="overlay" id="pt-modal">
+  <div class="modal">
+    <h3>Patient Information</h3>
+    <div class="form-row">
+      <div class="field"><label>Patient Name</label><input type="text" id="pt-name" placeholder="Full name"></div>
+      <div class="field"><label>Date of Birth</label><input type="date" id="pt-dob"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Diagnosis</label><input type="text" id="pt-dx" placeholder="e.g., ACL tear right knee"></div>
+      <div class="field"><label>Clinician</label><input type="text" id="pt-clin" placeholder="Clinician name"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Program Start Date</label><input type="date" id="pt-start"></div>
+      <div class="field"><label>Patient Access Code</label><input type="text" id="pt-code" placeholder="e.g. ALEX001" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()"></div>
+    </div>
+    <div id="pt-share-row" style="margin-bottom:16px;padding:12px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;display:none;">
+      <div style="font-size:12px;font-weight:600;color:#065f46;margin-bottom:6px;">Patient Link</div>
+      <input type="text" id="pt-link-display" readonly style="width:100%;font-size:11px;color:#475569;margin-bottom:8px;background:#fff;">
+      <button class="btn btn-primary btn-sm" onclick="copyPatientLink()" style="width:100%;justify-content:center;">📋 Copy Patient Link</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-danger btn-sm" id="pt-delete-btn" onclick="deletePatient()" style="margin-right:auto;">Delete Patient</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('pt-modal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="savePatient()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────
+const PASS = 'DPT2026';
+let isClinician = false;
+let patientAccessCode = null; // set when viewing in patient mode (URL link or code login)
+let calYear, calMonth;
+let editPhaseIdx = 0;
+let workoutPhaseIdx = 0;
+let _exCtx = {pi:0, wi:0};
+let taxPhaseFilter = 0; // 0 = All
+
+const COMMON_RESTRICTIONS = [
+  'No deep knee flexion past 90°','No full extension under load','No impact/plyometrics',
+  'No running until cleared','No open-chain quad loading','No single-leg loading',
+  'No pivot/rotation','No valgus stress','Limit ROM to surgeon range','No contact activities',
+  'No heavy spinal loading','No overhead pressing'
+];
+
+function defaultOutcomeMeasures(){
+  return [
+    {id:'om-q',name:'Quad Peak Force',unit:'Nm/kg',bilateral:true,values:[]},
+    {id:'om-h',name:'Hamstring Peak Force',unit:'Nm/kg',bilateral:true,values:[]},
+    {id:'om-qr',name:'Quad RFD',unit:'N/s',bilateral:true,values:[]},
+    {id:'om-sq',name:'Trap Bar Squat',unit:'lbs',bilateral:false,values:[]},
+    {id:'om-rom',name:'Knee Flexion ROM',unit:'°',bilateral:true,values:[]},
+  ];
+}
+function defaultTaxonomy(){
+  return {exercises:[
+    {id:'tx1',name:'Segmented Cat/Cow',bodyPart:'Core',intention:'Mobility',phases:[1,2],equipment:'Bodyweight',description:'Slow spinal segmentation, controlled breathing'},
+    {id:'tx2',name:'4-Point Hip CARS',bodyPart:'Hip',intention:'Mobility',phases:[1,2],equipment:'Bodyweight',description:'Full hip circular articulation, max range'},
+    {id:'tx3',name:'Adductor Rockbacks',bodyPart:'Hip',intention:'Mobility',phases:[1,2],equipment:'Bodyweight',description:'Hip adductor and groin mobility'},
+    {id:'tx4',name:'Supine Pelvic Tilts',bodyPart:'Core',intention:'Coordination / NMR',phases:[1],equipment:'Bodyweight',description:'Gentle lumbar stabilisation, quad activation'},
+    {id:'tx5',name:'Prayer Stretch on Bench',bodyPart:'Hip',intention:'Mobility',phases:[2],equipment:'Bodyweight',description:'Hip flexor length, anterior chain'},
+    {id:'tx6',name:'Single Leg Reaches',bodyPart:'Hip',intention:'Coordination / NMR',phases:[2,3],equipment:'Bodyweight',description:'Hip drive, proprioceptive challenge, keep it in the hips'},
+    {id:'tx7',name:'Rockbacks',bodyPart:'Knee',intention:'Mobility',phases:[2],equipment:'Bodyweight',description:'Stiff ankles, springy movement, knee ROM drill'},
+    {id:'tx8',name:'Bulgarian Split Squat',bodyPart:'Knee',intention:'Muscle Strength',phases:[2,3],equipment:'Dumbbell',description:'Unilateral quad-dominant, monitor bilateral symmetry'},
+    {id:'tx9',name:'Lunge Stance KB Swing',bodyPart:'Hip',intention:'Coordination / NMR',phases:[2],equipment:'Kettlebell',description:'Hip dissociation, dynamic stability challenge'},
+    {id:'tx10',name:'Dumbbell RDL',bodyPart:'Hamstring',intention:'Tendon Strength',phases:[2,3],equipment:'Dumbbell',description:'Slow eccentric, hip hinge pattern, hamstring loading'},
+    {id:'tx11',name:'Prone Hamstring Curl',bodyPart:'Hamstring',intention:'Muscle Strength',phases:[2,3],equipment:'Resistance Machine',description:'Isolated hamstring, stretch and squeeze'},
+    {id:'tx12',name:'Seated Quad Extension',bodyPart:'Quadriceps',intention:'Muscle Strength',phases:[2,3],equipment:'Resistance Machine',description:'Terminal extension, quad isolation, high RPE'},
+    {id:'tx13',name:'Wide Stance Goodmorning',bodyPart:'Hamstring',intention:'Muscle Strength',phases:[2],equipment:'Bodyweight',description:'Hip hinge warmup, posterior chain activation'},
+    {id:'tx14',name:'Front Squat',bodyPart:'Knee',intention:'Muscle Strength',phases:[2,3],equipment:'Dumbbell',description:'Upright torso, quad dominant, knee over toe'},
+    {id:'tx15',name:'Trap Bar Squat',bodyPart:'Knee',intention:'Muscle Strength',phases:[3,4],equipment:'Trap Bar',description:'Bilateral strength, progressive load, neutral spine'},
+    {id:'tx16',name:'Box Squat',bodyPart:'Knee',intention:'Muscle Strength',phases:[3,4],equipment:'Barbell',description:'Explosive concentric, controlled descent, posterior chain'},
+    {id:'tx17',name:'Nordic Hamstring Curl',bodyPart:'Hamstring',intention:'Tendon Strength',phases:[3,4],equipment:'Partner/Machine',description:'Eccentric emphasis, very high hamstring demand, progress slowly'},
+    {id:'tx18',name:'Romanian Deadlift',bodyPart:'Hamstring',intention:'Tendon Strength',phases:[3,4],equipment:'Barbell',description:'Hip hinge, slow eccentric, hamstring load'},
+    {id:'tx19',name:'KB Swing',bodyPart:'Hip',intention:'Power',phases:[3,4],equipment:'Kettlebell',description:'Hip power, explosive extension, hinge pattern'},
+    {id:'tx20',name:'Hanging Leg Raise',bodyPart:'Core',intention:'Stability',phases:[2,3],equipment:'Bodyweight',description:'Anti-extension core, hip flexor endurance'},
+    {id:'tx21',name:'Box Jump',bodyPart:'Knee',intention:'Power',phases:[4],equipment:'Plyo Box',description:'Bilateral explosive, max height, soft landing, stick it'},
+    {id:'tx22',name:'Lateral Bounds',bodyPart:'Knee',intention:'Power',phases:[4],equipment:'Bodyweight',description:'Unilateral explosive, distance and control, stick each landing'},
+    {id:'tx23',name:'Sprint Accelerations',bodyPart:'Full Body',intention:'Power',phases:[4],equipment:'Field / Track',description:'85–95% max effort, 10–20 yds, full recovery between reps'},
+    {id:'tx24',name:'Single Leg Landing',bodyPart:'Knee',intention:'Coordination / NMR',phases:[4],equipment:'Plyo Box',description:'Stick landing, no valgus, proprioceptive challenge'},
+    {id:'tx25',name:'Deceleration Runs',bodyPart:'Full Body',intention:'Coordination / NMR',phases:[4],equipment:'Field',description:'Max speed → controlled stop in 3 steps'},
+    {id:'tx26',name:'Incline Treadmill Walk',bodyPart:'Full Body',intention:'Endurance',phases:[2,3],equipment:'Cardio Equipment',description:'Low impact progressive cardio, RPE 6–7'},
+    {id:'tx27',name:'Recumbent Bike',bodyPart:'Full Body',intention:'Endurance',phases:[1,2],equipment:'Cardio Equipment',description:'Non-impact, range of motion and circulation'},
+    {id:'tx28',name:'Lateral COD Drills',bodyPart:'Knee',intention:'Coordination / NMR',phases:[4],equipment:'Cones',description:'Sharp lateral cuts, reactive, sport-specific pattern'},
+    {id:'tx29',name:'Hip Flexor Stretch',bodyPart:'Hip',intention:'Mobility',phases:[1,2,3,4],equipment:'Bodyweight',description:'Sustained anterior hip lengthening'},
+    {id:'tx30',name:'Full Stretch Sequence',bodyPart:'Full Body',intention:'Mobility',phases:[1,2,3,4],equipment:'Bodyweight',description:'~20 min full body stretch, slow and controlled'},
+  ]};
+}
+function makeDefaultPatient(id){
+  return {
+    id:id||('p'+Date.now()),
+    accessCode:'',
+    patient:{name:'',dob:'',startDate:'',clinician:'',diagnosis:''},
+    commTab:'',
+    proto:{surgeryType:'',surgeryDate:'',surgeon:'',weightBearing:'Full Weight Bearing',
+           brace:'No Brace',romRestrictions:'',restrictions:[],phaseOverrides:{},notes:''},
+    outcomeMeasures:defaultOutcomeMeasures(),
+    phases:[
+      {id:1,name:'Phase 1',weekStart:1,weekEnd:4,color:'#3b82f6',
+       rehabIntent:'Swelling / ROM / NMR',intensity:'Low',
+       cardioOptions:['Recumbent Bike','Arm Bike','Upper Body Circuits','Core Circuit'],
+       goals:'Reduce post-surgical swelling. Restore baseline range of motion. Re-establish neuromuscular control and quad activation.',
+       difficulties:'Stiffness and atrophy are normal. Pain modulation is the main limiter — manage expectations on strength early on.',
+       rules:'No loaded single-leg work. Keep all cardio non-impact. Prioritize swelling management above exercise goals.',
+       workouts:[
+         {id:'p1-ra',name:'Recovery A',description:'Cardio and Total Body Mobility',type:'recovery',exercises:[
+           {order:'A1',name:'Cardio - Equipment of Choice',equipment:'Cardio Equipment',sets:1,reps:'20-30 Min',rest:'2min',load:'',intent:'RPE 7'},
+           {order:'B1',name:'Segmented Cat/Cow',equipment:'Bodyweight',sets:1,reps:'60sec',rest:'0',load:'',intent:'Slow'},
+           {order:'',name:'Segmented LTR',equipment:'Bodyweight',sets:1,reps:'60sec',rest:'0',load:'',intent:'Slow'},
+           {order:'',name:'4 Point Thoracic Rotation',equipment:'Bodyweight',sets:2,reps:'60sec',rest:'0',load:'',intent:'Slow'},
+           {order:'',name:'4-Point Hip Drops',equipment:'Bodyweight',sets:2,reps:'60sec',rest:'0',load:'',intent:'Slow'},
+           {order:'',name:'Adductor RockBacks',equipment:'Bodyweight',sets:2,reps:'60sec',rest:'0',load:'',intent:'Slow'},
+           {order:'',name:'4-Point Hip CARS',equipment:'Bodyweight',sets:2,reps:'60sec',rest:'0',load:'',intent:'Slow'},
+           {order:'',name:'Supine Pelvic Tilts',equipment:'Bodyweight',sets:1,reps:'60sec',rest:'0',load:'',intent:'Slow'}]},
+         {id:'p1-rb',name:'Recovery B',description:'Cardio and Total Body Mobility',type:'recovery',exercises:[
+           {order:'A1',name:'Cardio - Equipment of Choice',equipment:'Cardio Equipment',sets:1,reps:'20-30 Min',rest:'2min',load:'',intent:'RPE 7'},
+           {order:'B1',name:'Full Stretch Sequence',equipment:'Bodyweight',sets:1,reps:'~20 Min',rest:'0',load:'',intent:'Slow, full sequence'}]}
+       ]},
+      {id:2,name:'Phase 2',weekStart:5,weekEnd:11,color:'#10b981',
+       rehabIntent:'ROM / NMR / Strength',intensity:'Low - Moderate',
+       cardioOptions:['Recumbent Bike','Upright Bike','Incline Treadmill (walking)','Pool','Elliptical'],
+       goals:'Build foundational bilateral strength. Improve single-leg control. Achieve full range of motion.',
+       difficulties:'Compensation patterns from the uninvolved limb. Patient may push too hard, too soon — stay disciplined with progressions.',
+       rules:'Push harder on squats than deadlifts. Take at least 2 days between Power C and A. Monitor for swelling after sessions.',
+       workouts:[
+         {id:'p2-wa',name:'Workout A',description:'Lower Body Strength',type:'strength',exercises:[
+           {order:'Warmup',name:'5x5x5',equipment:'Bodyweight',sets:5,reps:'5',rest:'0',load:'BW',intent:'5 Movements, 5 Yards Down & Back, 5 Times'},
+           {order:'A1',name:'Rockbacks',equipment:'Bodyweight',sets:3,reps:'15-20',rest:'0',load:'BW',intent:'Stay springy, stiff ankles'},
+           {order:'A2',name:'Prayer Stretch on Bench',equipment:'Bodyweight',sets:3,reps:'15-20',rest:'30s',load:'BW',intent:'Hips'},
+           {order:'B1',name:'Bulgarian Split Squat',equipment:'Dumbbell',sets:3,reps:'8-10',rest:'0',load:'30-50 lb',intent:'Strong hips'},
+           {order:'B2',name:'Lunge Stance KB Swings',equipment:'Kettlebell',sets:3,reps:'30sec',rest:'2min',load:'10-20 lb',intent:"Don't fall"},
+           {order:'C1',name:'Dumbbell RDL',equipment:'Dumbbell',sets:2,reps:'12-15',rest:'0',load:'2 RIR',intent:'Slow and controlled'},
+           {order:'D1',name:'Prone Hamstring Curl',equipment:'Resistance Machine',sets:2,reps:'15-20',rest:'0',load:'2 RIR',intent:'Stretch and squeeze'},
+           {order:'',name:'Mobility',equipment:'',sets:1,reps:'10-15 Min',rest:'',load:'',intent:''}]},
+         {id:'p2-wb',name:'Workout B',description:'Lower Body Strength',type:'strength',exercises:[
+           {order:'Warmup',name:'5x5x5',equipment:'Bodyweight',sets:5,reps:'5',rest:'0',load:'BW',intent:'Warmup'},
+           {order:'A1',name:'Wide Stance Goodmornings',equipment:'Bodyweight',sets:3,reps:'15-20',rest:'0',load:'BW',intent:'Warmup'},
+           {order:'A2',name:'Prayer Stretch on Bench',equipment:'Bodyweight',sets:3,reps:'15-20',rest:'30s',load:'BW',intent:'Warmup'},
+           {order:'B1',name:'Front Squat',equipment:'Dumbbell',sets:3,reps:'8-10',rest:'0',load:'20-30 lb',intent:'Stay tall'},
+           {order:'B2',name:'Single Leg Reaches',equipment:'Bodyweight',sets:3,reps:'60sec',rest:'2min',load:'BW',intent:'Keep it in the hips'},
+           {order:'C1',name:'Hanging Leg Raises',equipment:'Bodyweight',sets:2,reps:'12-15',rest:'2min',load:'BW',intent:'Strong core'},
+           {order:'D1',name:'Seated Quad Extensions',equipment:'Resistance Machine',sets:2,reps:'15-20',rest:'2min',load:'9.5 RPE',intent:'Stretch and squeeze'},
+           {order:'',name:'Mobility',equipment:'',sets:1,reps:'10-15 Min',rest:'',load:'',intent:''}]},
+         {id:'p2-ra',name:'Recovery A',description:'Cardio and Mobility',type:'recovery',exercises:[
+           {order:'A1',name:'Cardio - Equipment of Choice',equipment:'Cardio Equipment',sets:1,reps:'20-30 Min',rest:'2min',load:'',intent:'RPE 7'},
+           {order:'B1',name:'Full Stretch Sequence',equipment:'Bodyweight',sets:1,reps:'~20 Min',rest:'0',load:'',intent:'Slow, controlled'}]},
+         {id:'p2-rb',name:'Recovery B',description:'Cardio and Mobility',type:'recovery',exercises:[
+           {order:'A1',name:'Cardio - Equipment of Choice',equipment:'Cardio Equipment',sets:1,reps:'20-30 Min',rest:'2min',load:'',intent:'RPE 7'},
+           {order:'B1',name:'Full Stretch Sequence',equipment:'Bodyweight',sets:1,reps:'~20 Min',rest:'0',load:'',intent:'Slow, controlled'}]}
+       ]},
+      {id:3,name:'Phase 3',weekStart:12,weekEnd:22,color:'#f59e0b',
+       rehabIntent:'Strength / Hypertrophy',intensity:'Moderate',
+       cardioOptions:['Incline Treadmill','Reverse Treadmill','HIIT (low-impact)','Bike','Swim'],
+       goals:'Restore quad/hamstring strength to within 80% of contralateral limb. Build muscle mass. Introduce light plyometric prep.',
+       difficulties:'Plateaus in strength gains. Long phase — keep variety. Introduce volume carefully to avoid swelling rebound.',
+       rules:'Progressive overload each session. Track bilateral symmetry. Monitor DOMS and adjust volume accordingly.',
+       workouts:[
+         {id:'p3-wa',name:'Workout A',description:'Squat Dominant',type:'strength',exercises:[
+           {order:'Warmup',name:'5x5x5 Dynamic Warmup',equipment:'Bodyweight',sets:5,reps:'5',rest:'0',load:'BW',intent:'Full body movement prep'},
+           {order:'A1',name:'Trap Bar Squat',equipment:'Trap Bar',sets:4,reps:'6-8',rest:'2min',load:'Progressive',intent:'Strong and controlled'},
+           {order:'B1',name:'Bulgarian Split Squat',equipment:'Dumbbell',sets:3,reps:'8-10',rest:'90sec',load:'40-60 lb',intent:'Bilateral symmetry'},
+           {order:'C1',name:'Romanian Deadlift',equipment:'Barbell',sets:3,reps:'8-10',rest:'90sec',load:'2 RIR',intent:'Hip hinge, slow eccentric'},
+           {order:'D1',name:'Nordic Hamstring Curl',equipment:'Partner/Machine',sets:3,reps:'5-8',rest:'2min',load:'BW',intent:'Eccentric control'},
+           {order:'',name:'Mobility',equipment:'',sets:1,reps:'10 Min',rest:'',load:'',intent:''}]},
+         {id:'p3-wb',name:'Workout B',description:'Hip Dominant',type:'strength',exercises:[
+           {order:'Warmup',name:'5x5x5 Dynamic Warmup',equipment:'Bodyweight',sets:5,reps:'5',rest:'0',load:'BW',intent:'Full body movement prep'},
+           {order:'A1',name:'Box Squat',equipment:'Barbell',sets:4,reps:'5',rest:'2min',load:'Progressive',intent:'Explosive concentric'},
+           {order:'B1',name:'KB Swing',equipment:'Kettlebell',sets:4,reps:'10',rest:'90sec',load:'24-32 kg',intent:'Hip power'},
+           {order:'C1',name:'Leg Press',equipment:'Machine',sets:3,reps:'10-12',rest:'90sec',load:'2 RIR',intent:'Full ROM'},
+           {order:'D1',name:'Hamstring Curl',equipment:'Machine',sets:3,reps:'12-15',rest:'60sec',load:'2 RIR',intent:'Stretch and squeeze'},
+           {order:'',name:'Mobility',equipment:'',sets:1,reps:'10 Min',rest:'',load:'',intent:''}]},
+         {id:'p3-rc',name:'Recovery',description:'Active Recovery',type:'recovery',exercises:[
+           {order:'A1',name:'Low Intensity Cardio',equipment:'Cardio Equipment',sets:1,reps:'30-45 Min',rest:'',load:'',intent:'RPE 5-6'},
+           {order:'B1',name:'Full Stretch Sequence + Foam Rolling',equipment:'Bodyweight',sets:1,reps:'20 Min',rest:'0',load:'',intent:'Slow, full body'}]}
+       ]},
+      {id:4,name:'Phase 4',weekStart:23,weekEnd:52,color:'#ef4444',
+       rehabIntent:'Strength / Power / Agility',intensity:'Moderate to High',
+       cardioOptions:['Stairmaster','Sprints','Bike','Swim','HIIT'],
+       goals:'Restore power, RFD, change of direction, and sport-specific movement quality. Pass return-to-sport criteria.',
+       difficulties:'Confidence and psychological readiness as much as physical. Re-injury risk if rushed — respect criteria-based progression.',
+       rules:'Symmetry tests >90% LSI before sport return. All plyometrics must be pain-free. 2 days minimum between Power C and A.',
+       workouts:[
+         {id:'p4-pwa',name:'Total Body Power A',description:'Power & Plyometrics',type:'power',exercises:[
+           {order:'Warmup',name:'5x5x5 + Dynamic Prep',equipment:'Bodyweight',sets:5,reps:'5',rest:'0',load:'BW',intent:'A Skips, B Skips, Mario Skips'},
+           {order:'A1',name:'Box Jump',equipment:'Plyo Box',sets:4,reps:'5',rest:'2min',load:'BW',intent:'Max height, soft landing'},
+           {order:'B1',name:'Trap Bar Deadlift',equipment:'Trap Bar',sets:4,reps:'4-6',rest:'3min',load:'Heavy',intent:'Explosive pull'},
+           {order:'C1',name:'Lateral Bounds',equipment:'Bodyweight',sets:3,reps:'5 each',rest:'90sec',load:'BW',intent:'Distance and control'},
+           {order:'D1',name:'Nordic Hamstring Curl',equipment:'Partner',sets:3,reps:'5-6',rest:'2min',load:'BW',intent:'Eccentric emphasis'}]},
+         {id:'p4-pwb',name:'Total Body Power B',description:'Agility & Speed',type:'power',exercises:[
+           {order:'Warmup',name:'5x5x5 + Acceleration Drills',equipment:'Bodyweight',sets:5,reps:'5',rest:'0',load:'BW',intent:'Heel scoops, A skips, accel/decel'},
+           {order:'A1',name:'Sprint Accelerations (10–20 yds)',equipment:'Field/Track',sets:6,reps:'1',rest:'90sec',load:'BW',intent:'85–95% max effort'},
+           {order:'B1',name:'Barbell Back Squat',equipment:'Barbell',sets:4,reps:'5',rest:'3min',load:'Heavy',intent:'Controlled descent, explosive up'},
+           {order:'C1',name:'Lateral Change of Direction Drills',equipment:'Cones',sets:4,reps:'30sec',rest:'90sec',load:'BW',intent:'Sharp cuts'},
+           {order:'D1',name:'Single Leg Landing',equipment:'Plyo Box',sets:3,reps:'8 each',rest:'60sec',load:'BW',intent:'Stick landing, no valgus'}]},
+         {id:'p4-pwc',name:'Total Body Power C',description:'Deceleration & Control',type:'power',exercises:[
+           {order:'Warmup',name:'Dynamic Movement Prep',equipment:'Bodyweight',sets:1,reps:'10 Min',rest:'0',load:'BW',intent:'Full body'},
+           {order:'A1',name:'Deceleration Runs',equipment:'Field',sets:5,reps:'1',rest:'2min',load:'BW',intent:'Max speed → stop in 3 steps'},
+           {order:'B1',name:'Leg Press — Heavy',equipment:'Machine',sets:4,reps:'6-8',rest:'2min',load:'Heavy',intent:'Max strength'},
+           {order:'C1',name:'Broad Jump',equipment:'Field',sets:4,reps:'5',rest:'90sec',load:'BW',intent:'Max distance, stick landing'},
+           {order:'D1',name:'Hip Flexor / Hamstring Finisher',equipment:'Bodyweight',sets:2,reps:'15 each',rest:'60sec',load:'BW',intent:'Tissue health'}]},
+         {id:'p4-rc',name:'Recovery',description:'Active Recovery + Mobility',type:'recovery',exercises:[
+           {order:'A1',name:'Low Intensity Cardio',equipment:'Cardio Equipment',sets:1,reps:'30 Min',rest:'',load:'',intent:'RPE 5'},
+           {order:'B1',name:'Full Stretch Sequence + Foam Rolling',equipment:'Bodyweight',sets:1,reps:'20 Min',rest:'0',load:'',intent:'Full body recovery'}]}
+       ]}
+    ],
+    sessionLogs:[],
+  };
+}
+function defaultStore(){
+  const p=makeDefaultPatient('p1');
+  p.patient.startDate='2026-02-15';
+  return {patients:[p],currentPatient:0,taxonomy:defaultTaxonomy()};
+}
+function loadStore(){
+  try{
+    const s3=localStorage.getItem('dpt3');
+    if(s3){
+      const d=JSON.parse(s3);
+      if(!d.taxonomy)d.taxonomy=defaultTaxonomy();
+      d.patients.forEach(p=>{
+        if(!p.outcomeMeasures)p.outcomeMeasures=defaultOutcomeMeasures();
+        if(p.accessCode===undefined)p.accessCode='';
+      });
+      return d;
+    }
+    // Migrate from old format
+    const s2=localStorage.getItem('dpt2');
+    if(s2){const old=JSON.parse(s2);const st=defaultStore();const p=st.patients[0];p.patient=old.patient||p.patient;p.commTab=old.commTab||'';p.proto=old.proto||p.proto;p.phases=old.phases||p.phases;p.sessionLogs=old.sessionLogs||[];return st;}
+  }catch(e){}
+  return defaultStore();
+}
+function save(){
+  if(patientAccessCode){
+    // Patient mode: save sessions locally, update cached patient snapshot
+    try{
+      localStorage.setItem('dpt3_sl_'+patientAccessCode,JSON.stringify(APP.sessionLogs||[]));
+      const snap={...APP,sessionLogs:[]};
+      localStorage.setItem('dpt3_pt_'+patientAccessCode,JSON.stringify(snap));
+    }catch(e){}
+  }else{
+    try{localStorage.setItem('dpt3',JSON.stringify(STORE));}catch(e){}
+  }
+}
+let STORE=loadStore();
+let APP=STORE.patients[STORE.currentPatient];
+
+// ── UTILS ─────────────────────────────────────────
+function today(){return new Date().toISOString().split('T')[0];}
+function fmtDate(s){if(!s)return'—';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function progWeek(dateStr){if(!APP.patient.startDate)return null;const s=new Date(APP.patient.startDate+'T00:00:00'),t=new Date(dateStr+'T00:00:00');return Math.floor((t-s)/(7*864e5))+1;}
+function phaseForWeek(w){
+  for(let i=0;i<APP.phases.length;i++){
+    const ph=APP.phases[i];
+    const ws=APP.proto.phaseOverrides[ph.id]||ph.weekStart;
+    const we=i<APP.phases.length-1?(APP.proto.phaseOverrides[APP.phases[i+1].id]||APP.phases[i+1].weekStart)-1:ph.weekEnd;
+    if(w>=ws&&w<=we)return ph;
+  }
+  return w<1?APP.phases[0]:APP.phases[APP.phases.length-1];
+}
+function phaseIdx(ph){return APP.phases.indexOf(ph);}
+function phaseCls(ph){return['ph1','ph2','ph3','ph4'][phaseIdx(ph)]||'';}
+function phaseColor(ph){return ph?ph.color:'#94a3b8';}
+function genId(){return'w'+Math.random().toString(36).substr(2,8);}
+function getLog(dateStr){return APP.sessionLogs.find(s=>s.date===dateStr)||null;}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// ── AUTH ──────────────────────────────────────────
+function enterPatientCode(){
+  const raw=document.getElementById('pt-code-input').value.trim().toUpperCase();
+  const errEl=document.getElementById('pt-code-error');
+  if(!raw){errEl.style.display='flex';errEl.textContent='Please enter your patient code.';return;}
+  const stored=localStorage.getItem('dpt3_pt_'+raw);
+  if(!stored){errEl.style.display='flex';errEl.textContent='Code not found. Ask your clinician to send you your patient link.';return;}
+  try{
+    const data=JSON.parse(stored);
+    const sessions=JSON.parse(localStorage.getItem('dpt3_sl_'+raw)||'[]');
+    data.sessionLogs=sessions;
+    STORE.patients[0]=data;STORE.currentPatient=0;APP=STORE.patients[0];
+    patientAccessCode=raw;isClinician=false;
+    errEl.style.display='none';
+    launchApp();
+  }catch(e){errEl.style.display='flex';errEl.textContent='Invalid patient data. Please use the link sent by your clinician.';}
+}
+function enterClinician(){
+  if(document.getElementById('pw-input').value===PASS){
+    // Reload clinician store in case patient mode had modified STORE
+    STORE=loadStore();APP=STORE.patients[STORE.currentPatient];
+    patientAccessCode=null;isClinician=true;launchApp();
+  }else{document.getElementById('pw-error').style.display='flex';}
+}
+function launchApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('app').style.flexDirection='column';
+  const b=document.getElementById('mode-badge');
+  b.textContent=isClinician?'🔓 Clinician View':'● Client View';
+  b.className='mode-badge'+(isClinician?' clinician':'');
+  document.getElementById('clinician-nav').style.display=isClinician?'block':'none';
+  document.getElementById('client-summary-nav').style.display=isClinician?'none':'block';
+  document.getElementById('pt-select-wrap').style.display=isClinician?'flex':'none';
+  document.getElementById('top-patient').style.display=isClinician?'none':'inline-block';
+  renderPatientDropdown();
+  document.getElementById('top-patient').textContent=APP.patient.name||'No patient set';
+  const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();
+  show(isClinician?'overview':'home');
+  document.addEventListener('keydown',handleKey);
+}
+function renderPatientDropdown(){
+  const sel=document.getElementById('pt-select');
+  if(!sel)return;
+  sel.innerHTML=STORE.patients.map((p,i)=>`<option value="${i}" ${i===STORE.currentPatient?'selected':''}>${p.patient.name||'Unnamed Patient '+(i+1)}</option>`).join('');
+}
+function switchPatient(idx){
+  STORE.currentPatient=idx;
+  APP=STORE.patients[idx];
+  save();
+  document.getElementById('top-patient').textContent=APP.patient.name||'No patient set';
+  renderPatientDropdown();
+  editPhaseIdx=0;workoutPhaseIdx=0;
+  const cur=document.querySelector('.view.active');
+  const curId=cur?cur.id.replace('view-',''):'overview';
+  show(curId);
+}
+function addPatient(){
+  const name=document.getElementById('np-name').value.trim();
+  const p=makeDefaultPatient();
+  p.patient.name=name;
+  p.patient.dob=document.getElementById('np-dob').value;
+  p.patient.diagnosis=document.getElementById('np-dx').value;
+  p.patient.clinician=document.getElementById('np-clin').value;
+  p.patient.startDate=document.getElementById('np-start').value;
+  p.accessCode=document.getElementById('np-code').value.trim().toUpperCase();
+  STORE.patients.push(p);
+  STORE.currentPatient=STORE.patients.length-1;
+  APP=STORE.patients[STORE.currentPatient];
+  save();closeModal('add-patient-modal');renderPatientDropdown();show('overview');
+}
+function deletePatient(){
+  if(STORE.patients.length<=1){alert('Cannot delete the only patient.');return;}
+  const name=APP.patient.name||'this patient';
+  if(!confirm(`Delete ${name}? This cannot be undone.`))return;
+  STORE.patients.splice(STORE.currentPatient,1);
+  STORE.currentPatient=Math.min(STORE.currentPatient,STORE.patients.length-1);
+  APP=STORE.patients[STORE.currentPatient];
+  save();closeModal('pt-modal');renderPatientDropdown();show('overview');
+}
+function lockApp(){
+  // If coming out of patient mode, restore clinician store
+  if(patientAccessCode){STORE=loadStore();APP=STORE.patients[STORE.currentPatient];patientAccessCode=null;}
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('pw-input').value='';
+  document.getElementById('pw-error').style.display='none';
+  document.getElementById('pt-code-input').value='';
+  document.getElementById('pt-code-error').style.display='none';
+  document.removeEventListener('keydown',handleKey);
+}
+function handleKey(e){
+  if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;
+  const map={h:'home',c:'calendar',p:'phases',w:'workouts',o:'cardio',l:'session',v:'overview',e:'edit',s:'protocol',t:'taxonomy',g:'summary'};
+  if(map[e.key.toLowerCase()])show(map[e.key.toLowerCase()]);
+}
+
+// ── NAV ───────────────────────────────────────────
+function show(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const vEl=document.getElementById('view-'+view);
+  if(vEl)vEl.classList.add('active');
+  const nEl=document.getElementById('nav-'+view)||document.getElementById('nav-'+view+'-c');
+  if(nEl)nEl.classList.add('active');
+  if(view==='home')renderHome();
+  if(view==='calendar')renderCalendar();
+  if(view==='phases')renderPhases();
+  if(view==='workouts')renderWorkouts();
+  if(view==='cardio')renderCardio();
+  if(view==='session'){setToday();renderSession();}
+  if(view==='overview')renderOverview();
+  if(view==='edit')renderEdit();
+  if(view==='protocol')renderProtocol();
+  if(view==='taxonomy')renderTaxonomy();
+  if(view==='summary'){document.getElementById('sum-date').value=today();}
+}
+
+// ── HOME ──────────────────────────────────────────
+function renderHome(){
+  const w=progWeek(today());
+  const ph=w!==null?phaseForWeek(w):APP.phases[0];
+  const pi=phaseIdx(ph);
+  const bgColors=['#1d4ed8','#047857','#b45309','#b91c1c'];
+  const bg=bgColors[pi]||'#0f766e';
+  const wInPhase=ph?w-(APP.proto.phaseOverrides[ph.id]||ph.weekStart)+1:null;
+  const totalInPhase=ph?(APP.proto.phaseOverrides[ph.id]?ph.weekEnd-(APP.proto.phaseOverrides[ph.id])+1:ph.weekEnd-ph.weekStart+1):null;
+
+  // Suggested workout for today
+  const dayOfWeek=new Date().getDay();
+  let todayWorkout=ph&&ph.workouts.length?ph.workouts[w%2===0?Math.min(1,ph.workouts.length-1):0]:null;
+
+  const proto=APP.proto;
+  const protoAlert=proto.surgeryType?`<div class="alert alert-amber" style="margin-bottom:20px;">⚕ <strong>Surgeon Protocol Active:</strong> ${proto.surgeryType}${proto.surgeon?' — '+proto.surgeon:''}${proto.weightBearing!=='Full Weight Bearing'?' | WB: '+proto.weightBearing:''}</div>`:'';
+
+  let html=protoAlert;
+
+  if(ph){
+    html+=`<div class="phase-hero" style="background:linear-gradient(135deg,${bg} 0%,${bg}dd 100%);">
+      <div class="eyebrow">TODAY · ${new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}).toUpperCase()} · ${w?'WEEK '+w+' OF 52':''}</div>
+      <h2>${ph.name}: ${ph.rehabIntent}</h2>
+      <div class="intent">${ph.rehabIntent}</div>
+      <div class="phase-hero-grid">
+        <div class="hero-stat"><div class="h-label">Phase Week</div><div class="h-value">${wInPhase||'?'} of ${totalInPhase||'?'}</div></div>
+        <div class="hero-stat"><div class="h-label">Intensity</div><div class="h-value">${ph.intensity}</div></div>
+        <div class="hero-stat"><div class="h-label">Today's Session</div><div class="h-value">${todayWorkout?todayWorkout.name:'—'}</div></div>
+        <div class="hero-stat"><div class="h-label">Cardio Options</div><div class="h-value">${ph.cardioOptions.length} available</div></div>
+      </div>
+    </div>`;
+
+    html+=`<div class="phase-info-grid">
+      <div class="info-card"><div class="ic-label green">[+] Goals This Phase</div><p>${ph.goals}</p></div>
+      <div class="info-card"><div class="ic-label amber">[!] What to Expect / Difficulties</div><p>${ph.difficulties||'Stay consistent and trust the process.'}</p></div>
+    </div>`;
+  }
+
+  if(todayWorkout){
+    html+=`<div class="workout-preview">
+      <div class="wp-header">
+        <div class="wp-title">Today's session: ${todayWorkout.name}${todayWorkout.description?' — '+todayWorkout.description:''}</div>
+        <span class="wp-today">Today</span>
+        <div class="spacer"></div>
+        <button class="btn btn-primary btn-sm" onclick="goToSession()">Open full workout</button>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        ${todayWorkout.exercises.slice(0,5).filter(e=>e.name).map(e=>`<span style="font-size:12px;color:#64748b;background:#f1f5f9;padding:3px 8px;border-radius:6px;">${e.order?e.order+' ':''}<strong style="color:#1e293b;">${e.name}</strong></span>`).join('')}
+        ${todayWorkout.exercises.filter(e=>e.name).length>5?`<span style="font-size:12px;color:#94a3b8;">+${todayWorkout.exercises.filter(e=>e.name).length-5} more</span>`:''}
+      </div>
+    </div>`;
+  }
+
+  if(isClinician){
+    html+=`<div class="card"><div class="card-header"><div class="card-title">Communication Tab / Clinician Notes</div>
+      <button class="btn btn-ghost btn-sm" onclick="openPatientInfoModal()">⚙ Patient Info</button></div>
+      <textarea id="comm-tab" rows="3" style="width:100%;" onchange="APP.commTab=this.value;save();" placeholder="Clinician notes...">${APP.commTab||''}</textarea></div>`;
+  }
+
+  document.getElementById('home-content').innerHTML=html;
+}
+function goToSession(){
+  setToday();
+  show('session');
+}
+
+// ── CALENDAR ──────────────────────────────────────
+function renderCalendar(){
+  const label=new Date(calYear,calMonth).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  document.getElementById('cal-month-label').textContent=label;
+  const days=['S','M','T','W','T','F','S'];
+  let html=days.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+  const first=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
+  const tod=today();
+
+  for(let i=0;i<first;i++){
+    const d=prevDays-first+i+1;
+    html+=`<div class="cal-cell other-month"><div class="cal-date">${d}</div></div>`;
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const w=progWeek(ds);
+    const ph=w!==null?phaseForWeek(w):null;
+    const pi=ph?phaseIdx(ph):-1;
+    const phCls=pi>=0?['p1-cell','p2-cell','p3-cell','p4-cell'][pi]:'';
+    const isToday=ds===tod?'today':'';
+    const log=getLog(ds);
+    // Determine workout type for this day
+    let badge='';
+    if(ph&&ph.workouts.length){
+      const wObj=ph.workouts[w%2===0?Math.min(1,ph.workouts.length-1):0];
+      if(wObj){
+        if(log)badge=`<div class="cal-badge logged">✓ ${wObj.name}</div>`;
+        else badge=`<div class="cal-badge ${wObj.type==='recovery'?'rec':'a'}">${wObj.name.replace('Workout ','').replace('Recovery','Rec').substring(0,8)}</div>`;
+      }
+    }
+    html+=`<div class="cal-cell ${phCls} ${isToday}" onclick="calClickDay('${ds}')">
+      <div class="cal-date">${d}</div>
+      ${w?`<div class="cal-wk">WEEK ${w}</div>`:''}
+      ${badge}
+    </div>`;
+  }
+  const remaining=42-first-daysInMonth;
+  for(let d=1;d<=remaining;d++)html+=`<div class="cal-cell other-month"><div class="cal-date">${d}</div></div>`;
+  document.getElementById('cal-grid').innerHTML=html;
+}
+function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
+function calGoToday(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();renderCalendar();}
+function calClickDay(ds){document.getElementById('session-date').value=ds;show('session');}
+
+// ── PHASES ────────────────────────────────────────
+function renderPhases(){
+  const phColors=['#3b82f6','#10b981','#f59e0b','#ef4444'];
+  const phClasses=['ph1','ph2','ph3','ph4'];
+  document.getElementById('phases-content').innerHTML=APP.phases.map((ph,i)=>`
+    <div class="card ${phClasses[i]}" style="margin-bottom:20px;">
+      <div style="color:${phColors[i]};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">WEEKS ${ph.weekStart}–${ph.weekEnd} · ${ph.intensity.toUpperCase()} INTENSITY</div>
+      <h2 style="font-size:20px;font-weight:800;margin-bottom:4px;">${ph.name}: ${ph.rehabIntent}</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:16px;">PHASE INTENT: ${ph.rehabIntent}</div>
+      <div class="phase-info-grid" style="margin-bottom:12px;">
+        <div class="info-card"><div class="ic-label green">GOALS</div><p>${ph.goals}</p></div>
+        <div class="info-card"><div class="ic-label amber">DIFFICULTIES / WHAT TO EXPECT</div><p>${ph.difficulties||'Stay consistent and trust the process.'}</p></div>
+      </div>
+      ${ph.rules?`<div class="info-card" style="margin-bottom:12px;border-left:3px solid #f59e0b;"><div class="ic-label" style="color:#92400e;">PHASE RULES</div><p style="font-style:italic;">${ph.rules}</p></div>`:''}
+      <div><div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">CARDIO OPTIONS</div>
+        ${ph.cardioOptions.map(c=>`<span class="cardio-pill">${c}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+// ── WORKOUTS ──────────────────────────────────────
+function renderWorkouts(){
+  const tabs=document.getElementById('workout-phase-tabs');
+  tabs.innerHTML=APP.phases.map((ph,i)=>`
+    <button class="btn ${i===workoutPhaseIdx?'btn-primary':'btn-ghost'} btn-sm" onclick="workoutPhaseIdx=${i};renderWorkouts();">${ph.name}</button>`).join('');
+  const ph=APP.phases[workoutPhaseIdx];
+  document.getElementById('wk-phase-label').textContent=ph.name;
+  document.getElementById('workouts-content').innerHTML=ph.workouts.map(w=>`
+    <div class="workout-preview" style="margin-bottom:16px;">
+      <div class="wp-header">
+        <div class="wp-title">${w.name}${w.description?' — '+w.description:''}</div>
+        <span class="wp-type-badge type-${w.type}">${w.type.charAt(0).toUpperCase()+w.type.slice(1)}</span>
+        ${ph.rules?`<span class="pill pill-amber" style="font-size:10px;">Phase Rules Active</span>`:''}
+      </div>
+      ${ph.rules?`<div class="alert alert-amber" style="margin-bottom:12px;font-size:11px;"><strong>Phase Rules:</strong> ${ph.rules}</div>`:''}
+      <table class="ex-table">
+        <thead><tr><th>Order</th><th>Exercise</th><th>Equip</th><th>Sets</th><th>Reps</th><th>Rest</th><th>Load</th><th>Intent</th></tr></thead>
+        <tbody>${w.exercises.filter(e=>e.name).map(e=>`<tr>
+          <td>${e.order?`<span class="ex-order">${e.order}</span>`:''}</td>
+          <td><strong>${e.name}</strong></td>
+          <td class="text-muted">${e.equipment||''}</td>
+          <td>${e.sets||''}</td><td>${e.reps||''}</td><td>${e.rest||''}</td><td>${e.load||''}</td>
+          <td class="ex-intent">${e.intent||''}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>`).join('')||'<p class="text-muted">No workouts in this phase.</p>';
+}
+
+// ── CARDIO ────────────────────────────────────────
+function renderCardio(){
+  const phColors=['#3b82f6','#10b981','#f59e0b','#ef4444'];
+  document.getElementById('cardio-content').innerHTML=APP.phases.map((ph,i)=>`
+    <div class="card" style="border-left:4px solid ${phColors[i]};margin-bottom:14px;">
+      <div style="color:${phColors[i]};font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:6px;">${ph.name} · Weeks ${ph.weekStart}–${ph.weekEnd} · ${ph.intensity}</div>
+      <h3 style="font-size:15px;margin-bottom:10px;">${ph.rehabIntent}</h3>
+      <div>${ph.cardioOptions.map(c=>`<span class="cardio-pill">${c}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+// ── SESSION LOG ───────────────────────────────────
+function setToday(){document.getElementById('session-date').value=today();}
+function renderSession(){
+  const ds=document.getElementById('session-date').value||today();
+  const w=progWeek(ds);
+  const ph=w!==null?phaseForWeek(w):null;
+  const log=getLog(ds);
+  if(!ph){document.getElementById('session-content').innerHTML='<div class="alert alert-amber">Set a program start date to see session assignments.</div>';return;}
+
+  const selWid=log?log.workoutId:(ph.workouts[0]?.id);
+  let html=`<div class="card" style="margin-bottom:12px;"><div class="row">
+    <strong>Select Workout:</strong>
+    ${ph.workouts.map(wk=>`<button class="btn ${wk.id===selWid?'btn-primary':'btn-ghost'} btn-sm" onclick="selectSessionWorkout('${wk.id}')">${wk.name}</button>`).join('')}
+    <div class="spacer"></div>
+    <span style="font-size:12px;color:#64748b;">Week ${w} · ${ph.name}</span>
+  </div></div>`;
+
+  const workout=ph.workouts.find(wk=>wk.id===selWid);
+  if(!workout){document.getElementById('session-content').innerHTML=html+'<div class="alert alert-teal">No workouts configured. Add some in Edit Program.</div>';return;}
+
+  const prevLogs=APP.sessionLogs.filter(s=>s.workoutId===selWid&&s.date<ds).sort((a,b)=>b.date.localeCompare(a.date));
+  const prev=prevLogs[0];
+
+  if(ph.rules)html+=`<div class="alert alert-amber"><strong>Phase Rules:</strong> ${ph.rules}</div>`;
+
+  html+=`<div data-workout-id="${selWid}">`;
+  workout.exercises.forEach((ex,ei)=>{
+    if(!ex.name)return;
+    const lEx=log?log.exercises.find(e=>e.idx===ei):null;
+    const pEx=prev?prev.exercises.find(e=>e.idx===ei):null;
+    const ns=Math.max(parseInt(ex.sets)||3,6);
+    let setsHtml='<div class="sets-row">';
+    for(let s=0;s<ns;s++){
+      const lw=lEx&&lEx.sets[s]?lEx.sets[s].weight:'';
+      const lr=lEx&&lEx.sets[s]?lEx.sets[s].reps:'';
+      const pw=pEx&&pEx.sets[s]?pEx.sets[s].weight:'';
+      const pr=pEx&&pEx.sets[s]?pEx.sets[s].reps:'';
+      setsHtml+=`<div class="set-box"><div class="set-num">Set ${s+1}</div><div class="set-inputs">
+        <input class="set-input" type="text" placeholder="lb" title="Weight" data-ei="${ei}" data-si="${s}" data-f="weight" value="${lw}">
+        <input class="set-input" type="text" placeholder="reps" title="Reps" data-ei="${ei}" data-si="${s}" data-f="reps" value="${lr}">
+      </div><div class="set-prev">${pw?pw+'lb×'+pr:''}</div></div>`;
+    }
+    setsHtml+=`<div class="set-box" style="align-items:flex-start;"><div class="set-num">Notes</div>
+      <input type="text" style="width:130px;font-size:12px;padding:5px 8px;" placeholder="Comment..." data-ei="${ei}" data-f="comment" value="${lEx?lEx.comment||'':''}">
+    </div></div>`;
+    html+=`<div class="session-ex-block">
+      <div class="seb-name">${ex.order?`<span style="color:#0f766e;font-size:11px;font-weight:700;">${ex.order}</span> `:''} ${ex.name}</div>
+      <div class="seb-meta">${ex.equipment||''} · ${ex.sets}×${ex.reps}${ex.load?' @ '+ex.load:''} ${ex.intent?'· <em>'+ex.intent+'</em>':''}${prev?`<span style="margin-left:10px;color:#94a3b8;">↑ prev: ${fmtDate(prev.date)}</span>`:''}</div>
+      ${setsHtml}
+    </div>`;
+  });
+  html+=`</div>`;
+
+  html+=`<div class="card mt16">
+    <div class="card-title" style="margin-bottom:14px;">Session Notes</div>
+    <div class="form-row">
+      <div class="field"><label>Movement Quality (1–10)</label><input type="number" id="sl-move" min="1" max="10" value="${log?log.movement||'':''}" placeholder="/10"></div>
+      <div class="field"><label>Patient Readiness (1–10)</label><input type="number" id="sl-ready" min="1" max="10" value="${log?log.readiness||'':''}" placeholder="/10"></div>
+      <div class="field"><label>Pain Level (1–10)</label><input type="number" id="sl-pain" min="1" max="10" value="${log?log.pain||'':''}" placeholder="/10"></div>
+    </div>
+    <div class="field"><label>Subjective Comments</label>
+      <textarea id="sl-comments" rows="2" style="width:100%;" placeholder="How the patient felt, any concerns, wins...">${log?log.comments||'':''}</textarea></div>
+    <div id="save-ok" style="display:none;" class="alert alert-teal mt8">✓ Session saved!</div>
+  </div>`;
+
+  document.getElementById('session-content').innerHTML=html;
+}
+function selectSessionWorkout(wid){
+  const ds=document.getElementById('session-date').value||today();
+  const log=getLog(ds);
+  if(log)log.workoutId=wid;
+  // Re-render with this workout selected
+  const w=progWeek(ds);
+  const ph=w!==null?phaseForWeek(w):null;
+  if(!ph)return;
+  const cont=document.getElementById('session-content');
+  // Update button styles
+  cont.querySelectorAll('.row button[onclick^="selectSessionWorkout"]').forEach(b=>{
+    const isThis=b.getAttribute('onclick').includes(`'${wid}'`);
+    b.className='btn '+(isThis?'btn-primary':'btn-ghost')+' btn-sm';
+  });
+  // Re-render exercise area
+  renderSession();
+}
+function saveSession(){
+  const ds=document.getElementById('session-date').value||today();
+  const cont=document.getElementById('session-content');
+  const wrap=cont.querySelector('[data-workout-id]');
+  if(!wrap)return;
+  const wid=wrap.dataset.workoutId;
+  const exMap={};
+  wrap.querySelectorAll('[data-ei][data-si]').forEach(inp=>{
+    const ei=inp.dataset.ei,si=inp.dataset.si,f=inp.dataset.f;
+    if(!exMap[ei])exMap[ei]={idx:parseInt(ei),sets:{},comment:''};
+    if(!exMap[ei].sets[si])exMap[ei].sets[si]={weight:'',reps:''};
+    exMap[ei].sets[si][f]=inp.value;
+  });
+  wrap.querySelectorAll('[data-ei][data-f="comment"]').forEach(inp=>{
+    const ei=inp.dataset.ei;
+    if(!exMap[ei])exMap[ei]={idx:parseInt(ei),sets:{},comment:''};
+    exMap[ei].comment=inp.value;
+  });
+  const entry={date:ds,workoutId:wid,exercises:Object.values(exMap),
+    movement:document.getElementById('sl-move')?.value||'',
+    readiness:document.getElementById('sl-ready')?.value||'',
+    pain:document.getElementById('sl-pain')?.value||'',
+    comments:document.getElementById('sl-comments')?.value||'',
+    savedAt:new Date().toISOString()};
+  const idx=APP.sessionLogs.findIndex(s=>s.date===ds);
+  if(idx>=0)APP.sessionLogs[idx]=entry; else APP.sessionLogs.push(entry);
+  save();
+  const ok=document.getElementById('save-ok');
+  if(ok){ok.style.display='flex';setTimeout(()=>ok.style.display='none',2500);}
+}
+
+// ── EDIT PROGRAM ──────────────────────────────────
+function renderEdit(){
+  const tabs=document.getElementById('edit-phase-tabs');
+  tabs.innerHTML=APP.phases.map((ph,i)=>`
+    <button class="btn ${i===editPhaseIdx?'btn-primary':'btn-ghost'} btn-sm" onclick="editPhaseIdx=${i};renderEdit();">${ph.name}</button>`).join('');
+  const ph=APP.phases[editPhaseIdx];
+  document.getElementById('edit-phase-meta').innerHTML=`
+    <div class="card-title" style="margin-bottom:14px;">Phase Settings — ${ph.name}</div>
+    <div class="form-row">
+      <div class="field"><label>Phase Name</label><input type="text" value="${ph.name}" onchange="ph_field('name',this.value)"></div>
+      <div class="field" style="max-width:90px;"><label>Week Start</label><input type="number" value="${ph.weekStart}" onchange="ph_field('weekStart',+this.value)"></div>
+      <div class="field" style="max-width:90px;"><label>Week End</label><input type="number" value="${ph.weekEnd}" onchange="ph_field('weekEnd',+this.value)"></div>
+      <div class="field"><label>Intensity</label><input type="text" value="${ph.intensity}" onchange="ph_field('intensity',this.value)"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Rehab Intent</label><input type="text" value="${ph.rehabIntent}" onchange="ph_field('rehabIntent',this.value)"></div>
+      <div class="field"><label>Cardio Options (comma-separated)</label><input type="text" value="${ph.cardioOptions.join(', ')}" onchange="ph_field('cardioOptions',this.value.split(',').map(s=>s.trim()).filter(Boolean))"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Goals</label><textarea rows="2" style="width:100%;" onchange="ph_field('goals',this.value)">${ph.goals}</textarea></div>
+      <div class="field"><label>Difficulties / What to Expect</label><textarea rows="2" style="width:100%;" onchange="ph_field('difficulties',this.value)">${ph.difficulties||''}</textarea></div>
+    </div>
+    <div class="field"><label>Phase Rules</label><textarea rows="2" style="width:100%;" onchange="ph_field('rules',this.value)">${ph.rules||''}</textarea></div>`;
+
+  document.getElementById('edit-workouts-content').innerHTML=ph.workouts.map((w,wi)=>`
+    <div class="workout-block">
+      <div class="wb-bar">
+        <div style="flex:1;">
+          <input class="edit-input" type="text" value="${w.name}" onchange="APP.phases[editPhaseIdx].workouts[${wi}].name=this.value;save();" style="font-size:15px;font-weight:700;display:block;width:100%;">
+          <input class="edit-input wb-desc" type="text" value="${w.description||''}" placeholder="Description..." onchange="APP.phases[editPhaseIdx].workouts[${wi}].description=this.value;save();" style="font-size:12px;display:block;width:100%;margin-top:2px;">
+        </div>
+        <select onchange="APP.phases[editPhaseIdx].workouts[${wi}].type=this.value;save();" style="width:auto;">
+          <option value="strength" ${w.type==='strength'?'selected':''}>Strength</option>
+          <option value="recovery" ${w.type==='recovery'?'selected':''}>Recovery</option>
+          <option value="power" ${w.type==='power'?'selected':''}>Power</option>
+        </select>
+        <button class="btn btn-danger btn-xs" onclick="delWorkout(${wi})">✕ Delete</button>
+      </div>
+      <div class="wb-body">
+        <table class="ex-table">
+          <thead><tr><th>Order</th><th>Exercise</th><th>Equipment</th><th>Sets</th><th>Reps</th><th>Load</th><th>Rest</th><th>Intent</th><th></th></tr></thead>
+          <tbody>${w.exercises.map((ex,ei)=>exEditRow(wi,ei,ex)).join('')}</tbody>
+        </table>
+        <button class="btn btn-ghost btn-sm mt8" onclick="openAddEx(${wi})">+ Add Exercise</button>
+      </div>
+    </div>`).join('')||'<div class="alert alert-teal">No workouts yet. Click "+ Add Workout" to get started.</div>';
+}
+function exEditRow(wi,ei,ex){
+  const equips=['Bodyweight','Dumbbell','Barbell','Kettlebell','Resistance Machine','Cable','Resistance Band','Trap Bar','Plyo Box','Cardio Equipment','Partner','Other'];
+  return `<tr>
+    <td><input class="edit-input" type="text" value="${ex.order||''}" onchange="updEx(${wi},${ei},'order',this.value)" style="width:55px;"></td>
+    <td><input class="edit-input" type="text" value="${ex.name||''}" onchange="updEx(${wi},${ei},'name',this.value)" style="min-width:140px;"></td>
+    <td><select onchange="updEx(${wi},${ei},'equipment',this.value)" style="width:130px;border:none;background:transparent;">
+      ${equips.map(e=>`<option ${ex.equipment===e?'selected':''}>${e}</option>`).join('')}</select></td>
+    <td><input class="edit-input" type="number" value="${ex.sets||''}" min="1" max="10" onchange="updEx(${wi},${ei},'sets',this.value)" style="width:40px;"></td>
+    <td><input class="edit-input" type="text" value="${ex.reps||''}" onchange="updEx(${wi},${ei},'reps',this.value)" style="width:70px;"></td>
+    <td><input class="edit-input" type="text" value="${ex.load||''}" onchange="updEx(${wi},${ei},'load',this.value)" style="width:80px;"></td>
+    <td><input class="edit-input" type="text" value="${ex.rest||''}" onchange="updEx(${wi},${ei},'rest',this.value)" style="width:60px;"></td>
+    <td><input class="edit-input" type="text" value="${ex.intent||''}" onchange="updEx(${wi},${ei},'intent',this.value)"></td>
+    <td><button class="btn btn-danger btn-xs" onclick="delEx(${wi},${ei})">✕</button></td>
+  </tr>`;
+}
+function ph_field(f,v){APP.phases[editPhaseIdx][f]=v;save();}
+function updEx(wi,ei,f,v){APP.phases[editPhaseIdx].workouts[wi].exercises[ei][f]=v;save();}
+function delEx(wi,ei){if(!confirm('Delete this exercise?'))return;APP.phases[editPhaseIdx].workouts[wi].exercises.splice(ei,1);save();renderEdit();}
+function delWorkout(wi){if(!confirm(`Delete "${APP.phases[editPhaseIdx].workouts[wi].name}"?`))return;APP.phases[editPhaseIdx].workouts.splice(wi,1);save();renderEdit();}
+function addWorkout(){
+  APP.phases[editPhaseIdx].workouts.push({id:genId(),name:'New Workout',description:'',type:'strength',exercises:[{order:'A1',name:'',equipment:'Bodyweight',sets:3,reps:'10-12',rest:'60sec',load:'',intent:''}]});
+  save();renderEdit();
+}
+let _exWi=0;
+function openAddEx(wi){_exWi=wi;['em-order','em-name','em-load','em-rest','em-intent'].forEach(id=>document.getElementById(id).value='');document.getElementById('em-sets').value='3';document.getElementById('em-reps').value='';document.getElementById('em-modal-title').textContent='Add Exercise';openModal('ex-modal');}
+function saveExercise(){
+  const ex={order:document.getElementById('em-order').value,name:document.getElementById('em-name').value,equipment:document.getElementById('em-equip').value,sets:document.getElementById('em-sets').value,reps:document.getElementById('em-reps').value,load:document.getElementById('em-load').value,rest:document.getElementById('em-rest').value,intent:document.getElementById('em-intent').value};
+  if(!ex.name){alert('Exercise name required');return;}
+  APP.phases[editPhaseIdx].workouts[_exWi].exercises.push(ex);
+  save();closeModal('ex-modal');renderEdit();
+}
+
+// ── PATIENT ───────────────────────────────────────
+function savePatient(){
+  APP.patient={name:document.getElementById('pt-name').value,dob:document.getElementById('pt-dob').value,diagnosis:document.getElementById('pt-dx').value,clinician:document.getElementById('pt-clin').value,startDate:document.getElementById('pt-start').value};
+  APP.accessCode=document.getElementById('pt-code').value.trim().toUpperCase();
+  save();closeModal('pt-modal');
+  document.getElementById('top-patient').textContent=APP.patient.name||'No patient set';
+  renderPatientDropdown();renderHome();
+}
+
+// ── SURGEON PROTOCOL ──────────────────────────────
+function renderProtocol(){
+  const p=APP.proto;
+  document.getElementById('proto-type').value=p.surgeryType||'';
+  document.getElementById('proto-date').value=p.surgeryDate||'';
+  document.getElementById('proto-surgeon').value=p.surgeon||'';
+  document.getElementById('proto-wb').value=p.weightBearing||'Full Weight Bearing';
+  document.getElementById('proto-brace').value=p.brace||'No Brace';
+  document.getElementById('proto-rom').value=p.romRestrictions||'';
+  document.getElementById('proto-notes').value=p.notes||'';
+  document.getElementById('phase-overrides').innerHTML=APP.phases.map(ph=>`
+    <div class="form-row" style="margin-bottom:8px;align-items:center;">
+      <div style="min-width:140px;font-size:12px;color:#475569;">${ph.name} starts week:</div>
+      <input type="number" value="${p.phaseOverrides[ph.id]||ph.weekStart}" min="1" max="104" style="width:70px;" onchange="APP.proto.phaseOverrides[${ph.id}]=+this.value;save();renderProtocolImpact();">
+      <span style="font-size:11px;color:#94a3b8;">(default: wk ${ph.weekStart})</span>
+    </div>`).join('');
+  renderRestrictions();
+  document.getElementById('common-restrictions').innerHTML=COMMON_RESTRICTIONS.map(r=>`<button class="common-pill" onclick="addCommonR('${r.replace(/'/g,"\\'")}')">${r}</button>`).join('');
+  renderProtocolImpact();
+}
+function saveProto(){const p=APP.proto;p.surgeryType=document.getElementById('proto-type').value;p.surgeryDate=document.getElementById('proto-date').value;p.surgeon=document.getElementById('proto-surgeon').value;p.weightBearing=document.getElementById('proto-wb').value;p.brace=document.getElementById('proto-brace').value;p.romRestrictions=document.getElementById('proto-rom').value;p.notes=document.getElementById('proto-notes').value;save();renderProtocolImpact();}
+function renderRestrictions(){const el=document.getElementById('restriction-tags');if(!el)return;const rs=APP.proto.restrictions||[];el.innerHTML=rs.length?rs.map((r,i)=>`<div class="proto-badge">⚠ ${r} <button class="pb-remove" onclick="delR(${i})">×</button></div>`).join(''):'<p class="text-muted text-sm">No restrictions added yet.</p>';}
+function addRestriction(){const v=document.getElementById('new-restriction').value.trim();if(!v)return;APP.proto.restrictions.push(v);document.getElementById('new-restriction').value='';save();renderRestrictions();renderProtocolImpact();}
+function addCommonR(r){if(!APP.proto.restrictions.includes(r)){APP.proto.restrictions.push(r);save();renderRestrictions();renderProtocolImpact();}}
+function delR(i){APP.proto.restrictions.splice(i,1);save();renderRestrictions();renderProtocolImpact();}
+function renderProtocolImpact(){const el=document.getElementById('protocol-impact');if(!el)return;const p=APP.proto;const items=[];if(p.surgeryType)items.push(`Surgery: <strong>${p.surgeryType}</strong>`);if(p.weightBearing&&p.weightBearing!=='Full Weight Bearing')items.push(`Weight bearing: <strong>${p.weightBearing}</strong>`);if(p.brace&&p.brace!=='No Brace')items.push(`Brace: <strong>${p.brace}</strong>`);if(p.romRestrictions)items.push(`ROM: ${p.romRestrictions}`);if(p.restrictions.length)items.push(`<strong>${p.restrictions.length}</strong> exercise restriction(s) active`);if(Object.keys(p.phaseOverrides).length)items.push('Custom phase timeline active');el.innerHTML=items.length?`<div class="alert alert-amber">${items.map(i=>`<div>• ${i}</div>`).join('')}</div>`:'<p class="text-muted text-sm">No restrictions active.</p>';}
+
+// ── GENERATE SUMMARY ──────────────────────────────
+function generateSummary(){
+  const ds=document.getElementById('sum-date').value;
+  if(!ds){alert('Select a date');return;}
+  const type=document.getElementById('sum-type').value;
+  const w=progWeek(ds);const ph=w?phaseForWeek(w):null;
+  const log=getLog(ds);const pt=APP.patient;const p=APP.proto;
+  const om={qpeak:document.getElementById('sum-qpeak').value,qrfd:document.getElementById('sum-qrfd').value,hpeak:document.getElementById('sum-hpeak').value,hrfd:document.getElementById('sum-hrfd').value,squat:document.getElementById('sum-squat').value,kflex:document.getElementById('sum-kflex').value};
+  let out='';
+  const line=(n,v)=>v?`${n}: ${v}\n`:'';
+  const ruler='─'.repeat(55)+'\n';
+
+  if(type==='soap'){
+    const workout=log&&ph?ph.workouts.find(wk=>wk.id===log.workoutId):null;
+    out+=`SOAP NOTE — ${fmtDate(ds)}\n${ruler}`;
+    out+=`Patient: ${pt.name||'(name)'}${pt.dob?' | DOB: '+fmtDate(pt.dob):''}\n`;
+    out+=`Clinician: ${pt.clinician||'(clinician)'} | Diagnosis: ${pt.diagnosis||'(diagnosis)'}\n`;
+    if(p.surgeryType)out+=`Surgery: ${p.surgeryType}${p.surgeon?' — '+p.surgeon:''}${p.surgeryDate?' ('+fmtDate(p.surgeryDate)+')':''}\n`;
+    out+=`\nSUBJECTIVE\n${ruler}`;
+    out+=line('Movement Quality',log?(log.movement||'N/R')+'/10':'');
+    out+=line('Patient Readiness',log?(log.readiness||'N/R')+'/10':'');
+    out+=line('Pain Level',log?(log.pain||'N/R')+'/10':'');
+    if(log?.comments)out+=`Patient Report: ${log.comments}\n`;
+    out+=`\nOBJECTIVE\n${ruler}`;
+    out+=`Program Week: ${w||'N/A'} | Phase: ${ph?ph.name:'N/A'} (${ph?ph.rehabIntent:''})\n`;
+    out+=`Training Intensity: ${ph?ph.intensity:''}\n`;
+    if(workout)out+=`Workout Completed: ${workout.name}${workout.description?' — '+workout.description:''}\n\n`;
+    if(log&&workout){
+      out+=`Exercise Log:\n`;
+      workout.exercises.forEach((ex,ei)=>{if(!ex.name)return;const lEx=log.exercises.find(e=>e.idx===ei);let ln=`  ${ex.order?ex.order+'. ':''}${ex.name} (${ex.sets}×${ex.reps}${ex.load?' @ '+ex.load:''})`;if(lEx){const sv=Object.values(lEx.sets||{}).filter(s=>s.weight||s.reps);if(sv.length)ln+=` — `+sv.map((s,i)=>`S${i+1}:${s.weight||'?'}lb×${s.reps||'?'}`).join(', ');if(lEx.comment)ln+=` [${lEx.comment}]`;}out+=ln+'\n';});
+      out+='\n';
+    }
+    if(Object.values(om).some(v=>v)){out+=`Outcome Measures:\n`;Object.entries({'Quad Peak Force':om.qpeak,'Quad RFD':om.qrfd,'Hamstring Peak':om.hpeak,'Hamstring RFD':om.hrfd,'Trap Bar Squat':om.squat,'Knee Flexion ROM':om.kflex}).forEach(([k,v])=>{if(v)out+=`  ${k}: ${v}\n`;});out+='\n';}
+    if(p.restrictions.length||p.weightBearing!=='Full Weight Bearing'){out+=`Surgeon Protocol (${p.surgeryType}):\n`;if(p.weightBearing!=='Full Weight Bearing')out+=`  WB: ${p.weightBearing}\n`;if(p.restrictions.length)out+=`  Restrictions: ${p.restrictions.join('; ')}\n`;out+='\n';}
+    out+=`ASSESSMENT\n${ruler}`;
+    out+=`Patient is in Week ${w||'?'} of a 52-week Return to Performance program. ${ph?'Currently in '+ph.name+', focused on '+ph.rehabIntent.toLowerCase()+'. ':''} Program progressing per protocol.\n\n`;
+    out+=`PLAN\n${ruler}`;
+    if(ph){out+=`Continue ${ph.name} per current program.\nGoals: ${ph.goals}\n`;if(ph.rules)out+=`Phase Rules: ${ph.rules}\n`;}
+    out+=`Next session: per program schedule.\n`;
+    if(APP.commTab)out+=`\nClinician Notes: ${APP.commTab}\n`;
+  } else if(type==='progress'){
+    out+=`PROGRESS SUMMARY — ${fmtDate(ds)}\n${ruler}`;
+    out+=`Patient: ${pt.name||'(name)'} | Clinician: ${pt.clinician||'(clinician)'}\n`;
+    out+=`Program Start: ${fmtDate(pt.startDate)} | Current Week: ${w||'?'}\n`;
+    out+=`Total Sessions Logged: ${APP.sessionLogs.length}\n\n`;
+    if(APP.sessionLogs.length){out+=`Recent Sessions:\n`;APP.sessionLogs.slice(-5).reverse().forEach(sl=>{const phSl=phaseForWeek(progWeek(sl.date));const wkSl=progWeek(sl.date);const wkObj=phSl?phSl.workouts.find(wk=>wk.id===sl.workoutId):null;out+=`  ${fmtDate(sl.date)} — Wk ${wkSl} ${phSl?phSl.name:''}: ${wkObj?wkObj.name:'Session'}`;if(sl.movement)out+=` | MQ:${sl.movement}/10`;if(sl.pain)out+=` | Pain:${sl.pain}/10`;if(sl.comments)out+=` | "${sl.comments}"`;out+='\n';});}
+    if(ph){out+=`\nCurrent Phase: ${ph.name} — ${ph.rehabIntent}\nGoals: ${ph.goals}\n`;}
+  } else {
+    out+=`DISCHARGE PLANNING NOTE — ${fmtDate(ds)}\n${ruler}`;
+    out+=`Patient: ${pt.name||'(name)'} | Total Weeks: ${w||'?'} of 52\nTotal Sessions: ${APP.sessionLogs.length}\n\n`;
+    out+=`Program Summary:\n`;
+    APP.phases.forEach(phx=>{const n=APP.sessionLogs.filter(sl=>{const pw=progWeek(sl.date);const pp=phaseForWeek(pw);return pp&&pp.id===phx.id;}).length;out+=`  ${phx.name} (Wks ${phx.weekStart}–${phx.weekEnd}): ${n} sessions — ${phx.rehabIntent}\n`;});
+    out+=`\nDischarge Recommendations:\n  [To be completed by clinician]\n`;
+    out+=`\nHome Exercise Program Provided: [ ] Yes  [ ] No\n`;
+    out+=`Return to Sport Cleared: [ ] Yes  [ ] No — Date: ___________\nFollow-up: ____________\n`;
+  }
+  document.getElementById('summary-output').textContent=out;
+}
+function copySummary(){
+  const text=document.getElementById('summary-output').textContent;
+  navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
+  const c=document.getElementById('copy-confirm');c.style.display='block';setTimeout(()=>c.style.display='none',2500);
+}
+
+// ── OVERVIEW ──────────────────────────────────────
+function renderOverview(){
+  const logs=APP.sessionLogs||[];
+  const pt=APP.patient;
+  document.getElementById('ov-subtitle').textContent=pt.name?(pt.name+(pt.diagnosis?' — '+pt.diagnosis:'')):'No patient selected';
+
+  // KPI calculations
+  const recent=logs.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  const last5=recent.slice(0,5);
+  const avgReadiness=last5.filter(s=>s.readiness).length?
+    (last5.filter(s=>s.readiness).reduce((a,s)=>a+Number(s.readiness),0)/last5.filter(s=>s.readiness).length).toFixed(1):'—';
+  const lastPain=recent.find(s=>s.pain)?.pain||'—';
+
+  // Compliance: sessions in last 4 weeks vs expected (3/wk default)
+  const fourWeeksAgo=new Date();fourWeeksAgo.setDate(fourWeeksAgo.getDate()-28);
+  const recentCount=logs.filter(s=>new Date(s.date)>=fourWeeksAgo).length;
+  const expectedSessions=12; // 3 per week × 4 weeks
+  const compliance=Math.round((recentCount/expectedSessions)*100);
+  const compliancePct=Math.min(compliance,100);
+
+  const totalSessions=logs.length;
+
+  function scoreColor(v,low=4,high=7){if(v==='—')return'kpi-blue';return Number(v)>=high?'kpi-green':Number(v)>=low?'kpi-amber':'kpi-red';}
+  function painColor(v){if(v==='—')return'kpi-blue';return Number(v)<=3?'kpi-green':Number(v)<=6?'kpi-amber':'kpi-red';}
+
+  document.getElementById('ov-kpis').innerHTML=`
+    <div class="kpi-card">
+      <div class="kpi-value kpi-teal">${totalSessions}</div>
+      <div class="kpi-label">Total Sessions</div>
+      <div class="kpi-sub">${recentCount} in last 4 weeks</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${Math.min(totalSessions/52*100,100)}%;"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value ${scoreColor(avgReadiness)}">${avgReadiness}</div>
+      <div class="kpi-label">Avg Readiness</div>
+      <div class="kpi-sub">Last ${last5.filter(s=>s.readiness).length} sessions · /10</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${avgReadiness==='—'?0:avgReadiness*10}%;background:${avgReadiness!=='—'&&avgReadiness>=7?'#10b981':avgReadiness>=4?'#f59e0b':'#ef4444'};"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value ${compliancePct>=80?'kpi-green':compliancePct>=60?'kpi-amber':'kpi-red'}">${compliancePct}%</div>
+      <div class="kpi-label">Compliance</div>
+      <div class="kpi-sub">${recentCount}/${expectedSessions} sessions · 4 wks</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${compliancePct}%;background:${compliancePct>=80?'#10b981':compliancePct>=60?'#f59e0b':'#ef4444'};"></div></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value ${painColor(lastPain)}">${lastPain}</div>
+      <div class="kpi-label">Last Pain Score</div>
+      <div class="kpi-sub">Most recent session · /10</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${lastPain==='—'?0:lastPain*10}%;background:${lastPain!=='—'&&lastPain<=3?'#10b981':lastPain<=6?'#f59e0b':'#ef4444'};"></div></div>
+    </div>`;
+
+  // LSI Chart
+  const oms=APP.outcomeMeasures||[];
+  const bilateral=oms.filter(om=>om.bilateral&&om.values.length>0);
+  const lsiEl=document.getElementById('ov-lsi');
+  if(!bilateral.length){
+    lsiEl.innerHTML='<p class="lsi-empty">No bilateral outcome measure data yet. Record measurements using the Outcome Measures table.</p>';
+  } else {
+    let html='';
+    bilateral.forEach(om=>{
+      const latest=om.values.slice().sort((a,b)=>b.date.localeCompare(a.date))[0];
+      if(!latest.contra||!latest.inv)return;
+      const lsi=Math.round((Number(latest.inv)/Number(latest.contra))*100);
+      const pct=Math.min(lsi,100);
+      const color=lsi>=90?'#10b981':lsi>=70?'#f59e0b':'#ef4444';
+      html+=`<div class="lsi-row">
+        <div class="lsi-name">${om.name}<br><span style="font-size:10px;color:#94a3b8;">${om.unit}</span></div>
+        <div class="lsi-bar-bg">
+          <div class="lsi-bar-fill" style="width:${pct}%;background:${color};">${pct>15?lsi+'%':''}</div>
+          <div class="lsi-target-line" style="left:90%;"></div>
+        </div>
+        <div class="lsi-pct" style="color:${color};">${lsi}%</div>
+        <div class="lsi-date">${fmtDate(latest.date)}</div>
+        <button class="btn btn-ghost btn-xs" onclick="openOMValueModal('${om.id}')">+ Value</button>
+      </div>`;
+    });
+    lsiEl.innerHTML=html||'<p class="lsi-empty">Enter contralateral + involved values to see LSI.</p>';
+  }
+
+  // Outcome Measures Table
+  const tbody=document.getElementById('ov-om-rows');
+  const emptyEl=document.getElementById('ov-om-empty');
+  if(!oms.length){tbody.innerHTML='';emptyEl.style.display='block';return;}
+  emptyEl.style.display='none';
+  tbody.innerHTML=oms.map(om=>{
+    const latestVal=om.values.length?om.values.slice().sort((a,b)=>b.date.localeCompare(a.date))[0]:null;
+    let valStr='—';
+    if(latestVal){valStr=om.bilateral?(latestVal.inv||'?')+' / '+(latestVal.contra||'?')+' '+om.unit:(latestVal.single||'?')+' '+om.unit;}
+    return `<tr>
+      <td><strong>${om.name}</strong><br><span style="font-size:10px;color:#94a3b8;">${om.bilateral?'Bilateral':'Single'} · ${om.unit}</span></td>
+      <td style="font-weight:600;">${valStr}</td>
+      <td style="color:#94a3b8;">${latestVal?fmtDate(latestVal.date):'—'}</td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-ghost btn-xs" onclick="openOMValueModal('${om.id}')">+ Value</button>
+        <button class="btn btn-ghost btn-xs" onclick="openEditOMModal('${om.id}')">Edit</button>
+        <button class="btn btn-danger btn-xs" onclick="deleteOM('${om.id}')">✕</button>
+      </td></tr>`;
+  }).join('');
+
+  // Recent Sessions
+  const sessEl=document.getElementById('ov-sessions');
+  document.getElementById('ov-total-sessions').textContent=totalSessions+' total sessions logged';
+  if(!recent.length){sessEl.innerHTML='<p style="font-size:12px;color:#94a3b8;font-style:italic;">No sessions logged yet.</p>';return;}
+  sessEl.innerHTML=recent.slice(0,10).map(sl=>{
+    const w=progWeek(sl.date);const ph=w?phaseForWeek(w):null;
+    const wo=ph?ph.workouts.find(wk=>wk.id===sl.workoutId):null;
+    const phColor=ph?ph.color:'#94a3b8';
+    return `<div class="session-hist-row">
+      <div class="sh-dot" style="background:${phColor};"></div>
+      <div class="sh-date">${fmtDate(sl.date)}</div>
+      <div style="flex:1;"><strong style="font-size:12px;">${wo?wo.name:'Session'}</strong>
+        <span class="sh-phase"> · ${ph?ph.name:''} · Wk ${w||'?'}</span></div>
+      <div class="sh-score">
+        ${sl.readiness?`<span title="Readiness" style="color:#0f766e;">R:${sl.readiness}</span> `:''}
+        ${sl.pain?`<span title="Pain" style="color:#ef4444;">P:${sl.pain}</span>`:''}
+      </div>
+      ${sl.comments?`<div style="font-size:11px;color:#64748b;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${sl.comments}">"${sl.comments}"</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ── OUTCOME MEASURES ──────────────────────────────
+function saveOM(){
+  const id=document.getElementById('om-edit-id').value;
+  const name=document.getElementById('om-name').value.trim();
+  const unit=document.getElementById('om-unit').value.trim();
+  const bilateral=document.getElementById('om-bilateral').value==='bilateral';
+  if(!name){alert('Name required');return;}
+  if(id){
+    const om=APP.outcomeMeasures.find(o=>o.id===id);
+    if(om){om.name=name;om.unit=unit;om.bilateral=bilateral;}
+  } else {
+    APP.outcomeMeasures.push({id:'om'+Date.now(),name,unit,bilateral,values:[]});
+  }
+  save();closeModal('add-om-modal');renderOverview();
+}
+function openEditOMModal(id){
+  const om=APP.outcomeMeasures.find(o=>o.id===id);if(!om)return;
+  document.getElementById('add-om-title').textContent='Edit Outcome Measure';
+  document.getElementById('om-edit-id').value=id;
+  document.getElementById('om-name').value=om.name;
+  document.getElementById('om-unit').value=om.unit;
+  document.getElementById('om-bilateral').value=om.bilateral?'bilateral':'single';
+  openModal('add-om-modal');
+}
+function deleteOM(id){
+  if(!confirm('Delete this outcome measure and all its recorded values?'))return;
+  APP.outcomeMeasures=APP.outcomeMeasures.filter(o=>o.id!==id);
+  save();renderOverview();
+}
+function openOMValueModal(omId){
+  const om=APP.outcomeMeasures.find(o=>o.id===omId);if(!om)return;
+  document.getElementById('omval-om-id').value=omId;
+  document.getElementById('omval-title').textContent='Record: '+om.name;
+  document.getElementById('omval-date').value=today();
+  document.getElementById('omval-inv').value='';
+  document.getElementById('omval-contra').value='';
+  document.getElementById('omval-single').value='';
+  document.getElementById('omval-notes').value='';
+  document.getElementById('omval-bilateral-fields').style.display=om.bilateral?'flex':'none';
+  document.getElementById('omval-single-field').style.display=om.bilateral?'none':'block';
+  openModal('add-omval-modal');
+}
+function saveOMValue(){
+  const omId=document.getElementById('omval-om-id').value;
+  const om=APP.outcomeMeasures.find(o=>o.id===omId);if(!om)return;
+  const date=document.getElementById('omval-date').value;if(!date){alert('Date required');return;}
+  const val={id:'v'+Date.now(),date,notes:document.getElementById('omval-notes').value};
+  if(om.bilateral){val.inv=document.getElementById('omval-inv').value;val.contra=document.getElementById('omval-contra').value;}
+  else{val.single=document.getElementById('omval-single').value;}
+  om.values.push(val);
+  save();closeModal('add-omval-modal');renderOverview();
+}
+// Pre-fill add-om-modal when opening fresh
+document.getElementById('add-om-modal').addEventListener('click',function(e){
+  if(e.target===this){closeModal('add-om-modal');}
+});
+
+// ── TAXONOMY ──────────────────────────────────────
+const BODY_PARTS=['Knee','Hip','Hamstring','Quadriceps','Ankle / Foot','Core','Upper Body','Full Body'];
+const INTENTIONS=['Mobility','Stability','Endurance','Coordination / NMR','Tendon Strength','Muscle Strength','Power'];
+const PHASE_COLORS=['#3b82f6','#10b981','#f59e0b','#ef4444'];
+
+function renderTaxonomy(){
+  const tax=STORE.taxonomy;const exs=tax.exercises||[];
+  // Phase filter tabs
+  const filterEl=document.getElementById('tax-phase-filter');
+  filterEl.innerHTML=[{id:0,label:'All Phases',color:'#64748b'},
+    {id:1,label:'Phase 1',color:PHASE_COLORS[0]},{id:2,label:'Phase 2',color:PHASE_COLORS[1]},
+    {id:3,label:'Phase 3',color:PHASE_COLORS[2]},{id:4,label:'Phase 4',color:PHASE_COLORS[3]}]
+    .map(ph=>`<button class="btn btn-sm" style="border:1.5px solid ${ph.color};color:${taxPhaseFilter===ph.id?'#fff':ph.color};background:${taxPhaseFilter===ph.id?ph.color:'#fff'};" onclick="taxPhaseFilter=${ph.id};renderTaxonomy();">${ph.label}</button>`).join('');
+
+  const filtered=taxPhaseFilter===0?exs:exs.filter(e=>e.phases&&e.phases.includes(taxPhaseFilter));
+  const content=document.getElementById('tax-content');
+  if(!filtered.length){content.innerHTML='<div class="alert alert-teal">No exercises in this filter. Add one with the + button above.</div>';return;}
+
+  let html='';
+  BODY_PARTS.forEach(bp=>{
+    const bpExs=filtered.filter(e=>e.bodyPart===bp);
+    if(!bpExs.length)return;
+    html+=`<div class="tax-body-section"><div class="tax-bp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';"><span>${bp} <span style="font-size:11px;font-weight:400;color:#94a3b8;">(${bpExs.length})</span></span><span style="color:#94a3b8;">&#9662;</span></div><div class="tax-body">`;
+    INTENTIONS.forEach(intent=>{
+      const iExs=bpExs.filter(e=>e.intention===intent);
+      if(!iExs.length)return;
+      html+=`<div class="tax-intent-label">${intent}</div>`;
+      iExs.forEach(ex=>{
+        const phDots=(ex.phases||[]).map(ph=>`<span class="tax-ph-dot" style="background:${PHASE_COLORS[ph-1]||'#94a3b8'};">${ph}</span>`).join('');
+        html+=`<div class="tax-ex-row"><div class="tax-ex-name">${ex.name}</div><div class="tax-ex-meta">${ex.equipment||''}</div><div style="display:flex;gap:2px;margin:0 6px;">${phDots}</div>${ex.description?`<div style="font-size:11px;color:#64748b;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${ex.description}">${ex.description}</div>`:''}<button class="btn btn-ghost btn-xs" onclick="openEditTaxModal('${ex.id}')">Edit</button><button class="btn btn-danger btn-xs" onclick="deleteTaxEx('${ex.id}')">&#10005;</button></div>`;
+      });
+    });
+    html+=`</div></div>`;
+  });
+  const knownBPs=new Set(BODY_PARTS);
+  const others=filtered.filter(e=>!knownBPs.has(e.bodyPart));
+  if(others.length){
+    html+=`<div class="tax-body-section"><div class="tax-bp-header">Other</div><div class="tax-body">`;
+    others.forEach(ex=>{html+=`<div class="tax-ex-row"><div class="tax-ex-name">${ex.name}</div><div class="tax-ex-meta">${ex.bodyPart||''} &middot; ${ex.equipment||''}</div><button class="btn btn-ghost btn-xs" onclick="openEditTaxModal('${ex.id}')">Edit</button><button class="btn btn-danger btn-xs" onclick="deleteTaxEx('${ex.id}')">&#10005;</button></div>`;});
+    html+=`</div></div>`;
+  }
+  content.innerHTML=html;
+}
+function openAddTaxModal(){
+  document.getElementById('tax-modal-title').textContent='Add Exercise to Taxonomy';
+  document.getElementById('tax-edit-id').value='';
+  document.getElementById('tax-name').value='';
+  document.getElementById('tax-desc').value='';
+  ['tax-ph1','tax-ph2','tax-ph3','tax-ph4'].forEach(id=>document.getElementById(id).checked=false);
+  openModal('add-tax-modal');
+}
+function openEditTaxModal(id){
+  const ex=STORE.taxonomy.exercises.find(e=>e.id===id);if(!ex)return;
+  document.getElementById('tax-modal-title').textContent='Edit Exercise';
+  document.getElementById('tax-edit-id').value=id;
+  document.getElementById('tax-name').value=ex.name;
+  document.getElementById('tax-bp').value=ex.bodyPart;
+  document.getElementById('tax-intent').value=ex.intention;
+  document.getElementById('tax-equip').value=ex.equipment||'Bodyweight';
+  document.getElementById('tax-desc').value=ex.description||'';
+  [1,2,3,4].forEach(ph=>document.getElementById('tax-ph'+ph).checked=(ex.phases||[]).includes(ph));
+  openModal('add-tax-modal');
+}
+function saveTaxExercise(){
+  const name=document.getElementById('tax-name').value.trim();
+  if(!name){alert('Exercise name required');return;}
+  const phases=[1,2,3,4].filter(ph=>document.getElementById('tax-ph'+ph).checked);
+  const data={name,bodyPart:document.getElementById('tax-bp').value,intention:document.getElementById('tax-intent').value,equipment:document.getElementById('tax-equip').value,description:document.getElementById('tax-desc').value,phases};
+  const id=document.getElementById('tax-edit-id').value;
+  if(id){const ex=STORE.taxonomy.exercises.find(e=>e.id===id);if(ex)Object.assign(ex,data);}
+  else{STORE.taxonomy.exercises.push({id:'tx'+Date.now(),...data});}
+  save();closeModal('add-tax-modal');renderTaxonomy();
+}
+function deleteTaxEx(id){
+  if(!confirm('Remove this exercise from the taxonomy?'))return;
+  STORE.taxonomy.exercises=STORE.taxonomy.exercises.filter(e=>e.id!==id);
+  save();renderTaxonomy();
+}
+
+// -- PATIENT LINK / SHARING --
+function openPatientInfoModal(){
+  const p=APP.patient;
+  document.getElementById('pt-name').value=p.name||'';
+  document.getElementById('pt-dob').value=p.dob||'';
+  document.getElementById('pt-dx').value=p.diagnosis||'';
+  document.getElementById('pt-clin').value=p.clinician||'';
+  document.getElementById('pt-start').value=p.startDate||'';
+  document.getElementById('pt-code').value=APP.accessCode||'';
+  const shareRow=document.getElementById('pt-share-row');
+  const linkDisplay=document.getElementById('pt-link-display');
+  if(APP.accessCode){linkDisplay.value=buildPatientURL();shareRow.style.display='block';}
+  else{shareRow.style.display='none';}
+  openModal('pt-modal');
+}
+function buildPatientURL(){
+  const data={...APP,sessionLogs:[]};
+  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  return window.location.origin+window.location.pathname+'#p='+encoded;
+}
+function generatePatientLink(){
+  if(!APP.accessCode){alert('Set an access code for this patient first.\nGo to Patient Info and fill in the Patient Access Code field.');return null;}
+  return buildPatientURL();
+}
+function copyPatientLink(){
+  const url=generatePatientLink();
+  if(!url)return;
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(()=>showToast('Patient link copied!')).catch(()=>fallbackCopy(url));}
+  else{fallbackCopy(url);}
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Patient link copied!');
+}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=''+msg;
+  t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>{t.style.transform='translateX(-50%) translateY(80px)';},2800);
+}
+
+// -- URL HASH: auto-load patient from shared link --
+(function(){
+  var hash=window.location.hash;
+  if(!hash||hash.indexOf('#p=')<0)return;
+  try{
+    var encoded=hash.slice(3);
+    var json=decodeURIComponent(escape(atob(encoded)));
+    var data=JSON.parse(json);
+    var code=((data.accessCode||data.id)||'').toUpperCase();
+    if(!code)return;
+    localStorage.setItem('dpt3_pt_'+code,JSON.stringify(Object.assign({},data,{sessionLogs:[]})));
+    var sessions=JSON.parse(localStorage.getItem('dpt3_sl_'+code)||'[]');
+    data.sessionLogs=sessions;
+    STORE.patients[0]=data;STORE.currentPatient=0;APP=STORE.patients[0];
+    patientAccessCode=code;isClinician=false;
+    history.replaceState(null,'',window.location.pathname);
+    launchApp();
+  }catch(e){console.warn('Invalid patient link:',e);}
+}());
+
+document.getElementById('lock-btn').addEventListener('click',lockApp);
+window.openPatientModal=openPatientInfoModal;
+</script>
+</body>
+</html>
