@@ -15,7 +15,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .login-card h1{font-size:24px;font-weight:700;margin-bottom:4px;}
 .login-card .sub{color:#64748b;font-size:14px;margin-bottom:28px;}
 .login-divider{display:flex;align-items:center;gap:12px;color:#cbd5e1;font-size:12px;margin:20px 0;}
-.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:#e2e8f0;}
+.login-divider::before,.login-divider::after{content:''+flex:1;height:1px;background:#e2e8f0;}
 
 /* MAIN APP */
 #app{display:none;height:100vh;flex-direction:column;}
@@ -271,23 +271,64 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
 <!-- TOAST -->
 <div id="toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;pointer-events:none;">✓ Link copied!</div>
 
+
+<!-- FIREBASE SETUP SCREEN -->
+<div id="setup-screen" style="display:none;position:fixed;inset:0;background:linear-gradient(135deg,#0f766e,#134e4a);z-index:9999;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;">
+  <div style="background:#fff;border-radius:16px;padding:36px;width:560px;max-width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);">
+    <div style="width:48px;height:48px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;">&#128274;</div>
+    <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-bottom:6px;">Database Setup Required</h2>
+    <p style="font-size:13px;color:#64748b;margin-bottom:20px;">This app needs a free Firebase database so patients can log in from any device. Follow the steps below — it takes about 5 minutes.</p>
+
+    <div style="background:#f0fdf4;border-radius:10px;padding:16px;margin-bottom:20px;font-size:12px;color:#0f766e;line-height:1.7;">
+      <strong>Step 1:</strong> Go to <strong>console.firebase.google.com</strong> and click <strong>Add project</strong><br>
+      <strong>Step 2:</strong> Name it (e.g. <em>dpt-rehab</em>), disable Analytics, click <strong>Create project</strong><br>
+      <strong>Step 3:</strong> Click <strong>Firestore Database</strong> &#8594; <strong>Create database</strong> &#8594; Start in <strong>test mode</strong> &#8594; Done<br>
+      <strong>Step 4:</strong> Click <strong>Project Settings</strong> (gear icon) &#8594; scroll to <strong>Your apps</strong> &#8594; click <strong>&lt;/&gt;</strong> (Web)<br>
+      <strong>Step 5:</strong> Register the app (any nickname), then copy the <em>firebaseConfig</em> values below
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">API Key</label>
+        <input type="text" id="setup-apiKey" placeholder="AIzaSy..." style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;box-sizing:border-box;"></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Project ID</label>
+        <input type="text" id="setup-projectId" placeholder="dpt-rehab-xxxxx" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;box-sizing:border-box;"></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Auth Domain</label>
+        <input type="text" id="setup-authDomain" placeholder="dpt-rehab.firebaseapp.com" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;box-sizing:border-box;"></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Storage Bucket</label>
+        <input type="text" id="setup-storageBucket" placeholder="dpt-rehab.appspot.com" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;box-sizing:border-box;"></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Messaging Sender ID</label>
+        <input type="text" id="setup-messagingSenderId" placeholder="123456789" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;box-sizing:border-box;"></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">App ID</label>
+        <input type="text" id="setup-appId" placeholder="1:123:web:abc..." style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;box-sizing:border-box;"></div>
+    </div>
+
+    <div id="setup-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:10px 12px;font-size:12px;color:#dc2626;margin-bottom:12px;"></div>
+    <button onclick="saveFirebaseConfig()" style="width:100%;padding:12px;background:#0f766e;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Connect Database &#8594;</button>
+    <p style="font-size:10px;color:#94a3b8;text-align:center;margin-top:12px;">Your config is saved in your browser. You only need to do this once per device.</p>
+  </div>
+</div>
+
+<!-- Firebase v9 compat -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">➕</div>
     <h1>Return to Performance</h1>
     <p class="sub">DPT Physical Therapy — Rehab Program Tool</p>
+    <div id="login-status" style="text-align:center;font-size:12px;color:#94a3b8;margin-bottom:12px;min-height:16px;">Connecting to database...</div>
     <div>
       <label>PATIENT ACCESS CODE</label>
       <input type="text" id="pt-code-input" placeholder="e.g. ALEX001" style="width:100%;margin-bottom:10px;text-transform:uppercase;" onkeydown="if(event.key==='Enter')enterPatientCode()">
       <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="enterPatientCode()">Open My Program →</button>
-      <div id="pt-code-error" class="alert alert-red" style="display:none;margin-top:10px;">Code not found. Ask your clinician to send you your patient link.</div>
+      <div id="pt-code-error" class="alert alert-red" style="display:none;margin-top:10px;">Code not found. Please check with your clinician.</div>
     </div>
     <div class="login-divider">or</div>
     <div>
       <label>CLINICIAN PASSWORD</label>
       <input type="password" id="pw-input" placeholder="Enter password" style="width:100%;margin-bottom:10px;" onkeydown="if(event.key==='Enter')enterClinician()">
-      <button class="btn btn-outline" style="width:100%;justify-content:center;padding:11px;" onclick="enterClinician()">Clinician Login</button>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;padding:11px;" id="clin-login-btn" disabled onclick="enterClinician()">Clinician Login</button>
       <div id="pw-error" class="alert alert-red" style="display:none;margin-top:10px;">Incorrect password. Try again.</div>
       <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:12px;">Default password: <strong style="color:#1e293b;">DPT2026</strong> · change in Settings</p>
     </div>
@@ -773,11 +814,10 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
   </div>
 </div>
 
+
 <script>
 // ── DATA ──────────────────────────────────────────
-const PASS = 'DPT2026';
-let isClinician = false;
-let patientAccessCode = null; // set when viewing in patient mode (URL link or code login)
+const CLINICIAN_PASS = 'DPT2026';
 let calYear, calMonth;
 let editPhaseIdx = 0;
 let workoutPhaseIdx = 0;
@@ -838,16 +878,7 @@ function makeDefaultPatient(id){
   return {
     id:id||('p'+Date.now()),
     accessCode:'',
-    patient:{name:'',dob:'',startDate:'',clinician:'',diagnosis:''},
-    commTab:'',
-    proto:{surgeryType:'',surgeryDate:'',surgeon:'',weightBearing:'Full Weight Bearing',
-           brace:'No Brace',romRestrictions:'',restrictions:[],phaseOverrides:{},notes:''},
-    outcomeMeasures:defaultOutcomeMeasures(),
-    phases:[
-      {id:1,name:'Phase 1',weekStart:1,weekEnd:4,color:'#3b82f6',
-       rehabIntent:'Swelling / ROM / NMR',intensity:'Low',
-       cardioOptions:['Recumbent Bike','Arm Bike','Upper Body Circuits','Core Circuit'],
-       goals:'Reduce post-surgical swelling. Restore baseline range of motion. Re-establish neuromuscular control and quad activation.',
+    patient:{name:'',dob:'',startDatS�rr�6Ɩ�6��rr�F�v��6�3�rw���6���F#�rr��&�F�7W&vW'�G�S�rr�7W&vW'�FFS�rr�7W&vV��rr�vV�v�D&V&��s�tgV��vV�v�B&V&��rr��'&6S�t��'&6Rr�&��&W7G&�7F���3�rr�&W7G&�7F���3�����6T�fW'&�FW3������FW3�rw����WF6��T�V7W&W3�FVfV�D�WF6��T�V7W&W2�����6W3�����C����S�u�6Rr�vVV�7F'C��vVV�V�C�B�6���#�r36#�&cbr��&V�$��FV�C�u7vV�Ɩ�r�$�����"rƖ�FV�6�G��t��rr��6&F���F���3��u&V7V�&V�B&��Rr�t&�&��Rr�uWW"&�G�6�&7V�G2r�t6�&R6�&7V�Bu���v��3�u&VGV6R�7B�7W&v�6�7vlling. Restore baseline range of motion. Re-establish neuromuscular control and quad activation.',
        difficulties:'Stiffness and atrophy are normal. Pain modulation is the main limiter — manage expectations on strength early on.',
        rules:'No loaded single-leg work. Keep all cardio non-impact. Prioritize swelling management above exercise goals.',
        workouts:[
@@ -954,45 +985,99 @@ function makeDefaultPatient(id){
     sessionLogs:[],
   };
 }
-function defaultStore(){
-  const p=makeDefaultPatient('p1');
-  p.patient.startDate='2026-02-15';
-  return {patients:[p],currentPatient:0,taxonomy:defaultTaxonomy()};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let db = null;
+let isClinician = false;
+let patientAccessCode = null;
+let STORE = { patients: [], currentPatient: 0, taxonomy: defaultTaxonomy() };
+let APP = null; // set after login
+
+// ── FIREBASE INIT ─────────────────────────────────────────────────────────────
+function getStoredConfig() {
+  try {
+    const c = JSON.parse(localStorage.getItem('dpt_fb_config') || '{}');
+    if (c.apiKey && c.projectId) return c;
+  } catch(e) {}
+  // Hardcoded Firebase project config — DPT Return to Performance
+  return {
+    apiKey:            "AIzaSyBlOlImHevdpHrHa_Y45Mhlz1a_OWuzgf8",
+    authDomain:        "dpt-return-to-performance.firebaseapp.com",
+    projectId:         "dpt-return-to-performance",
+    storageBucket:     "dpt-return-to-performance.firebasestorage.app",
+    messagingSenderId: "70607529840",
+    appId:             "1:70607529840:web:624b791e385e2ccc5b51b5",
+    measurementId:     "G-00NS41TXRP"
+  };
 }
-function loadStore(){
-  try{
-    const s3=localStorage.getItem('dpt3');
-    if(s3){
-      const d=JSON.parse(s3);
-      if(!d.taxonomy)d.taxonomy=defaultTaxonomy();
-      d.patients.forEach(p=>{
-        if(!p.outcomeMeasures)p.outcomeMeasures=defaultOutcomeMeasures();
-        if(p.accessCode===undefined)p.accessCode='';
-      });
-      return d;
-    }
-    // Migrate from old format
-    const s2=localStorage.getItem('dpt2');
-    if(s2){const old=JSON.parse(s2);const st=defaultStore();const p=st.patients[0];p.patient=old.patient||p.patient;p.commTab=old.commTab||'';p.proto=old.proto||p.proto;p.phases=old.phases||p.phases;p.sessionLogs=old.sessionLogs||[];return st;}
-  }catch(e){}
-  return defaultStore();
+function saveFirebaseConfig() {
+  const cfg = {
+    apiKey:            document.getElementById('setup-apiKey').value.trim(),
+    authDomain:        document.getElementById('setup-authDomain').value.trim(),
+    projectId:         document.getElementById('setup-projectId').value.trim(),
+    storageBucket:     document.getElementById('setup-storageBucket').value.trim(),
+    messagingSenderId: document.getElementById('setup-messagingSenderId').value.trim(),
+    appId:             document.getElementById('setup-appId').value.trim(),
+  };
+  const errEl = document.getElementById('setup-error');
+  if (!cfg.apiKey || !cfg.projectId) {
+    errEl.style.display = 'block';
+    errEl.textContent = 'API Key and Project ID are required.';
+    return;
+  }
+  localStorage.setItem('dpt_fb_config', JSON.stringify(cfg));
+  errEl.style.display = 'none';
+  location.reload();
 }
-function save(){
-  if(patientAccessCode){
-    // Patient mode: save sessions locally, update cached patient snapshot
-    try{
-      localStorage.setItem('dpt3_sl_'+patientAccessCode,JSON.stringify(APP.sessionLogs||[]));
-      const snap={...APP,sessionLogs:[]};
-      localStorage.setItem('dpt3_pt_'+patientAccessCode,JSON.stringify(snap));
-    }catch(e){}
-  }else{
-    try{localStorage.setItem('dpt3',JSON.stringify(STORE));}catch(e){}
+async function initFirebase() {
+  const cfg = getStoredConfig();
+  if (!cfg) { showSetupScreen(); return; }
+  try {
+    firebase.initializeApp(cfg);
+    db = firebase.firestore();
+    enableLoginUI();
+  } catch(e) {
+    showSetupScreen('Could not connect to Firebase. Please check your config.');
   }
 }
-let STORE=loadStore();
-let APP=STORE.patients[STORE.currentPatient];
+function showSetupScreen(msg) {
+  const s = document.getElementById('setup-screen');
+  s.style.display = 'flex';
+  if (msg) {
+    const e = document.getElementById('setup-error');
+    e.style.display = 'block';
+    e.textContent = msg;
+  }
+  // Pre-fill from existing config if any
+  const cfg = getStoredConfig();
+  if (cfg) {
+    Object.keys(cfg).forEach(k => {
+      const el = document.getElementById('setup-'+k);
+      if (el) el.value = cfg[k];
+    });
+  }
+}
+function enableLoginUI() {
+  document.getElementById('login-status').textContent = '';
+  const pb = document.getElementById('pt-login-btn');
+  const cb = document.getElementById('clin-login-btn');
+  if (pb) pb.disabled = false;
+  if (cb) cb.disabled = false;
+}
 
-// ── UTILS ─────────────────────────────────────────
+// ── SAVE ──────────────────────────────────────────────────────────────────────
+// Fire-and-forget: UI never waits for Firestore — fast UX, syncs in background
+function save() {
+  if (!db || !APP) return;
+  db.collection('patients').doc(APP.id).set(APP)
+    .catch(e => console.error('Save failed:', e));
+}
+function saveTaxonomy() {
+  if (!db) return;
+  db.collection('config').doc('taxonomy').set(STORE.taxonomy)
+    .catch(e => console.error('Taxonomy save failed:', e));
+}
+
 function today(){return new Date().toISOString().split('T')[0];}
 function fmtDate(s){if(!s)return'—';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
 function progWeek(dateStr){if(!APP.patient.startDate)return null;const s=new Date(APP.patient.startDate+'T00:00:00'),t=new Date(dateStr+'T00:00:00');return Math.floor((t-s)/(7*864e5))+1;}
@@ -1014,96 +1099,159 @@ function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 // ── AUTH ──────────────────────────────────────────
-function enterPatientCode(){
-  const raw=document.getElementById('pt-code-input').value.trim().toUpperCase();
-  const errEl=document.getElementById('pt-code-error');
-  if(!raw){errEl.style.display='flex';errEl.textContent='Please enter your patient code.';return;}
-  const stored=localStorage.getItem('dpt3_pt_'+raw);
-  if(!stored){errEl.style.display='flex';errEl.textContent='Code not found. Ask your clinician to send you your patient link.';return;}
-  try{
-    const data=JSON.parse(stored);
-    const sessions=JSON.parse(localStorage.getItem('dpt3_sl_'+raw)||'[]');
-    data.sessionLogs=sessions;
-    STORE.patients[0]=data;STORE.currentPatient=0;APP=STORE.patients[0];
-    patientAccessCode=raw;isClinician=false;
-    errEl.style.display='none';
+
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function setLoginLoading(on) {
+  document.getElementById('login-status').textContent = on ? 'Loading your program...' : '';
+  ['pt-login-btn','clin-login-btn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.disabled = on; el.style.opacity = on ? '0.6' : '1'; }
+  });
+}
+async function enterPatientCode() {
+  const raw = (document.getElementById('pt-code-input').value||'').trim().toUpperCase();
+  const errEl = document.getElementById('pt-code-error');
+  errEl.style.display = 'none';
+  if (!raw) { errEl.style.display='flex'; errEl.textContent='Please enter your access code.'; return; }
+  setLoginLoading(true);
+  try {
+    const snap = await db.collection('patients').where('accessCode','==',raw).get();
+    if (snap.empty) {
+      errEl.style.display = 'flex';
+      errEl.textContent = 'Access code not found. Please check with your clinician.';
+      setLoginLoading(false);
+      return;
+    }
+    const data = snap.docs[0].data();
+    STORE = { patients: [data], currentPatient: 0, taxonomy: defaultTaxonomy() };
+    APP = STORE.patients[0];
+    patientAccessCode = raw;
+    isClinician = false;
     launchApp();
-  }catch(e){errEl.style.display='flex';errEl.textContent='Invalid patient data. Please use the link sent by your clinician.';}
+  } catch(e) {
+    errEl.style.display = 'flex';
+    errEl.textContent = 'Connection error. Please try again.';
+    console.error(e);
+  }
+  setLoginLoading(false);
 }
-function enterClinician(){
-  if(document.getElementById('pw-input').value===PASS){
-    // Reload clinician store in case patient mode had modified STORE
-    STORE=loadStore();APP=STORE.patients[STORE.currentPatient];
-    patientAccessCode=null;isClinician=true;launchApp();
-  }else{document.getElementById('pw-error').style.display='flex';}
+async function enterClinician() {
+  const pw = document.getElementById('pw-input').value;
+  const errEl = document.getElementById('pw-error');
+  if (pw !== CLINICIAN_PASS) { errEl.style.display='flex'; return; }
+  errEl.style.display = 'none';
+  setLoginLoading(true);
+  try {
+    // Load taxonomy
+    const taxSnap = await db.collection('config').doc('taxonomy').get();
+    const taxonomy = taxSnap.exists ? taxSnap.data() : defaultTaxonomy();
+
+    // Load all patients
+    const ptSnap = await db.collection('patients').get();
+    let patients = ptSnap.docs.map(d => d.data());
+
+    // First run: seed a default patient
+    if (patients.length === 0) {
+      const def = makeDefaultPatient('p1');
+      await db.collection('patients').doc(def.id).set(def);
+      patients = [def];
+    }
+    patients.sort((a,b) => (a.patient.name||'').localeCompare(b.patient.name||''));
+    STORE = { patients, currentPatient: 0, taxonomy };
+    APP = STORE.patients[0];
+    isClinician = true;
+    patientAccessCode = null;
+    launchApp();
+  } catch(e) {
+    errEl.style.display = 'flex';
+    errEl.textContent = 'Connection error loading patients. Check your internet.';
+    console.error(e);
+  }
+  setLoginLoading(false);
 }
-function launchApp(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('app').style.flexDirection='column';
-  const b=document.getElementById('mode-badge');
-  b.textContent=isClinician?'🔓 Clinician View':'● Client View';
-  b.className='mode-badge'+(isClinician?' clinician':'');
-  document.getElementById('clinician-nav').style.display=isClinician?'block':'none';
-  document.getElementById('client-summary-nav').style.display=isClinician?'none':'block';
-  document.getElementById('pt-select-wrap').style.display=isClinician?'flex':'none';
-  document.getElementById('top-patient').style.display=isClinician?'none':'inline-block';
+function launchApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('app').style.flexDirection = 'column';
+  const b = document.getElementById('mode-badge');
+  b.textContent = isClinician ? '🔓 Clinician View' : '● Client View';
+  b.className = 'mode-badge' + (isClinician ? ' clinician' : '');
+  document.getElementById('clinician-nav').style.display = isClinician ? 'block' : 'none';
+  document.getElementById('client-summary-nav').style.display = isClinician ? 'none' : 'block';
+  document.getElementById('pt-select-wrap').style.display = isClinician ? 'flex' : 'none';
+  document.getElementById('top-patient').style.display = isClinician ? 'none' : 'inline-block';
   renderPatientDropdown();
-  document.getElementById('top-patient').textContent=APP.patient.name||'No patient set';
-  const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();
-  show(isClinician?'overview':'home');
-  document.addEventListener('keydown',handleKey);
+  document.getElementById('top-patient').textContent = APP.patient.name || 'No patient set';
+  const d = new Date(); calYear = d.getFullYear(); calMonth = d.getMonth();
+  show(isClinician ? 'overview' : 'home');
+  document.addEventListener('keydown', handleKey);
 }
-function renderPatientDropdown(){
-  const sel=document.getElementById('pt-select');
-  if(!sel)return;
-  sel.innerHTML=STORE.patients.map((p,i)=>`<option value="${i}" ${i===STORE.currentPatient?'selected':''}>${p.patient.name||'Unnamed Patient '+(i+1)}</option>`).join('');
+function renderPatientDropdown() {
+  const sel = document.getElementById('pt-select');
+  if (!sel) return;
+  sel.innerHTML = STORE.patients.map((p,i) =>
+    `<option value="${i}" ${i===STORE.currentPatient?'selected':''}>${p.patient.name||'Unnamed Patient '+(i+1)}</option>`
+  ).join('');
 }
-function switchPatient(idx){
-  STORE.currentPatient=idx;
-  APP=STORE.patients[idx];
-  save();
-  document.getElementById('top-patient').textContent=APP.patient.name||'No patient set';
+function switchPatient(idx) {
+  STORE.currentPatient = idx;
+  APP = STORE.patients[idx];
+  document.getElementById('top-patient').textContent = APP.patient.name || 'No patient set';
   renderPatientDropdown();
-  editPhaseIdx=0;workoutPhaseIdx=0;
-  const cur=document.querySelector('.view.active');
-  const curId=cur?cur.id.replace('view-',''):'overview';
+  editPhaseIdx = 0; workoutPhaseIdx = 0;
+  const cur = document.querySelector('.view.active');
+  const curId = cur ? cur.id.replace('view-','') : 'overview';
   show(curId);
 }
-function addPatient(){
-  const name=document.getElementById('np-name').value.trim();
-  const p=makeDefaultPatient();
-  p.patient.name=name;
-  p.patient.dob=document.getElementById('np-dob').value;
-  p.patient.diagnosis=document.getElementById('np-dx').value;
-  p.patient.clinician=document.getElementById('np-clin').value;
-  p.patient.startDate=document.getElementById('np-start').value;
-  p.accessCode=document.getElementById('np-code').value.trim().toUpperCase();
+async function addPatient() {
+  const code = (document.getElementById('np-code').value||'').trim().toUpperCase();
+  // Check for duplicate access code
+  if (code) {
+    const dup = STORE.patients.find(p => p.accessCode === code);
+    if (dup) { alert('That access code is already in use by ' + (dup.patient.name||'another patient') + '. Please choose a different code.'); return; }
+  }
+  const p = makeDefaultPatient();
+  p.patient.name      = document.getElementById('np-name').value.trim();
+  p.patient.dob       = document.getElementById('np-dob').value;
+  p.patient.diagnosis = document.getElementById('np-dx').value;
+  p.patient.clinician = document.getElementById('np-clin').value;
+  p.patient.startDate = document.getElementById('np-start').value;
+  p.accessCode        = code;
+  // Optimistic update then background save
   STORE.patients.push(p);
-  STORE.currentPatient=STORE.patients.length-1;
-  APP=STORE.patients[STORE.currentPatient];
-  save();closeModal('add-patient-modal');renderPatientDropdown();show('overview');
+  STORE.currentPatient = STORE.patients.length - 1;
+  APP = STORE.patients[STORE.currentPatient];
+  db.collection('patients').doc(p.id).set(p).catch(console.error);
+  closeModal('add-patient-modal');
+  renderPatientDropdown();
+  show('overview');
 }
-function deletePatient(){
-  if(STORE.patients.length<=1){alert('Cannot delete the only patient.');return;}
-  const name=APP.patient.name||'this patient';
-  if(!confirm(`Delete ${name}? This cannot be undone.`))return;
-  STORE.patients.splice(STORE.currentPatient,1);
-  STORE.currentPatient=Math.min(STORE.currentPatient,STORE.patients.length-1);
-  APP=STORE.patients[STORE.currentPatient];
-  save();closeModal('pt-modal');renderPatientDropdown();show('overview');
+async function deletePatient() {
+  if (STORE.patients.length <= 1) { alert('Cannot delete the only patient.'); return; }
+  const name = APP.patient.name || 'this patient';
+  if (!confirm('Delete ' + name + '? This cannot be undone.')) return;
+  const id = APP.id;
+  STORE.patients.splice(STORE.currentPatient, 1);
+  STORE.currentPatient = Math.min(STORE.currentPatient, STORE.patients.length - 1);
+  APP = STORE.patients[STORE.currentPatient];
+  db.collection('patients').doc(id).delete().catch(console.error);
+  closeModal('pt-modal');
+  renderPatientDropdown();
+  show('overview');
 }
-function lockApp(){
-  // If coming out of patient mode, restore clinician store
-  if(patientAccessCode){STORE=loadStore();APP=STORE.patients[STORE.currentPatient];patientAccessCode=null;}
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('app').style.display='none';
-  document.getElementById('pw-input').value='';
-  document.getElementById('pw-error').style.display='none';
-  document.getElementById('pt-code-input').value='';
-  document.getElementById('pt-code-error').style.display='none';
-  document.removeEventListener('keydown',handleKey);
+function lockApp() {
+  isClinician = false; patientAccessCode = null;
+  STORE = { patients: [], currentPatient: 0, taxonomy: defaultTaxonomy() };
+  APP = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').style.display = 'none';
+  document.getElementById('pt-code-input').value = '';
+  document.getElementById('pt-code-error').style.display = 'none';
+  document.removeEventListener('keydown', handleKey);
 }
+
 function handleKey(e){
   if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;
   const map={h:'home',c:'calendar',p:'phases',w:'workouts',o:'cardio',l:'session',v:'overview',e:'edit',s:'protocol',t:'taxonomy',g:'summary'};
@@ -1482,7 +1630,7 @@ function exEditRow(wi,ei,ex){
 function ph_field(f,v){APP.phases[editPhaseIdx][f]=v;save();}
 function updEx(wi,ei,f,v){APP.phases[editPhaseIdx].workouts[wi].exercises[ei][f]=v;save();}
 function delEx(wi,ei){if(!confirm('Delete this exercise?'))return;APP.phases[editPhaseIdx].workouts[wi].exercises.splice(ei,1);save();renderEdit();}
-function delWorkout(wi){if(!confirm(`Delete "${APP.phases[editPhaseIdx].workouts[wi].name}"?`))return;APP.phases[editPhaseIdx].workouts.splice(wi,1);save();renderEdit();}
+function delWorkout(wi){if(!confirm(`delete "${APP.phases[editPhaseIdx].workouts[wi].name}"?`))return;APP.phases[editPhaseIdx].workouts.splice(wi,1);save();renderEdit();}
 function addWorkout(){
   APP.phases[editPhaseIdx].workouts.push({id:genId(),name:'New Workout',description:'',type:'strength',exercises:[{order:'A1',name:'',equipment:'Bodyweight',sets:3,reps:'10-12',rest:'60sec',load:'',intent:''}]});
   save();renderEdit();
@@ -1515,7 +1663,7 @@ function renderProtocol(){
   document.getElementById('proto-brace').value=p.brace||'No Brace';
   document.getElementById('proto-rom').value=p.romRestrictions||'';
   document.getElementById('proto-notes').value=p.notes||'';
-  document.getElementById('phase-overrides').innerHTML=APP.phases.map(ph=>`
+  document.getElementById('phaseseoverrides').innerHTML=APP.phases.map(ph=>`
     <div class="form-row" style="margin-bottom:8px;align-items:center;">
       <div style="min-width:140px;font-size:12px;color:#475569;">${ph.name} starts week:</div>
       <input type="number" value="${p.phaseOverrides[ph.id]||ph.weekStart}" min="1" max="104" style="width:70px;" onchange="APP.proto.phaseOverrides[${ph.id}]=+this.value;save();renderProtocolImpact();">
@@ -1532,7 +1680,7 @@ function addCommonR(r){if(!APP.proto.restrictions.includes(r)){APP.proto.restric
 function delR(i){APP.proto.restrictions.splice(i,1);save();renderRestrictions();renderProtocolImpact();}
 function renderProtocolImpact(){const el=document.getElementById('protocol-impact');if(!el)return;const p=APP.proto;const items=[];if(p.surgeryType)items.push(`Surgery: <strong>${p.surgeryType}</strong>`);if(p.weightBearing&&p.weightBearing!=='Full Weight Bearing')items.push(`Weight bearing: <strong>${p.weightBearing}</strong>`);if(p.brace&&p.brace!=='No Brace')items.push(`Brace: <strong>${p.brace}</strong>`);if(p.romRestrictions)items.push(`ROM: ${p.romRestrictions}`);if(p.restrictions.length)items.push(`<strong>${p.restrictions.length}</strong> exercise restriction(s) active`);if(Object.keys(p.phaseOverrides).length)items.push('Custom phase timeline active');el.innerHTML=items.length?`<div class="alert alert-amber">${items.map(i=>`<div>• ${i}</div>`).join('')}</div>`:'<p class="text-muted text-sm">No restrictions active.</p>';}
 
-// ── GENERATE SUMMARY ──────────────────────────────
+// ── GENERATE SUMMARY ───────────────────��──────────
 function generateSummary(){
   const ds=document.getElementById('sum-date').value;
   if(!ds){alert('Select a date');return;}
@@ -1853,67 +2001,51 @@ function deleteTaxEx(id){
   save();renderTaxonomy();
 }
 
-// -- PATIENT LINK / SHARING --
-function openPatientInfoModal(){
-  const p=APP.patient;
-  document.getElementById('pt-name').value=p.name||'';
-  document.getElementById('pt-dob').value=p.dob||'';
-  document.getElementById('pt-dx').value=p.diagnosis||'';
-  document.getElementById('pt-clin').value=p.clinician||'';
-  document.getElementById('pt-start').value=p.startDate||'';
-  document.getElementById('pt-code').value=APP.accessCode||'';
-  const shareRow=document.getElementById('pt-share-row');
-  const linkDisplay=document.getElementById('pt-link-display');
-  if(APP.accessCode){linkDisplay.value=buildPatientURL();shareRow.style.display='block';}
-  else{shareRow.style.display='none';}
+
+// ── PATIENT INFO MODAL ────────────────────────────────────────────────────────
+function openPatientInfoModal() {
+  const p = APP.patient;
+  document.getElementById('pt-name').value  = p.name||'';
+  document.getElementById('pt-dob').value   = p.dob||'';
+  document.getElementById('pt-dx').value    = p.diagnosis||'';
+  document.getElementById('pt-clin').value  = p.clinician||'';
+  document.getElementById('pt-start').value = p.startDate||'';
+  document.getElementById('pt-code').value  = APP.accessCode||'';
+  // Show share row with just the base URL + code (no encoded data needed now)
+  const shareRow  = document.getElementById('pt-share-row');
+  const linkDisplay = document.getElementById('pt-link-display');
+  if (APP.accessCode) {
+    linkDisplay.value = window.location.origin + window.location.pathname
+      + '  →  Code: ' + APP.accessCode;
+    shareRow.style.display = 'block';
+  } else {
+    shareRow.style.display = 'none';
+  }
   openModal('pt-modal');
 }
-function buildPatientURL(){
-  const data={...APP,sessionLogs:[]};
-  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-  return window.location.origin+window.location.pathname+'#p='+encoded;
+function copyPatientLink() {
+  if (!APP.accessCode) {
+    alert('Set an access code first (in Patient Info).');
+    return;
+  }
+  const url  = window.location.origin + window.location.pathname;
+  const text = 'Your rehab program is ready!\n\nOpen this link: ' + url
+    + '\n\nYour access code: ' + APP.accessCode
+    + '\n\nEnter your code on the login screen to access your program.';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => showToast('Login instructions copied!'))
+      .catch(() => fallbackCopy(text));
+  } else { fallbackCopy(text); }
 }
-function generatePatientLink(){
-  if(!APP.accessCode){alert('Set an access code for this patient first.\nGo to Patient Info and fill in the Patient Access Code field.');return null;}
-  return buildPatientURL();
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  document.execCommand('copy'); document.body.removeChild(ta);
+  showToast('Login instructions copied!');
 }
-function copyPatientLink(){
-  const url=generatePatientLink();
-  if(!url)return;
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(()=>showToast('Patient link copied!')).catch(()=>fallbackCopy(url));}
-  else{fallbackCopy(url);}
-}
-function fallbackCopy(text){
-  const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Patient link copied!');
-}
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=''+msg;
-  t.style.transform='translateX(-50%) translateY(0)';
-  setTimeout(()=>{t.style.transform='translateX(-50%) translateY(80px)';},2800);
-}
-
-// -- URL HASH: auto-load patient from shared link --
-(function(){
-  var hash=window.location.hash;
-  if(!hash||hash.indexOf('#p=')<0)return;
-  try{
-    var encoded=hash.slice(3);
-    var json=decodeURIComponent(escape(atob(encoded)));
-    var data=JSON.parse(json);
-    var code=((data.accessCode||data.id)||'').toUpperCase();
-    if(!code)return;
-    localStorage.setItem('dpt3_pt_'+code,JSON.stringify(Object.assign({},data,{sessionLogs:[]})));
-    var sessions=JSON.parse(localStorage.getItem('dpt3_sl_'+code)||'[]');
-    data.sessionLogs=sessions;
-    STORE.patients[0]=data;STORE.currentPatient=0;APP=STORE.patients[0];
-    patientAccessCode=code;isClinician=false;
-    history.replaceState(null,'',window.location.pathname);
-    launchApp();
-  }catch(e){console.warn('Invalid patient link:',e);}
-}());
-
-document.getElementById('lock-btn').addEventListener('click',lockApp);
-window.openPatientModal=openPatientInfoModal;
-</script>
-</body>
-</html>
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = '✓ ' + msg;
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  setTimeout(
