@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Return to Performance — DPT Physical Therapy</title>
+<title>Return to Performance â€” DPT Physical Therapy</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh;}
@@ -269,7 +269,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
 <body>
 
 <!-- TOAST -->
-<div id="toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;pointer-events:none;">✓ Link copied!</div>
+<div id="toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;pointer-events:none;">âœ“ Link copied!</div>
 
 
 <!-- FIREBASE SETUP SCREEN -->
@@ -277,7 +277,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
   <div style="background:#fff;border-radius:16px;padding:36px;width:560px;max-width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);">
     <div style="width:48px;height:48px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;">&#128274;</div>
     <h2 style="font-size:20px;font-weight:700;color:#1e293b;margin-bottom:6px;">Database Setup Required</h2>
-    <p style="font-size:13px;color:#64748b;margin-bottom:20px;">This app needs a free Firebase database so patients can log in from any device. Follow the steps below — it takes about 5 minutes.</p>
+    <p style="font-size:13px;color:#64748b;margin-bottom:20px;">This app needs a free Firebase database so patients can log in from any device. Follow the steps below â€” it takes about 5 minutes.</p>
 
     <div style="background:#f0fdf4;border-radius:10px;padding:16px;margin-bottom:20px;font-size:12px;color:#0f766e;line-height:1.7;">
       <strong>Step 1:</strong> Go to <strong>console.firebase.google.com</strong> and click <strong>Add project</strong><br>
@@ -314,14 +314,14 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="login-logo">➕</div>
+    <div class="login-logo">âž•</div>
     <h1>Return to Performance</h1>
-    <p class="sub">DPT Physical Therapy — Rehab Program Tool</p>
+    <p class="sub">DPT Physical Therapy â€” Rehab Program Tool</p>
     <div id="login-status" style="text-align:center;font-size:12px;color:#94a3b8;margin-bottom:12px;min-height:16px;">Connecting to database...</div>
     <div>
       <label>PATIENT ACCESS CODE</label>
       <input type="text" id="pt-code-input" placeholder="e.g. ALEX001" style="width:100%;margin-bottom:10px;text-transform:uppercase;" onkeydown="if(event.key==='Enter')enterPatientCode()">
-      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="enterPatientCode()">Open My Program →</button>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="enterPatientCode()">Open My Program â†’</button>
       <div id="pt-code-error" class="alert alert-red" style="display:none;margin-top:10px;">Code not found. Please check with your clinician.</div>
     </div>
     <div class="login-divider">or</div>
@@ -330,7 +330,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
       <input type="password" id="pw-input" placeholder="Enter password" style="width:100%;margin-bottom:10px;" onkeydown="if(event.key==='Enter')enterClinician()">
       <button class="btn btn-outline" style="width:100%;justify-content:center;padding:11px;" id="clin-login-btn" disabled onclick="enterClinician()">Clinician Login</button>
       <div id="pw-error" class="alert alert-red" style="display:none;margin-top:10px;">Incorrect password. Try again.</div>
-      <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:12px;">Default password: <strong style="color:#1e293b;">DPT2026</strong> · change in Settings</p>
+      <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:12px;">Default password: <strong style="color:#1e293b;">DPT2026</strong> Â· change in Settings</p>
     </div>
   </div>
 </div>
@@ -345,7 +345,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
     <div id="mode-badge" class="mode-badge">Client View</div>
     <div class="pt-select-wrap" id="pt-select-wrap">
       <select id="pt-select" onchange="switchPatient(+this.value)" style="max-width:160px;"></select>
-      <button class="btn btn-ghost btn-sm" onclick="copyPatientLink()" title="Copy shareable patient link">🔗 Share</button>
+      <button class="btn btn-ghost btn-sm" onclick="copyPatientLink()" title="Copy shareable patient link">ðŸ”— Share</button>
       <button class="btn btn-ghost btn-sm" onclick="openModal('add-patient-modal')">+ Patient</button>
     </div>
     <div class="topbar-right">
@@ -357,25 +357,25 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
   <div class="layout">
     <nav class="sidebar">
       <div class="sidebar-section">
-        <div class="nav-item active" id="nav-home" onclick="show('home')">🏠 Home <span class="shortcut">H</span></div>
-        <div class="nav-item" id="nav-calendar" onclick="show('calendar')">📅 Calendar <span class="shortcut">C</span></div>
-        <div class="nav-item" id="nav-phases" onclick="show('phases')">🎯 Phases <span class="shortcut">P</span></div>
-        <div class="nav-item" id="nav-workouts" onclick="show('workouts')">💪 Workouts <span class="shortcut">W</span></div>
-        <div class="nav-item" id="nav-cardio" onclick="show('cardio')">🚴 Cardio <span class="shortcut">O</span></div>
-        <div class="nav-item" id="nav-session" onclick="show('session')">📋 Session Log <span class="shortcut">L</span></div>
+        <div class="nav-item active" id="nav-home" onclick="show('home')">ðŸ  Home <span class="shortcut">H</span></div>
+        <div class="nav-item" id="nav-calendar" onclick="show('calendar')">ðŸ“… Calendar <span class="shortcut">C</span></div>
+        <div class="nav-item" id="nav-phases" onclick="show('phases')">ðŸŽ¯ Phases <span class="shortcut">P</span></div>
+        <div class="nav-item" id="nav-workouts" onclick="show('workouts')">ðŸ’ª Workouts <span class="shortcut">W</span></div>
+        <div class="nav-item" id="nav-cardio" onclick="show('cardio')">ðŸš´ Cardio <span class="shortcut">O</span></div>
+        <div class="nav-item" id="nav-session" onclick="show('session')">ðŸ“‹ Session Log <span class="shortcut">L</span></div>
       </div>
       <div class="sidebar-sep"></div>
       <div class="sidebar-section" id="clinician-nav" style="display:none">
         <div class="sidebar-label">Clinician</div>
-        <div class="nav-item" id="nav-overview" onclick="show('overview')">📊 Overview <span class="shortcut">V</span></div>
-        <div class="nav-item" id="nav-edit" onclick="show('edit')">✏️ Edit Program <span class="shortcut">E</span></div>
-        <div class="nav-item" id="nav-protocol" onclick="show('protocol')">🏥 Surgeon Protocol <span class="shortcut">S</span></div>
-        <div class="nav-item" id="nav-taxonomy" onclick="show('taxonomy')">🗂 Taxonomy DB <span class="shortcut">T</span></div>
-        <div class="nav-item" id="nav-summary" onclick="show('summary')">📄 Generate Summary <span class="shortcut">G</span></div>
+        <div class="nav-item" id="nav-overview" onclick="show('overview')">ðŸ“Š Overview <span class="shortcut">V</span></div>
+        <div class="nav-item" id="nav-edit" onclick="show('edit')">âœï¸ Edit Program <span class="shortcut">E</span></div>
+        <div class="nav-item" id="nav-protocol" onclick="show('protocol')">ðŸ¥ Surgeon Protocol <span class="shortcut">S</span></div>
+        <div class="nav-item" id="nav-taxonomy" onclick="show('taxonomy')">ðŸ—‚ Taxonomy DB <span class="shortcut">T</span></div>
+        <div class="nav-item" id="nav-summary" onclick="show('summary')">ðŸ“„ Generate Summary <span class="shortcut">G</span></div>
       </div>
       <div class="sidebar-section" id="client-summary-nav">
         <div class="sidebar-sep"></div>
-        <div class="nav-item" id="nav-summary-c" onclick="show('summary')">📄 Summary <span class="shortcut">G</span></div>
+        <div class="nav-item" id="nav-summary-c" onclick="show('summary')">ðŸ“„ Summary <span class="shortcut">G</span></div>
       </div>
     </nav>
 
@@ -392,18 +392,18 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
         <div class="section-sub">Click any day to log that session</div>
         <div class="card">
           <div class="cal-nav">
-            <button class="cal-btn" onclick="calPrev()">‹</button>
+            <button class="cal-btn" onclick="calPrev()">â€¹</button>
             <h3 id="cal-month-label"></h3>
-            <button class="cal-btn" onclick="calNext()">›</button>
+            <button class="cal-btn" onclick="calNext()">â€º</button>
             <div class="spacer"></div>
             <button class="btn btn-ghost btn-sm" onclick="calGoToday()">Today</button>
           </div>
           <div class="cal-grid" id="cal-grid"></div>
           <div class="cal-legend">
-            <div class="leg-item"><div class="leg-dot" style="background:#3b82f6;"></div>Phase 1 (wk 1–4)</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#10b981;"></div>Phase 2 (wk 5–11)</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#f59e0b;"></div>Phase 3 (wk 12–22)</div>
-            <div class="leg-item"><div class="leg-dot" style="background:#ef4444;"></div>Phase 4 (wk 23–52)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#3b82f6;"></div>Phase 1 (wk 1â€“4)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#10b981;"></div>Phase 2 (wk 5â€“11)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#f59e0b;"></div>Phase 3 (wk 12â€“22)</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#ef4444;"></div>Phase 4 (wk 23â€“52)</div>
             <div class="leg-item"><div class="leg-dot" style="background:#f59e0b;border-radius:50%;"></div>Logged session</div>
           </div>
         </div>
@@ -421,7 +421,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
         <div class="row mb16">
           <div>
             <div class="section-title">Workouts</div>
-            <div class="section-sub" style="margin:0;">Phase <span id="wk-phase-label">—</span> workouts</div>
+            <div class="section-sub" style="margin:0;">Phase <span id="wk-phase-label">â€”</span> workouts</div>
           </div>
           <div class="spacer"></div>
           <div id="workout-phase-tabs" class="row" style="gap:6px;"></div>
@@ -446,7 +446,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
           <div class="spacer"></div>
           <input type="date" id="session-date" onchange="renderSession()" style="width:auto;">
           <button class="btn btn-ghost btn-sm" onclick="setToday()">Today</button>
-          <button class="btn btn-primary btn-sm" onclick="saveSession()">💾 Save Session</button>
+          <button class="btn btn-primary btn-sm" onclick="saveSession()">ðŸ’¾ Save Session</button>
         </div>
         <div id="session-content"></div>
       </div>
@@ -460,14 +460,14 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
           </div>
           <div class="spacer"></div>
           <button class="btn btn-ghost btn-sm" onclick="show('session')">+ Log Session</button>
-          <button class="btn btn-ghost btn-sm" onclick="openPatientInfoModal()">⚙ Patient Info</button>
+          <button class="btn btn-ghost btn-sm" onclick="openPatientInfoModal()">âš™ Patient Info</button>
         </div>
         <div class="kpi-grid" id="ov-kpis"></div>
         <div class="g2" style="margin-bottom:16px;">
           <div class="card">
             <div class="card-header">
               <div class="card-title">LSI Tracker</div>
-              <span style="font-size:11px;color:#94a3b8;">▌ = 90% return-to-sport target</span>
+              <span style="font-size:11px;color:#94a3b8;">â–Œ = 90% return-to-sport target</span>
             </div>
             <div id="ov-lsi"><p class="lsi-empty">No bilateral outcome measure data yet.</p></div>
           </div>
@@ -534,7 +534,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
               <div class="card-title" style="margin-bottom:14px;">Surgery Information</div>
               <div class="form-row"><div class="field"><label>Surgery Type</label>
                 <select id="proto-type" onchange="saveProto()" style="width:100%;">
-                  <option value="">— Select —</option>
+                  <option value="">â€” Select â€”</option>
                   <option>ACL Reconstruction</option><option>ACL Reconstruction + Meniscus Repair</option>
                   <option>Meniscus Repair (Complex)</option><option>Meniscus Repair (Simple)</option>
                   <option>Meniscectomy (Partial)</option><option>Total Knee Replacement</option>
@@ -555,12 +555,12 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
                     <option>Non-Weight Bearing</option></select></div>
                 <div class="field"><label>Brace</label>
                   <select id="proto-brace" onchange="saveProto()" style="width:100%;">
-                    <option>No Brace</option><option>Hinged Knee Brace (0–90°)</option>
+                    <option>No Brace</option><option>Hinged Knee Brace (0â€“90Â°)</option>
                     <option>Hinged Knee Brace (Full ROM)</option><option>Locked in Extension</option>
                     <option>Custom Protocol</option></select></div>
               </div>
               <div class="field"><label>ROM Restrictions / Notes</label>
-                <textarea id="proto-rom" rows="3" style="width:100%;" onchange="saveProto()" placeholder="e.g., 0–90° for first 6 weeks..."></textarea></div>
+                <textarea id="proto-rom" rows="3" style="width:100%;" onchange="saveProto()" placeholder="e.g., 0â€“90Â° for first 6 weeks..."></textarea></div>
             </div>
             <div class="card">
               <div class="card-title" style="margin-bottom:12px;">Phase Timeline Overrides</div>
@@ -572,7 +572,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
             <div class="card">
               <div class="card-title" style="margin-bottom:12px;">Exercise Restrictions</div>
               <div class="row mb8">
-                <input type="text" id="new-restriction" placeholder="e.g., No deep knee flexion past 90°" style="flex:1;">
+                <input type="text" id="new-restriction" placeholder="e.g., No deep knee flexion past 90Â°" style="flex:1;">
                 <button class="btn btn-primary btn-sm" onclick="addRestriction()">+ Add</button>
               </div>
               <div id="restriction-tags" class="mb16"></div>
@@ -593,7 +593,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
       <!-- GENERATE SUMMARY -->
       <div id="view-summary" class="view">
         <div class="section-title">Generate Summary</div>
-        <div class="section-sub">Create an EMR-ready SOAP note or progress summary — copy and paste directly into your system</div>
+        <div class="section-sub">Create an EMR-ready SOAP note or progress summary â€” copy and paste directly into your system</div>
         <div class="g2">
           <div>
             <div class="card">
@@ -607,7 +607,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
                     <option value="discharge">Discharge Planning Note</option>
                   </select></div>
               </div>
-              <button class="btn btn-primary" onclick="generateSummary()" style="width:100%;justify-content:center;padding:11px;">⚡ Generate Summary</button>
+              <button class="btn btn-primary" onclick="generateSummary()" style="width:100%;justify-content:center;padding:11px;">âš¡ Generate Summary</button>
               <div class="sep"></div>
               <div class="card-title" style="margin-bottom:12px;">Outcome Measures (optional)</div>
               <div class="form-row">
@@ -620,7 +620,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
               </div>
               <div class="form-row">
                 <div class="field"><label>Trap Bar Squat</label><input type="text" id="sum-squat" placeholder="lbs"></div>
-                <div class="field"><label>Knee Flexion ROM</label><input type="text" id="sum-kflex" placeholder="°"></div>
+                <div class="field"><label>Knee Flexion ROM</label><input type="text" id="sum-kflex" placeholder="Â°"></div>
               </div>
             </div>
           </div>
@@ -628,10 +628,10 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
             <div class="card" style="height:100%;">
               <div class="card-header">
                 <div class="card-title">EMR Output</div>
-                <button class="btn btn-outline btn-sm" onclick="copySummary()">📋 Copy to Clipboard</button>
+                <button class="btn btn-outline btn-sm" onclick="copySummary()">ðŸ“‹ Copy to Clipboard</button>
               </div>
               <div class="summary-box" id="summary-output">Select options and click Generate Summary.</div>
-              <div id="copy-confirm" style="display:none;color:#0f766e;font-size:12px;margin-top:8px;font-weight:600;">✓ Copied to clipboard!</div>
+              <div id="copy-confirm" style="display:none;color:#0f766e;font-size:12px;margin-top:8px;font-weight:600;">âœ“ Copied to clipboard!</div>
             </div>
           </div>
         </div>
@@ -707,7 +707,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
     </div>
     <div class="field mb16"><label>Type</label>
       <select id="om-bilateral" style="width:100%;">
-        <option value="bilateral">Bilateral (Involved + Contralateral → LSI)</option>
+        <option value="bilateral">Bilateral (Involved + Contralateral â†’ LSI)</option>
         <option value="single">Single Value</option>
       </select>
     </div>
@@ -804,7 +804,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
     <div id="pt-share-row" style="margin-bottom:16px;padding:12px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;display:none;">
       <div style="font-size:12px;font-weight:600;color:#065f46;margin-bottom:6px;">Patient Link</div>
       <input type="text" id="pt-link-display" readonly style="width:100%;font-size:11px;color:#475569;margin-bottom:8px;background:#fff;">
-      <button class="btn btn-primary btn-sm" onclick="copyPatientLink()" style="width:100%;justify-content:center;">📋 Copy Patient Link</button>
+      <button class="btn btn-primary btn-sm" onclick="copyPatientLink()" style="width:100%;justify-content:center;">ðŸ“‹ Copy Patient Link</button>
     </div>
     <div class="modal-actions">
       <button class="btn btn-danger btn-sm" id="pt-delete-btn" onclick="deletePatient()" style="margin-right:auto;">Delete Patient</button>
@@ -816,7 +816,7 @@ label,.field-label{font-size:11px;font-weight:600;color:#64748b;text-transform:u
 
 
 <script>
-// ── DATA ──────────────────────────────────────────
+// â”€â”€ DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const CLINICIAN_PASS = 'DPT2026';
 let calYear, calMonth;
 let editPhaseIdx = 0;
@@ -825,7 +825,7 @@ let _exCtx = {pi:0, wi:0};
 let taxPhaseFilter = 0; // 0 = All
 
 const COMMON_RESTRICTIONS = [
-  'No deep knee flexion past 90°','No full extension under load','No impact/plyometrics',
+  'No deep knee flexion past 90Â°','No full extension under load','No impact/plyometrics',
   'No running until cleared','No open-chain quad loading','No single-leg loading',
   'No pivot/rotation','No valgus stress','Limit ROM to surgeon range','No contact activities',
   'No heavy spinal loading','No overhead pressing'
@@ -837,7 +837,7 @@ function defaultOutcomeMeasures(){
     {id:'om-h',name:'Hamstring Peak Force',unit:'Nm/kg',bilateral:true,values:[]},
     {id:'om-qr',name:'Quad RFD',unit:'N/s',bilateral:true,values:[]},
     {id:'om-sq',name:'Trap Bar Squat',unit:'lbs',bilateral:false,values:[]},
-    {id:'om-rom',name:'Knee Flexion ROM',unit:'°',bilateral:true,values:[]},
+    {id:'om-rom',name:'Knee Flexion ROM',unit:'Â°',bilateral:true,values:[]},
   ];
 }
 function defaultTaxonomy(){
@@ -864,10 +864,10 @@ function defaultTaxonomy(){
     {id:'tx20',name:'Hanging Leg Raise',bodyPart:'Core',intention:'Stability',phases:[2,3],equipment:'Bodyweight',description:'Anti-extension core, hip flexor endurance'},
     {id:'tx21',name:'Box Jump',bodyPart:'Knee',intention:'Power',phases:[4],equipment:'Plyo Box',description:'Bilateral explosive, max height, soft landing, stick it'},
     {id:'tx22',name:'Lateral Bounds',bodyPart:'Knee',intention:'Power',phases:[4],equipment:'Bodyweight',description:'Unilateral explosive, distance and control, stick each landing'},
-    {id:'tx23',name:'Sprint Accelerations',bodyPart:'Full Body',intention:'Power',phases:[4],equipment:'Field / Track',description:'85–95% max effort, 10–20 yds, full recovery between reps'},
+    {id:'tx23',name:'Sprint Accelerations',bodyPart:'Full Body',intention:'Power',phases:[4],equipment:'Field / Track',description:'85â€“95% max effort, 10â€“20 yds, full recovery between reps'},
     {id:'tx24',name:'Single Leg Landing',bodyPart:'Knee',intention:'Coordination / NMR',phases:[4],equipment:'Plyo Box',description:'Stick landing, no valgus, proprioceptive challenge'},
-    {id:'tx25',name:'Deceleration Runs',bodyPart:'Full Body',intention:'Coordination / NMR',phases:[4],equipment:'Field',description:'Max speed → controlled stop in 3 steps'},
-    {id:'tx26',name:'Incline Treadmill Walk',bodyPart:'Full Body',intention:'Endurance',phases:[2,3],equipment:'Cardio Equipment',description:'Low impact progressive cardio, RPE 6–7'},
+    {id:'tx25',name:'Deceleration Runs',bodyPart:'Full Body',intention:'Coordination / NMR',phases:[4],equipment:'Field',description:'Max speed â†’ controlled stop in 3 steps'},
+    {id:'tx26',name:'Incline Treadmill Walk',bodyPart:'Full Body',intention:'Endurance',phases:[2,3],equipment:'Cardio Equipment',description:'Low impact progressive cardio, RPE 6â€“7'},
     {id:'tx27',name:'Recumbent Bike',bodyPart:'Full Body',intention:'Endurance',phases:[1,2],equipment:'Cardio Equipment',description:'Non-impact, range of motion and circulation'},
     {id:'tx28',name:'Lateral COD Drills',bodyPart:'Knee',intention:'Coordination / NMR',phases:[4],equipment:'Cones',description:'Sharp lateral cuts, reactive, sport-specific pattern'},
     {id:'tx29',name:'Hip Flexor Stretch',bodyPart:'Hip',intention:'Mobility',phases:[1,2,3,4],equipment:'Bodyweight',description:'Sustained anterior hip lengthening'},
@@ -878,8 +878,8 @@ function makeDefaultPatient(id){
   return {
     id:id||('p'+Date.now()),
     accessCode:'',
-    patient:{name:'',dob:'',startDatS�rr�6Ɩ�6��rr�F�v��6�3�rw���6���F#�rr��&�F�7W&vW'�G�S�rr�7W&vW'�FFS�rr�7W&vV��rr�vV�v�D&V&��s�tgV��vV�v�B&V&��rr��'&6S�t��'&6Rr�&��&W7G&�7F���3�rr�&W7G&�7F���3�����6T�fW'&�FW3������FW3�rw����WF6��T�V7W&W3�FVfV�D�WF6��T�V7W&W2�����6W3�����C����S�u�6Rr�vVV�7F'C��vVV�V�C�B�6���#�r36#�&cbr��&V�$��FV�C�u7vV�Ɩ�r�$�����"rƖ�FV�6�G��t��rr��6&F���F���3��u&V7V�&V�B&��Rr�t&�&��Rr�uWW"&�G�6�&7V�G2r�t6�&R6�&7V�Bu���v��3�u&VGV6R�7B�7W&v�6�7vlling. Restore baseline range of motion. Re-establish neuromuscular control and quad activation.',
-       difficulties:'Stiffness and atrophy are normal. Pain modulation is the main limiter — manage expectations on strength early on.',
+    patient:{name:'',dob:'',startDatS¢rrÆ6Æ–æ–6–ã¢rrÆF–væ÷6—3¢rwÒÀ¢6öÖÕF#¢rrÀ¢&÷Fó§·7W&vW'•G—S¢rrÇ7W&vW'”FFS¢rrÇ7W&vVöã¢rrÇvV–v‡D&V&–æs¢tgVÆÂvV–v‡B&V&–ærrÀ¢'&6S¢tæò'&6RrÇ&öÕ&W7G&–7F–öç3¢rrÇ&W7G&–7F–öç3¥µÒÇ†6T÷fW'&–FW3§·ÒÆæ÷FW3¢rwÒÀ¢÷WF6öÖTÖV7W&W3¦FVfVÇD÷WF6öÖTÖV7W&W2‚’À¢†6W3¥°¢¶–C£ÆæÖS¢u†6RrÇvVVµ7F'C£ÇvVV´VæC£BÆ6öÆ÷#¢r36#ƒ&cbrÀ¢&V†$–çFVçC¢u7vVÆÆ–ærò$ôÒòäÕ"rÆ–çFVç6—G“¢tÆ÷rrÀ¢6&F–ô÷F–öç3¥²u&V7VÖ&VçB&–¶RrÂt&Ò&–¶RrÂuWW"&öG’6—&7V—G2rÂt6÷&R6—&7V—BuÒÀ¢vöÇ3¢u&VGV6R÷7B×7W&v–6Â7vlling. Restore baseline range of motion. Re-establish neuromuscular control and quad activation.',
+       difficulties:'Stiffness and atrophy are normal. Pain modulation is the main limiter â€” manage expectations on strength early on.',
        rules:'No loaded single-leg work. Keep all cardio non-impact. Prioritize swelling management above exercise goals.',
        workouts:[
          {id:'p1-ra',name:'Recovery A',description:'Cardio and Total Body Mobility',type:'recovery',exercises:[
@@ -899,7 +899,7 @@ function makeDefaultPatient(id){
        rehabIntent:'ROM / NMR / Strength',intensity:'Low - Moderate',
        cardioOptions:['Recumbent Bike','Upright Bike','Incline Treadmill (walking)','Pool','Elliptical'],
        goals:'Build foundational bilateral strength. Improve single-leg control. Achieve full range of motion.',
-       difficulties:'Compensation patterns from the uninvolved limb. Patient may push too hard, too soon — stay disciplined with progressions.',
+       difficulties:'Compensation patterns from the uninvolved limb. Patient may push too hard, too soon â€” stay disciplined with progressions.',
        rules:'Push harder on squats than deadlifts. Take at least 2 days between Power C and A. Monitor for swelling after sessions.',
        workouts:[
          {id:'p2-wa',name:'Workout A',description:'Lower Body Strength',type:'strength',exercises:[
@@ -931,7 +931,7 @@ function makeDefaultPatient(id){
        rehabIntent:'Strength / Hypertrophy',intensity:'Moderate',
        cardioOptions:['Incline Treadmill','Reverse Treadmill','HIIT (low-impact)','Bike','Swim'],
        goals:'Restore quad/hamstring strength to within 80% of contralateral limb. Build muscle mass. Introduce light plyometric prep.',
-       difficulties:'Plateaus in strength gains. Long phase — keep variety. Introduce volume carefully to avoid swelling rebound.',
+       difficulties:'Plateaus in strength gains. Long phase â€” keep variety. Introduce volume carefully to avoid swelling rebound.',
        rules:'Progressive overload each session. Track bilateral symmetry. Monitor DOMS and adjust volume accordingly.',
        workouts:[
          {id:'p3-wa',name:'Workout A',description:'Squat Dominant',type:'strength',exercises:[
@@ -956,7 +956,7 @@ function makeDefaultPatient(id){
        rehabIntent:'Strength / Power / Agility',intensity:'Moderate to High',
        cardioOptions:['Stairmaster','Sprints','Bike','Swim','HIIT'],
        goals:'Restore power, RFD, change of direction, and sport-specific movement quality. Pass return-to-sport criteria.',
-       difficulties:'Confidence and psychological readiness as much as physical. Re-injury risk if rushed — respect criteria-based progression.',
+       difficulties:'Confidence and psychological readiness as much as physical. Re-injury risk if rushed â€” respect criteria-based progression.',
        rules:'Symmetry tests >90% LSI before sport return. All plyometrics must be pain-free. 2 days minimum between Power C and A.',
        workouts:[
          {id:'p4-pwa',name:'Total Body Power A',description:'Power & Plyometrics',type:'power',exercises:[
@@ -967,14 +967,14 @@ function makeDefaultPatient(id){
            {order:'D1',name:'Nordic Hamstring Curl',equipment:'Partner',sets:3,reps:'5-6',rest:'2min',load:'BW',intent:'Eccentric emphasis'}]},
          {id:'p4-pwb',name:'Total Body Power B',description:'Agility & Speed',type:'power',exercises:[
            {order:'Warmup',name:'5x5x5 + Acceleration Drills',equipment:'Bodyweight',sets:5,reps:'5',rest:'0',load:'BW',intent:'Heel scoops, A skips, accel/decel'},
-           {order:'A1',name:'Sprint Accelerations (10–20 yds)',equipment:'Field/Track',sets:6,reps:'1',rest:'90sec',load:'BW',intent:'85–95% max effort'},
+           {order:'A1',name:'Sprint Accelerations (10â€“20 yds)',equipment:'Field/Track',sets:6,reps:'1',rest:'90sec',load:'BW',intent:'85â€“95% max effort'},
            {order:'B1',name:'Barbell Back Squat',equipment:'Barbell',sets:4,reps:'5',rest:'3min',load:'Heavy',intent:'Controlled descent, explosive up'},
            {order:'C1',name:'Lateral Change of Direction Drills',equipment:'Cones',sets:4,reps:'30sec',rest:'90sec',load:'BW',intent:'Sharp cuts'},
            {order:'D1',name:'Single Leg Landing',equipment:'Plyo Box',sets:3,reps:'8 each',rest:'60sec',load:'BW',intent:'Stick landing, no valgus'}]},
          {id:'p4-pwc',name:'Total Body Power C',description:'Deceleration & Control',type:'power',exercises:[
            {order:'Warmup',name:'Dynamic Movement Prep',equipment:'Bodyweight',sets:1,reps:'10 Min',rest:'0',load:'BW',intent:'Full body'},
-           {order:'A1',name:'Deceleration Runs',equipment:'Field',sets:5,reps:'1',rest:'2min',load:'BW',intent:'Max speed → stop in 3 steps'},
-           {order:'B1',name:'Leg Press — Heavy',equipment:'Machine',sets:4,reps:'6-8',rest:'2min',load:'Heavy',intent:'Max strength'},
+           {order:'A1',name:'Deceleration Runs',equipment:'Field',sets:5,reps:'1',rest:'2min',load:'BW',intent:'Max speed â†’ stop in 3 steps'},
+           {order:'B1',name:'Leg Press â€” Heavy',equipment:'Machine',sets:4,reps:'6-8',rest:'2min',load:'Heavy',intent:'Max strength'},
            {order:'C1',name:'Broad Jump',equipment:'Field',sets:4,reps:'5',rest:'90sec',load:'BW',intent:'Max distance, stick landing'},
            {order:'D1',name:'Hip Flexor / Hamstring Finisher',equipment:'Bodyweight',sets:2,reps:'15 each',rest:'60sec',load:'BW',intent:'Tissue health'}]},
          {id:'p4-rc',name:'Recovery',description:'Active Recovery + Mobility',type:'recovery',exercises:[
@@ -986,20 +986,20 @@ function makeDefaultPatient(id){
   };
 }
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
+// â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let db = null;
 let isClinician = false;
 let patientAccessCode = null;
 let STORE = { patients: [], currentPatient: 0, taxonomy: defaultTaxonomy() };
 let APP = null; // set after login
 
-// ── FIREBASE INIT ─────────────────────────────────────────────────────────────
+// â”€â”€ FIREBASE INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getStoredConfig() {
   try {
     const c = JSON.parse(localStorage.getItem('dpt_fb_config') || '{}');
     if (c.apiKey && c.projectId) return c;
   } catch(e) {}
-  // Hardcoded Firebase project config — DPT Return to Performance
+  // Hardcoded Firebase project config â€” DPT Return to Performance
   return {
     apiKey:            "AIzaSyBlOlImHevdpHrHa_Y45Mhlz1a_OWuzgf8",
     authDomain:        "dpt-return-to-performance.firebaseapp.com",
@@ -1065,8 +1065,8 @@ function enableLoginUI() {
   if (cb) cb.disabled = false;
 }
 
-// ── SAVE ──────────────────────────────────────────────────────────────────────
-// Fire-and-forget: UI never waits for Firestore — fast UX, syncs in background
+// â”€â”€ SAVE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Fire-and-forget: UI never waits for Firestore â€” fast UX, syncs in background
 function save() {
   if (!db || !APP) return;
   db.collection('patients').doc(APP.id).set(APP)
@@ -1079,7 +1079,7 @@ function saveTaxonomy() {
 }
 
 function today(){return new Date().toISOString().split('T')[0];}
-function fmtDate(s){if(!s)return'—';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function fmtDate(s){if(!s)return'â€”';const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
 function progWeek(dateStr){if(!APP.patient.startDate)return null;const s=new Date(APP.patient.startDate+'T00:00:00'),t=new Date(dateStr+'T00:00:00');return Math.floor((t-s)/(7*864e5))+1;}
 function phaseForWeek(w){
   for(let i=0;i<APP.phases.length;i++){
@@ -1098,9 +1098,9 @@ function getLog(dateStr){return APP.sessionLogs.find(s=>s.date===dateStr)||null;
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
-// ── AUTH ──────────────────────────────────────────
+// â”€â”€ AUTH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
+// â”€â”€ AUTH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function setLoginLoading(on) {
   document.getElementById('login-status').textContent = on ? 'Loading your program...' : '';
   ['pt-login-btn','clin-login-btn'].forEach(id => {
@@ -1174,7 +1174,7 @@ function launchApp() {
   document.getElementById('app').style.display = 'flex';
   document.getElementById('app').style.flexDirection = 'column';
   const b = document.getElementById('mode-badge');
-  b.textContent = isClinician ? '🔓 Clinician View' : '● Client View';
+  b.textContent = isClinician ? 'ðŸ”“ Clinician View' : 'â— Client View';
   b.className = 'mode-badge' + (isClinician ? ' clinician' : '');
   document.getElementById('clinician-nav').style.display = isClinician ? 'block' : 'none';
   document.getElementById('client-summary-nav').style.display = isClinician ? 'none' : 'block';
@@ -1258,7 +1258,7 @@ function handleKey(e){
   if(map[e.key.toLowerCase()])show(map[e.key.toLowerCase()]);
 }
 
-// ── NAV ───────────────────────────────────────────
+// â”€â”€ NAV â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function show(view){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -1279,7 +1279,7 @@ function show(view){
   if(view==='summary'){document.getElementById('sum-date').value=today();}
 }
 
-// ── HOME ──────────────────────────────────────────
+// â”€â”€ HOME â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderHome(){
   const w=progWeek(today());
   const ph=w!==null?phaseForWeek(w):APP.phases[0];
@@ -1294,19 +1294,19 @@ function renderHome(){
   let todayWorkout=ph&&ph.workouts.length?ph.workouts[w%2===0?Math.min(1,ph.workouts.length-1):0]:null;
 
   const proto=APP.proto;
-  const protoAlert=proto.surgeryType?`<div class="alert alert-amber" style="margin-bottom:20px;">⚕ <strong>Surgeon Protocol Active:</strong> ${proto.surgeryType}${proto.surgeon?' — '+proto.surgeon:''}${proto.weightBearing!=='Full Weight Bearing'?' | WB: '+proto.weightBearing:''}</div>`:'';
+  const protoAlert=proto.surgeryType?`<div class="alert alert-amber" style="margin-bottom:20px;">âš• <strong>Surgeon Protocol Active:</strong> ${proto.surgeryType}${proto.surgeon?' â€” '+proto.surgeon:''}${proto.weightBearing!=='Full Weight Bearing'?' | WB: '+proto.weightBearing:''}</div>`:'';
 
   let html=protoAlert;
 
   if(ph){
     html+=`<div class="phase-hero" style="background:linear-gradient(135deg,${bg} 0%,${bg}dd 100%);">
-      <div class="eyebrow">TODAY · ${new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}).toUpperCase()} · ${w?'WEEK '+w+' OF 52':''}</div>
+      <div class="eyebrow">TODAY Â· ${new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}).toUpperCase()} Â· ${w?'WEEK '+w+' OF 52':''}</div>
       <h2>${ph.name}: ${ph.rehabIntent}</h2>
       <div class="intent">${ph.rehabIntent}</div>
       <div class="phase-hero-grid">
         <div class="hero-stat"><div class="h-label">Phase Week</div><div class="h-value">${wInPhase||'?'} of ${totalInPhase||'?'}</div></div>
         <div class="hero-stat"><div class="h-label">Intensity</div><div class="h-value">${ph.intensity}</div></div>
-        <div class="hero-stat"><div class="h-label">Today's Session</div><div class="h-value">${todayWorkout?todayWorkout.name:'—'}</div></div>
+        <div class="hero-stat"><div class="h-label">Today's Session</div><div class="h-value">${todayWorkout?todayWorkout.name:'â€”'}</div></div>
         <div class="hero-stat"><div class="h-label">Cardio Options</div><div class="h-value">${ph.cardioOptions.length} available</div></div>
       </div>
     </div>`;
@@ -1320,7 +1320,7 @@ function renderHome(){
   if(todayWorkout){
     html+=`<div class="workout-preview">
       <div class="wp-header">
-        <div class="wp-title">Today's session: ${todayWorkout.name}${todayWorkout.description?' — '+todayWorkout.description:''}</div>
+        <div class="wp-title">Today's session: ${todayWorkout.name}${todayWorkout.description?' â€” '+todayWorkout.description:''}</div>
         <span class="wp-today">Today</span>
         <div class="spacer"></div>
         <button class="btn btn-primary btn-sm" onclick="goToSession()">Open full workout</button>
@@ -1334,7 +1334,7 @@ function renderHome(){
 
   if(isClinician){
     html+=`<div class="card"><div class="card-header"><div class="card-title">Communication Tab / Clinician Notes</div>
-      <button class="btn btn-ghost btn-sm" onclick="openPatientInfoModal()">⚙ Patient Info</button></div>
+      <button class="btn btn-ghost btn-sm" onclick="openPatientInfoModal()">âš™ Patient Info</button></div>
       <textarea id="comm-tab" rows="3" style="width:100%;" onchange="APP.commTab=this.value;save();" placeholder="Clinician notes...">${APP.commTab||''}</textarea></div>`;
   }
 
@@ -1345,7 +1345,7 @@ function goToSession(){
   show('session');
 }
 
-// ── CALENDAR ──────────────────────────────────────
+// â”€â”€ CALENDAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderCalendar(){
   const label=new Date(calYear,calMonth).toLocaleDateString('en-US',{month:'long',year:'numeric'});
   document.getElementById('cal-month-label').textContent=label;
@@ -1373,7 +1373,7 @@ function renderCalendar(){
     if(ph&&ph.workouts.length){
       const wObj=ph.workouts[w%2===0?Math.min(1,ph.workouts.length-1):0];
       if(wObj){
-        if(log)badge=`<div class="cal-badge logged">✓ ${wObj.name}</div>`;
+        if(log)badge=`<div class="cal-badge logged">âœ“ ${wObj.name}</div>`;
         else badge=`<div class="cal-badge ${wObj.type==='recovery'?'rec':'a'}">${wObj.name.replace('Workout ','').replace('Recovery','Rec').substring(0,8)}</div>`;
       }
     }
@@ -1392,13 +1392,13 @@ function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalend
 function calGoToday(){const d=new Date();calYear=d.getFullYear();calMonth=d.getMonth();renderCalendar();}
 function calClickDay(ds){document.getElementById('session-date').value=ds;show('session');}
 
-// ── PHASES ────────────────────────────────────────
+// â”€â”€ PHASES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderPhases(){
   const phColors=['#3b82f6','#10b981','#f59e0b','#ef4444'];
   const phClasses=['ph1','ph2','ph3','ph4'];
   document.getElementById('phases-content').innerHTML=APP.phases.map((ph,i)=>`
     <div class="card ${phClasses[i]}" style="margin-bottom:20px;">
-      <div style="color:${phColors[i]};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">WEEKS ${ph.weekStart}–${ph.weekEnd} · ${ph.intensity.toUpperCase()} INTENSITY</div>
+      <div style="color:${phColors[i]};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">WEEKS ${ph.weekStart}â€“${ph.weekEnd} Â· ${ph.intensity.toUpperCase()} INTENSITY</div>
       <h2 style="font-size:20px;font-weight:800;margin-bottom:4px;">${ph.name}: ${ph.rehabIntent}</h2>
       <div style="font-size:12px;color:#64748b;margin-bottom:16px;">PHASE INTENT: ${ph.rehabIntent}</div>
       <div class="phase-info-grid" style="margin-bottom:12px;">
@@ -1411,7 +1411,7 @@ function renderPhases(){
     </div>`).join('');
 }
 
-// ── WORKOUTS ──────────────────────────────────────
+// â”€â”€ WORKOUTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderWorkouts(){
   const tabs=document.getElementById('workout-phase-tabs');
   tabs.innerHTML=APP.phases.map((ph,i)=>`
@@ -1421,7 +1421,7 @@ function renderWorkouts(){
   document.getElementById('workouts-content').innerHTML=ph.workouts.map(w=>`
     <div class="workout-preview" style="margin-bottom:16px;">
       <div class="wp-header">
-        <div class="wp-title">${w.name}${w.description?' — '+w.description:''}</div>
+        <div class="wp-title">${w.name}${w.description?' â€” '+w.description:''}</div>
         <span class="wp-type-badge type-${w.type}">${w.type.charAt(0).toUpperCase()+w.type.slice(1)}</span>
         ${ph.rules?`<span class="pill pill-amber" style="font-size:10px;">Phase Rules Active</span>`:''}
       </div>
@@ -1439,18 +1439,18 @@ function renderWorkouts(){
     </div>`).join('')||'<p class="text-muted">No workouts in this phase.</p>';
 }
 
-// ── CARDIO ────────────────────────────────────────
+// â”€â”€ CARDIO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderCardio(){
   const phColors=['#3b82f6','#10b981','#f59e0b','#ef4444'];
   document.getElementById('cardio-content').innerHTML=APP.phases.map((ph,i)=>`
     <div class="card" style="border-left:4px solid ${phColors[i]};margin-bottom:14px;">
-      <div style="color:${phColors[i]};font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:6px;">${ph.name} · Weeks ${ph.weekStart}–${ph.weekEnd} · ${ph.intensity}</div>
+      <div style="color:${phColors[i]};font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:6px;">${ph.name} Â· Weeks ${ph.weekStart}â€“${ph.weekEnd} Â· ${ph.intensity}</div>
       <h3 style="font-size:15px;margin-bottom:10px;">${ph.rehabIntent}</h3>
       <div>${ph.cardioOptions.map(c=>`<span class="cardio-pill">${c}</span>`).join('')}</div>
     </div>`).join('');
 }
 
-// ── SESSION LOG ───────────────────────────────────
+// â”€â”€ SESSION LOG â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function setToday(){document.getElementById('session-date').value=today();}
 function renderSession(){
   const ds=document.getElementById('session-date').value||today();
@@ -1464,7 +1464,7 @@ function renderSession(){
     <strong>Select Workout:</strong>
     ${ph.workouts.map(wk=>`<button class="btn ${wk.id===selWid?'btn-primary':'btn-ghost'} btn-sm" onclick="selectSessionWorkout('${wk.id}')">${wk.name}</button>`).join('')}
     <div class="spacer"></div>
-    <span style="font-size:12px;color:#64748b;">Week ${w} · ${ph.name}</span>
+    <span style="font-size:12px;color:#64748b;">Week ${w} Â· ${ph.name}</span>
   </div></div>`;
 
   const workout=ph.workouts.find(wk=>wk.id===selWid);
@@ -1490,14 +1490,14 @@ function renderSession(){
       setsHtml+=`<div class="set-box"><div class="set-num">Set ${s+1}</div><div class="set-inputs">
         <input class="set-input" type="text" placeholder="lb" title="Weight" data-ei="${ei}" data-si="${s}" data-f="weight" value="${lw}">
         <input class="set-input" type="text" placeholder="reps" title="Reps" data-ei="${ei}" data-si="${s}" data-f="reps" value="${lr}">
-      </div><div class="set-prev">${pw?pw+'lb×'+pr:''}</div></div>`;
+      </div><div class="set-prev">${pw?pw+'lbÃ—'+pr:''}</div></div>`;
     }
     setsHtml+=`<div class="set-box" style="align-items:flex-start;"><div class="set-num">Notes</div>
       <input type="text" style="width:130px;font-size:12px;padding:5px 8px;" placeholder="Comment..." data-ei="${ei}" data-f="comment" value="${lEx?lEx.comment||'':''}">
     </div></div>`;
     html+=`<div class="session-ex-block">
       <div class="seb-name">${ex.order?`<span style="color:#0f766e;font-size:11px;font-weight:700;">${ex.order}</span> `:''} ${ex.name}</div>
-      <div class="seb-meta">${ex.equipment||''} · ${ex.sets}×${ex.reps}${ex.load?' @ '+ex.load:''} ${ex.intent?'· <em>'+ex.intent+'</em>':''}${prev?`<span style="margin-left:10px;color:#94a3b8;">↑ prev: ${fmtDate(prev.date)}</span>`:''}</div>
+      <div class="seb-meta">${ex.equipment||''} Â· ${ex.sets}Ã—${ex.reps}${ex.load?' @ '+ex.load:''} ${ex.intent?'Â· <em>'+ex.intent+'</em>':''}${prev?`<span style="margin-left:10px;color:#94a3b8;">â†‘ prev: ${fmtDate(prev.date)}</span>`:''}</div>
       ${setsHtml}
     </div>`;
   });
@@ -1506,13 +1506,13 @@ function renderSession(){
   html+=`<div class="card mt16">
     <div class="card-title" style="margin-bottom:14px;">Session Notes</div>
     <div class="form-row">
-      <div class="field"><label>Movement Quality (1–10)</label><input type="number" id="sl-move" min="1" max="10" value="${log?log.movement||'':''}" placeholder="/10"></div>
-      <div class="field"><label>Patient Readiness (1–10)</label><input type="number" id="sl-ready" min="1" max="10" value="${log?log.readiness||'':''}" placeholder="/10"></div>
-      <div class="field"><label>Pain Level (1–10)</label><input type="number" id="sl-pain" min="1" max="10" value="${log?log.pain||'':''}" placeholder="/10"></div>
+      <div class="field"><label>Movement Quality (1â€“10)</label><input type="number" id="sl-move" min="1" max="10" value="${log?log.movement||'':''}" placeholder="/10"></div>
+      <div class="field"><label>Patient Readiness (1â€“10)</label><input type="number" id="sl-ready" min="1" max="10" value="${log?log.readiness||'':''}" placeholder="/10"></div>
+      <div class="field"><label>Pain Level (1â€“10)</label><input type="number" id="sl-pain" min="1" max="10" value="${log?log.pain||'':''}" placeholder="/10"></div>
     </div>
     <div class="field"><label>Subjective Comments</label>
       <textarea id="sl-comments" rows="2" style="width:100%;" placeholder="How the patient felt, any concerns, wins...">${log?log.comments||'':''}</textarea></div>
-    <div id="save-ok" style="display:none;" class="alert alert-teal mt8">✓ Session saved!</div>
+    <div id="save-ok" style="display:none;" class="alert alert-teal mt8">âœ“ Session saved!</div>
   </div>`;
 
   document.getElementById('session-content').innerHTML=html;
@@ -1565,14 +1565,14 @@ function saveSession(){
   if(ok){ok.style.display='flex';setTimeout(()=>ok.style.display='none',2500);}
 }
 
-// ── EDIT PROGRAM ──────────────────────────────────
+// â”€â”€ EDIT PROGRAM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderEdit(){
   const tabs=document.getElementById('edit-phase-tabs');
   tabs.innerHTML=APP.phases.map((ph,i)=>`
     <button class="btn ${i===editPhaseIdx?'btn-primary':'btn-ghost'} btn-sm" onclick="editPhaseIdx=${i};renderEdit();">${ph.name}</button>`).join('');
   const ph=APP.phases[editPhaseIdx];
   document.getElementById('edit-phase-meta').innerHTML=`
-    <div class="card-title" style="margin-bottom:14px;">Phase Settings — ${ph.name}</div>
+    <div class="card-title" style="margin-bottom:14px;">Phase Settings â€” ${ph.name}</div>
     <div class="form-row">
       <div class="field"><label>Phase Name</label><input type="text" value="${ph.name}" onchange="ph_field('name',this.value)"></div>
       <div class="field" style="max-width:90px;"><label>Week Start</label><input type="number" value="${ph.weekStart}" onchange="ph_field('weekStart',+this.value)"></div>
@@ -1601,7 +1601,7 @@ function renderEdit(){
           <option value="recovery" ${w.type==='recovery'?'selected':''}>Recovery</option>
           <option value="power" ${w.type==='power'?'selected':''}>Power</option>
         </select>
-        <button class="btn btn-danger btn-xs" onclick="delWorkout(${wi})">✕ Delete</button>
+        <button class="btn btn-danger btn-xs" onclick="delWorkout(${wi})">âœ• Delete</button>
       </div>
       <div class="wb-body">
         <table class="ex-table">
@@ -1624,7 +1624,7 @@ function exEditRow(wi,ei,ex){
     <td><input class="edit-input" type="text" value="${ex.load||''}" onchange="updEx(${wi},${ei},'load',this.value)" style="width:80px;"></td>
     <td><input class="edit-input" type="text" value="${ex.rest||''}" onchange="updEx(${wi},${ei},'rest',this.value)" style="width:60px;"></td>
     <td><input class="edit-input" type="text" value="${ex.intent||''}" onchange="updEx(${wi},${ei},'intent',this.value)"></td>
-    <td><button class="btn btn-danger btn-xs" onclick="delEx(${wi},${ei})">✕</button></td>
+    <td><button class="btn btn-danger btn-xs" onclick="delEx(${wi},${ei})">âœ•</button></td>
   </tr>`;
 }
 function ph_field(f,v){APP.phases[editPhaseIdx][f]=v;save();}
@@ -1644,7 +1644,7 @@ function saveExercise(){
   save();closeModal('ex-modal');renderEdit();
 }
 
-// ── PATIENT ───────────────────────────────────────
+// â”€â”€ PATIENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function savePatient(){
   APP.patient={name:document.getElementById('pt-name').value,dob:document.getElementById('pt-dob').value,diagnosis:document.getElementById('pt-dx').value,clinician:document.getElementById('pt-clin').value,startDate:document.getElementById('pt-start').value};
   APP.accessCode=document.getElementById('pt-code').value.trim().toUpperCase();
@@ -1653,7 +1653,7 @@ function savePatient(){
   renderPatientDropdown();renderHome();
 }
 
-// ── SURGEON PROTOCOL ──────────────────────────────
+// â”€â”€ SURGEON PROTOCOL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderProtocol(){
   const p=APP.proto;
   document.getElementById('proto-type').value=p.surgeryType||'';
@@ -1674,13 +1674,13 @@ function renderProtocol(){
   renderProtocolImpact();
 }
 function saveProto(){const p=APP.proto;p.surgeryType=document.getElementById('proto-type').value;p.surgeryDate=document.getElementById('proto-date').value;p.surgeon=document.getElementById('proto-surgeon').value;p.weightBearing=document.getElementById('proto-wb').value;p.brace=document.getElementById('proto-brace').value;p.romRestrictions=document.getElementById('proto-rom').value;p.notes=document.getElementById('proto-notes').value;save();renderProtocolImpact();}
-function renderRestrictions(){const el=document.getElementById('restriction-tags');if(!el)return;const rs=APP.proto.restrictions||[];el.innerHTML=rs.length?rs.map((r,i)=>`<div class="proto-badge">⚠ ${r} <button class="pb-remove" onclick="delR(${i})">×</button></div>`).join(''):'<p class="text-muted text-sm">No restrictions added yet.</p>';}
+function renderRestrictions(){const el=document.getElementById('restriction-tags');if(!el)return;const rs=APP.proto.restrictions||[];el.innerHTML=rs.length?rs.map((r,i)=>`<div class="proto-badge">âš  ${r} <button class="pb-remove" onclick="delR(${i})">Ã—</button></div>`).join(''):'<p class="text-muted text-sm">No restrictions added yet.</p>';}
 function addRestriction(){const v=document.getElementById('new-restriction').value.trim();if(!v)return;APP.proto.restrictions.push(v);document.getElementById('new-restriction').value='';save();renderRestrictions();renderProtocolImpact();}
 function addCommonR(r){if(!APP.proto.restrictions.includes(r)){APP.proto.restrictions.push(r);save();renderRestrictions();renderProtocolImpact();}}
 function delR(i){APP.proto.restrictions.splice(i,1);save();renderRestrictions();renderProtocolImpact();}
-function renderProtocolImpact(){const el=document.getElementById('protocol-impact');if(!el)return;const p=APP.proto;const items=[];if(p.surgeryType)items.push(`Surgery: <strong>${p.surgeryType}</strong>`);if(p.weightBearing&&p.weightBearing!=='Full Weight Bearing')items.push(`Weight bearing: <strong>${p.weightBearing}</strong>`);if(p.brace&&p.brace!=='No Brace')items.push(`Brace: <strong>${p.brace}</strong>`);if(p.romRestrictions)items.push(`ROM: ${p.romRestrictions}`);if(p.restrictions.length)items.push(`<strong>${p.restrictions.length}</strong> exercise restriction(s) active`);if(Object.keys(p.phaseOverrides).length)items.push('Custom phase timeline active');el.innerHTML=items.length?`<div class="alert alert-amber">${items.map(i=>`<div>• ${i}</div>`).join('')}</div>`:'<p class="text-muted text-sm">No restrictions active.</p>';}
+function renderProtocolImpact(){const el=document.getElementById('protocol-impact');if(!el)return;const p=APP.proto;const items=[];if(p.surgeryType)items.push(`Surgery: <strong>${p.surgeryType}</strong>`);if(p.weightBearing&&p.weightBearing!=='Full Weight Bearing')items.push(`Weight bearing: <strong>${p.weightBearing}</strong>`);if(p.brace&&p.brace!=='No Brace')items.push(`Brace: <strong>${p.brace}</strong>`);if(p.romRestrictions)items.push(`ROM: ${p.romRestrictions}`);if(p.restrictions.length)items.push(`<strong>${p.restrictions.length}</strong> exercise restriction(s) active`);if(Object.keys(p.phaseOverrides).length)items.push('Custom phase timeline active');el.innerHTML=items.length?`<div class="alert alert-amber">${items.map(i=>`<div>â€¢ ${i}</div>`).join('')}</div>`:'<p class="text-muted text-sm">No restrictions active.</p>';}
 
-// ── GENERATE SUMMARY ───────────────────��──────────
+// â”€â”€ GENERATE SUMMARY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function generateSummary(){
   const ds=document.getElementById('sum-date').value;
   if(!ds){alert('Select a date');return;}
@@ -1690,14 +1690,14 @@ function generateSummary(){
   const om={qpeak:document.getElementById('sum-qpeak').value,qrfd:document.getElementById('sum-qrfd').value,hpeak:document.getElementById('sum-hpeak').value,hrfd:document.getElementById('sum-hrfd').value,squat:document.getElementById('sum-squat').value,kflex:document.getElementById('sum-kflex').value};
   let out='';
   const line=(n,v)=>v?`${n}: ${v}\n`:'';
-  const ruler='─'.repeat(55)+'\n';
+  const ruler='â”€'.repeat(55)+'\n';
 
   if(type==='soap'){
     const workout=log&&ph?ph.workouts.find(wk=>wk.id===log.workoutId):null;
-    out+=`SOAP NOTE — ${fmtDate(ds)}\n${ruler}`;
+    out+=`SOAP NOTE â€” ${fmtDate(ds)}\n${ruler}`;
     out+=`Patient: ${pt.name||'(name)'}${pt.dob?' | DOB: '+fmtDate(pt.dob):''}\n`;
     out+=`Clinician: ${pt.clinician||'(clinician)'} | Diagnosis: ${pt.diagnosis||'(diagnosis)'}\n`;
-    if(p.surgeryType)out+=`Surgery: ${p.surgeryType}${p.surgeon?' — '+p.surgeon:''}${p.surgeryDate?' ('+fmtDate(p.surgeryDate)+')':''}\n`;
+    if(p.surgeryType)out+=`Surgery: ${p.surgeryType}${p.surgeon?' â€” '+p.surgeon:''}${p.surgeryDate?' ('+fmtDate(p.surgeryDate)+')':''}\n`;
     out+=`\nSUBJECTIVE\n${ruler}`;
     out+=line('Movement Quality',log?(log.movement||'N/R')+'/10':'');
     out+=line('Patient Readiness',log?(log.readiness||'N/R')+'/10':'');
@@ -1706,10 +1706,10 @@ function generateSummary(){
     out+=`\nOBJECTIVE\n${ruler}`;
     out+=`Program Week: ${w||'N/A'} | Phase: ${ph?ph.name:'N/A'} (${ph?ph.rehabIntent:''})\n`;
     out+=`Training Intensity: ${ph?ph.intensity:''}\n`;
-    if(workout)out+=`Workout Completed: ${workout.name}${workout.description?' — '+workout.description:''}\n\n`;
+    if(workout)out+=`Workout Completed: ${workout.name}${workout.description?' â€” '+workout.description:''}\n\n`;
     if(log&&workout){
       out+=`Exercise Log:\n`;
-      workout.exercises.forEach((ex,ei)=>{if(!ex.name)return;const lEx=log.exercises.find(e=>e.idx===ei);let ln=`  ${ex.order?ex.order+'. ':''}${ex.name} (${ex.sets}×${ex.reps}${ex.load?' @ '+ex.load:''})`;if(lEx){const sv=Object.values(lEx.sets||{}).filter(s=>s.weight||s.reps);if(sv.length)ln+=` — `+sv.map((s,i)=>`S${i+1}:${s.weight||'?'}lb×${s.reps||'?'}`).join(', ');if(lEx.comment)ln+=` [${lEx.comment}]`;}out+=ln+'\n';});
+      workout.exercises.forEach((ex,ei)=>{if(!ex.name)return;const lEx=log.exercises.find(e=>e.idx===ei);let ln=`  ${ex.order?ex.order+'. ':''}${ex.name} (${ex.sets}Ã—${ex.reps}${ex.load?' @ '+ex.load:''})`;if(lEx){const sv=Object.values(lEx.sets||{}).filter(s=>s.weight||s.reps);if(sv.length)ln+=` â€” `+sv.map((s,i)=>`S${i+1}:${s.weight||'?'}lbÃ—${s.reps||'?'}`).join(', ');if(lEx.comment)ln+=` [${lEx.comment}]`;}out+=ln+'\n';});
       out+='\n';
     }
     if(Object.values(om).some(v=>v)){out+=`Outcome Measures:\n`;Object.entries({'Quad Peak Force':om.qpeak,'Quad RFD':om.qrfd,'Hamstring Peak':om.hpeak,'Hamstring RFD':om.hrfd,'Trap Bar Squat':om.squat,'Knee Flexion ROM':om.kflex}).forEach(([k,v])=>{if(v)out+=`  ${k}: ${v}\n`;});out+='\n';}
@@ -1721,20 +1721,20 @@ function generateSummary(){
     out+=`Next session: per program schedule.\n`;
     if(APP.commTab)out+=`\nClinician Notes: ${APP.commTab}\n`;
   } else if(type==='progress'){
-    out+=`PROGRESS SUMMARY — ${fmtDate(ds)}\n${ruler}`;
+    out+=`PROGRESS SUMMARY â€” ${fmtDate(ds)}\n${ruler}`;
     out+=`Patient: ${pt.name||'(name)'} | Clinician: ${pt.clinician||'(clinician)'}\n`;
     out+=`Program Start: ${fmtDate(pt.startDate)} | Current Week: ${w||'?'}\n`;
     out+=`Total Sessions Logged: ${APP.sessionLogs.length}\n\n`;
-    if(APP.sessionLogs.length){out+=`Recent Sessions:\n`;APP.sessionLogs.slice(-5).reverse().forEach(sl=>{const phSl=phaseForWeek(progWeek(sl.date));const wkSl=progWeek(sl.date);const wkObj=phSl?phSl.workouts.find(wk=>wk.id===sl.workoutId):null;out+=`  ${fmtDate(sl.date)} — Wk ${wkSl} ${phSl?phSl.name:''}: ${wkObj?wkObj.name:'Session'}`;if(sl.movement)out+=` | MQ:${sl.movement}/10`;if(sl.pain)out+=` | Pain:${sl.pain}/10`;if(sl.comments)out+=` | "${sl.comments}"`;out+='\n';});}
-    if(ph){out+=`\nCurrent Phase: ${ph.name} — ${ph.rehabIntent}\nGoals: ${ph.goals}\n`;}
+    if(APP.sessionLogs.length){out+=`Recent Sessions:\n`;APP.sessionLogs.slice(-5).reverse().forEach(sl=>{const phSl=phaseForWeek(progWeek(sl.date));const wkSl=progWeek(sl.date);const wkObj=phSl?phSl.workouts.find(wk=>wk.id===sl.workoutId):null;out+=`  ${fmtDate(sl.date)} â€” Wk ${wkSl} ${phSl?phSl.name:''}: ${wkObj?wkObj.name:'Session'}`;if(sl.movement)out+=` | MQ:${sl.movement}/10`;if(sl.pain)out+=` | Pain:${sl.pain}/10`;if(sl.comments)out+=` | "${sl.comments}"`;out+='\n';});}
+    if(ph){out+=`\nCurrent Phase: ${ph.name} â€” ${ph.rehabIntent}\nGoals: ${ph.goals}\n`;}
   } else {
-    out+=`DISCHARGE PLANNING NOTE — ${fmtDate(ds)}\n${ruler}`;
+    out+=`DISCHARGE PLANNING NOTE â€” ${fmtDate(ds)}\n${ruler}`;
     out+=`Patient: ${pt.name||'(name)'} | Total Weeks: ${w||'?'} of 52\nTotal Sessions: ${APP.sessionLogs.length}\n\n`;
     out+=`Program Summary:\n`;
-    APP.phases.forEach(phx=>{const n=APP.sessionLogs.filter(sl=>{const pw=progWeek(sl.date);const pp=phaseForWeek(pw);return pp&&pp.id===phx.id;}).length;out+=`  ${phx.name} (Wks ${phx.weekStart}–${phx.weekEnd}): ${n} sessions — ${phx.rehabIntent}\n`;});
+    APP.phases.forEach(phx=>{const n=APP.sessionLogs.filter(sl=>{const pw=progWeek(sl.date);const pp=phaseForWeek(pw);return pp&&pp.id===phx.id;}).length;out+=`  ${phx.name} (Wks ${phx.weekStart}â€“${phx.weekEnd}): ${n} sessions â€” ${phx.rehabIntent}\n`;});
     out+=`\nDischarge Recommendations:\n  [To be completed by clinician]\n`;
     out+=`\nHome Exercise Program Provided: [ ] Yes  [ ] No\n`;
-    out+=`Return to Sport Cleared: [ ] Yes  [ ] No — Date: ___________\nFollow-up: ____________\n`;
+    out+=`Return to Sport Cleared: [ ] Yes  [ ] No â€” Date: ___________\nFollow-up: ____________\n`;
   }
   document.getElementById('summary-output').textContent=out;
 }
@@ -1744,30 +1744,30 @@ function copySummary(){
   const c=document.getElementById('copy-confirm');c.style.display='block';setTimeout(()=>c.style.display='none',2500);
 }
 
-// ── OVERVIEW ──────────────────────────────────────
+// â”€â”€ OVERVIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function renderOverview(){
   const logs=APP.sessionLogs||[];
   const pt=APP.patient;
-  document.getElementById('ov-subtitle').textContent=pt.name?(pt.name+(pt.diagnosis?' — '+pt.diagnosis:'')):'No patient selected';
+  document.getElementById('ov-subtitle').textContent=pt.name?(pt.name+(pt.diagnosis?' â€” '+pt.diagnosis:'')):'No patient selected';
 
   // KPI calculations
   const recent=logs.slice().sort((a,b)=>b.date.localeCompare(a.date));
   const last5=recent.slice(0,5);
   const avgReadiness=last5.filter(s=>s.readiness).length?
-    (last5.filter(s=>s.readiness).reduce((a,s)=>a+Number(s.readiness),0)/last5.filter(s=>s.readiness).length).toFixed(1):'—';
-  const lastPain=recent.find(s=>s.pain)?.pain||'—';
+    (last5.filter(s=>s.readiness).reduce((a,s)=>a+Number(s.readiness),0)/last5.filter(s=>s.readiness).length).toFixed(1):'â€”';
+  const lastPain=recent.find(s=>s.pain)?.pain||'â€”';
 
   // Compliance: sessions in last 4 weeks vs expected (3/wk default)
   const fourWeeksAgo=new Date();fourWeeksAgo.setDate(fourWeeksAgo.getDate()-28);
   const recentCount=logs.filter(s=>new Date(s.date)>=fourWeeksAgo).length;
-  const expectedSessions=12; // 3 per week × 4 weeks
+  const expectedSessions=12; // 3 per week Ã— 4 weeks
   const compliance=Math.round((recentCount/expectedSessions)*100);
   const compliancePct=Math.min(compliance,100);
 
   const totalSessions=logs.length;
 
-  function scoreColor(v,low=4,high=7){if(v==='—')return'kpi-blue';return Number(v)>=high?'kpi-green':Number(v)>=low?'kpi-amber':'kpi-red';}
-  function painColor(v){if(v==='—')return'kpi-blue';return Number(v)<=3?'kpi-green':Number(v)<=6?'kpi-amber':'kpi-red';}
+  function scoreColor(v,low=4,high=7){if(v==='â€”')return'kpi-blue';return Number(v)>=high?'kpi-green':Number(v)>=low?'kpi-amber':'kpi-red';}
+  function painColor(v){if(v==='â€”')return'kpi-blue';return Number(v)<=3?'kpi-green':Number(v)<=6?'kpi-amber':'kpi-red';}
 
   document.getElementById('ov-kpis').innerHTML=`
     <div class="kpi-card">
@@ -1779,20 +1779,20 @@ function renderOverview(){
     <div class="kpi-card">
       <div class="kpi-value ${scoreColor(avgReadiness)}">${avgReadiness}</div>
       <div class="kpi-label">Avg Readiness</div>
-      <div class="kpi-sub">Last ${last5.filter(s=>s.readiness).length} sessions · /10</div>
-      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${avgReadiness==='—'?0:avgReadiness*10}%;background:${avgReadiness!=='—'&&avgReadiness>=7?'#10b981':avgReadiness>=4?'#f59e0b':'#ef4444'};"></div></div>
+      <div class="kpi-sub">Last ${last5.filter(s=>s.readiness).length} sessions Â· /10</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${avgReadiness==='â€”'?0:avgReadiness*10}%;background:${avgReadiness!=='â€”'&&avgReadiness>=7?'#10b981':avgReadiness>=4?'#f59e0b':'#ef4444'};"></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-value ${compliancePct>=80?'kpi-green':compliancePct>=60?'kpi-amber':'kpi-red'}">${compliancePct}%</div>
       <div class="kpi-label">Compliance</div>
-      <div class="kpi-sub">${recentCount}/${expectedSessions} sessions · 4 wks</div>
+      <div class="kpi-sub">${recentCount}/${expectedSessions} sessions Â· 4 wks</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${compliancePct}%;background:${compliancePct>=80?'#10b981':compliancePct>=60?'#f59e0b':'#ef4444'};"></div></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-value ${painColor(lastPain)}">${lastPain}</div>
       <div class="kpi-label">Last Pain Score</div>
-      <div class="kpi-sub">Most recent session · /10</div>
-      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${lastPain==='—'?0:lastPain*10}%;background:${lastPain!=='—'&&lastPain<=3?'#10b981':lastPain<=6?'#f59e0b':'#ef4444'};"></div></div>
+      <div class="kpi-sub">Most recent session Â· /10</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:${lastPain==='â€”'?0:lastPain*10}%;background:${lastPain!=='â€”'&&lastPain<=3?'#10b981':lastPain<=6?'#f59e0b':'#ef4444'};"></div></div>
     </div>`;
 
   // LSI Chart
@@ -1830,16 +1830,16 @@ function renderOverview(){
   emptyEl.style.display='none';
   tbody.innerHTML=oms.map(om=>{
     const latestVal=om.values.length?om.values.slice().sort((a,b)=>b.date.localeCompare(a.date))[0]:null;
-    let valStr='—';
+    let valStr='â€”';
     if(latestVal){valStr=om.bilateral?(latestVal.inv||'?')+' / '+(latestVal.contra||'?')+' '+om.unit:(latestVal.single||'?')+' '+om.unit;}
     return `<tr>
-      <td><strong>${om.name}</strong><br><span style="font-size:10px;color:#94a3b8;">${om.bilateral?'Bilateral':'Single'} · ${om.unit}</span></td>
+      <td><strong>${om.name}</strong><br><span style="font-size:10px;color:#94a3b8;">${om.bilateral?'Bilateral':'Single'} Â· ${om.unit}</span></td>
       <td style="font-weight:600;">${valStr}</td>
-      <td style="color:#94a3b8;">${latestVal?fmtDate(latestVal.date):'—'}</td>
+      <td style="color:#94a3b8;">${latestVal?fmtDate(latestVal.date):'â€”'}</td>
       <td style="white-space:nowrap;">
         <button class="btn btn-ghost btn-xs" onclick="openOMValueModal('${om.id}')">+ Value</button>
         <button class="btn btn-ghost btn-xs" onclick="openEditOMModal('${om.id}')">Edit</button>
-        <button class="btn btn-danger btn-xs" onclick="deleteOM('${om.id}')">✕</button>
+        <button class="btn btn-danger btn-xs" onclick="deleteOM('${om.id}')">âœ•</button>
       </td></tr>`;
   }).join('');
 
@@ -1855,7 +1855,7 @@ function renderOverview(){
       <div class="sh-dot" style="background:${phColor};"></div>
       <div class="sh-date">${fmtDate(sl.date)}</div>
       <div style="flex:1;"><strong style="font-size:12px;">${wo?wo.name:'Session'}</strong>
-        <span class="sh-phase"> · ${ph?ph.name:''} · Wk ${w||'?'}</span></div>
+        <span class="sh-phase"> Â· ${ph?ph.name:''} Â· Wk ${w||'?'}</span></div>
       <div class="sh-score">
         ${sl.readiness?`<span title="Readiness" style="color:#0f766e;">R:${sl.readiness}</span> `:''}
         ${sl.pain?`<span title="Pain" style="color:#ef4444;">P:${sl.pain}</span>`:''}
@@ -1865,7 +1865,7 @@ function renderOverview(){
   }).join('');
 }
 
-// ── OUTCOME MEASURES ──────────────────────────────
+// â”€â”€ OUTCOME MEASURES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function saveOM(){
   const id=document.getElementById('om-edit-id').value;
   const name=document.getElementById('om-name').value.trim();
@@ -1922,7 +1922,7 @@ document.getElementById('add-om-modal').addEventListener('click',function(e){
   if(e.target===this){closeModal('add-om-modal');}
 });
 
-// ── TAXONOMY ──────────────────────────────────────
+// â”€â”€ TAXONOMY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const BODY_PARTS=['Knee','Hip','Hamstring','Quadriceps','Ankle / Foot','Core','Upper Body','Full Body'];
 const INTENTIONS=['Mobility','Stability','Endurance','Coordination / NMR','Tendon Strength','Muscle Strength','Power'];
 const PHASE_COLORS=['#3b82f6','#10b981','#f59e0b','#ef4444'];
@@ -2002,7 +2002,7 @@ function deleteTaxEx(id){
 }
 
 
-// ── PATIENT INFO MODAL ────────────────────────────────────────────────────────
+// â”€â”€ PATIENT INFO MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function openPatientInfoModal() {
   const p = APP.patient;
   document.getElementById('pt-name').value  = p.name||'';
@@ -2016,7 +2016,7 @@ function openPatientInfoModal() {
   const linkDisplay = document.getElementById('pt-link-display');
   if (APP.accessCode) {
     linkDisplay.value = window.location.origin + window.location.pathname
-      + '  →  Code: ' + APP.accessCode;
+      + '  â†’  Code: ' + APP.accessCode;
     shareRow.style.display = 'block';
   } else {
     shareRow.style.display = 'none';
@@ -2046,6 +2046,15 @@ function fallbackCopy(text) {
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = '✓ ' + msg;
+  t.textContent = 'âœ“ ' + msg;
   t.style.transform = 'translateX(-50%) translateY(0)';
-  setTimeout(
+  setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(80px)'; }, 2800);
+}
+
+// ── BOOT ──────────────────────────────────────────────────────────────────────
+document.getElementById('lock-btn').addEventListener('click', lockApp);
+window.openPatientModal = openPatientInfoModal;
+initFirebase();
+</script>
+</body>
+</html>
