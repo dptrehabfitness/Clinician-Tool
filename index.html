@@ -878,7 +878,16 @@ function makeDefaultPatient(id){
   return {
     id:id||('p'+Date.now()),
     accessCode:'',
-    patient:{name:'',dob:'',startDatS¢rrÆ6Æ–æ–6–ã¢rrÆF–væ÷6—3¢rwÒÀ¢6öÖÕF#¢rrÀ¢&÷Fó§·7W&vW'•G—S¢rrÇ7W&vW'”FFS¢rrÇ7W&vVöã¢rrÇvV–v‡D&V&–æs¢tgVÆÂvV–v‡B&V&–ærrÀ¢'&6S¢tæò'&6RrÇ&öÕ&W7G&–7F–öç3¢rrÇ&W7G&–7F–öç3¥µÒÇ†6T÷fW'&–FW3§·ÒÆæ÷FW3¢rwÒÀ¢÷WF6öÖTÖV7W&W3¦FVfVÇD÷WF6öÖTÖV7W&W2‚’À¢†6W3¥°¢¶–C£ÆæÖS¢u†6RrÇvVVµ7F'C£ÇvVV´VæC£BÆ6öÆ÷#¢r36#ƒ&cbrÀ¢&V†$–çFVçC¢u7vVÆÆ–ærò$ôÒòäÕ"rÆ–çFVç6—G“¢tÆ÷rrÀ¢6&F–ô÷F–öç3¥²u&V7VÖ&VçB&–¶RrÂt&Ò&–¶RrÂuWW"&öG’6—&7V—G2rÂt6÷&R6—&7V—BuÒÀ¢vöÇ3¢u&VGV6R÷7B×7W&v–6Â7vlling. Restore baseline range of motion. Re-establish neuromuscular control and quad activation.',
+    patient:{name:'',dob:'',startDate:'',clinician:'',diagnosis:''},
+    commTab:'',
+    proto:{surgeryType:'',surgeryDate:'',surgeon:'',weightBearing:'Full Weight Bearing',
+           brace:'No Brace',romRestrictions:'',restrictions:[],phaseOverrides:{},notes:''},
+    outcomeMeasures:defaultOutcomeMeasures(),
+    phases:[
+      {id:1,name:'Phase 1',weekStart:1,weekEnd:4,color:'#3b82f6',
+       rehabIntent:'Swelling / ROM / NMR',intensity:'Low',
+       cardioOptions:['Recumbent Bike','Arm Bike','Upper Body Circuits','Core Circuit'],
+       goals:'Reduce post-surgical swelling. Restore baseline range of motion. Re-establish neuromuscular control and quad activation.',
        difficulties:'Stiffness and atrophy are normal. Pain modulation is the main limiter â€” manage expectations on strength early on.',
        rules:'No loaded single-leg work. Keep all cardio non-impact. Prioritize swelling management above exercise goals.',
        workouts:[
