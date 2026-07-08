@@ -338,14 +338,14 @@ label,.field-label{font-size:11px;font-weight:700;color:#64748b;text-transform:u
       <button class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;" onclick="enterPatientCode()">Open My Program →</button>
       <div id="pt-code-error" class="alert alert-red" style="display:none;margin-top:10px;">Code not found. Please check with your clinician.</div>
     </div>
-    <div class="login-divider">or</div>
-    <div>
+    <div id="clin-divider" class="login-divider" style="display:none;">or</div>
+    <div id="clin-section" style="display:none;">
       <label>CLINICIAN PASSWORD</label>
       <input type="password" id="pw-input" placeholder="Enter password" style="width:100%;margin-bottom:10px;" onkeydown="if(event.key==='Enter')enterClinician()">
       <button class="btn btn-outline" style="width:100%;justify-content:center;padding:11px;" id="clin-login-btn" disabled onclick="enterClinician()">Clinician Login</button>
       <div id="pw-error" class="alert alert-red" style="display:none;margin-top:10px;">Incorrect password. Try again.</div>
-      <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:12px;">Clinician access only · contact your administrator</p>
     </div>
+    <p style="font-size:11px;color:#cbd5e1;text-align:center;margin-top:20px;cursor:pointer;user-select:none;" onclick="toggleClinSection()" id="clin-toggle-hint">Staff</p>
   </div>
 </div>
 
@@ -1080,6 +1080,16 @@ function showSetupScreen(msg) {
       if (el) el.value = cfg[k];
     });
   }
+}
+function toggleClinSection() {
+  const sec = document.getElementById('clin-section');
+  const div = document.getElementById('clin-divider');
+  const hint = document.getElementById('clin-toggle-hint');
+  const open = sec.style.display === 'none';
+  sec.style.display = open ? 'block' : 'none';
+  div.style.display = open ? '' : 'none';
+  hint.style.color = open ? '#94a3b8' : '#cbd5e1';
+  if (open) document.getElementById('pw-input').focus();
 }
 function enableLoginUI() {
   document.getElementById('login-status').textContent = '';
