@@ -532,6 +532,7 @@ label,.field-label{font-size:11px;font-weight:700;color:#64748b;text-transform:u
           </div>
           <div class="spacer"></div>
           <div id="edit-phase-tabs" class="row" style="gap:6px;"></div>
+          <button class="btn btn-ghost btn-sm" onclick="addPhase()" style="margin-left:8px;">+ Add Phase</button>
           <button class="btn btn-primary btn-sm" onclick="addWorkout()">+ Add Workout</button>
         </div>
         <div id="edit-phase-meta" class="card mb16"></div>
@@ -1090,10 +1091,32 @@ function enableLoginUI() {
 
 // ── SAVE ──────────────────────────────────────────────────────────────────────
 // Fire-and-forget: UI never waits for Firestore — fast UX, syncs in background
+let _saveToast = null;
+function showSaved() {
+  let el = document.getElementById('save-toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'save-toast';
+    el.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#10b981;color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.2s;pointer-events:none;';
+    el.textContent = '✓ Saved';
+    document.body.appendChild(el);
+  }
+  el.style.opacity = '1';
+  if (_saveToast) clearTimeout(_saveToast);
+  _saveToast = setTimeout(() => { el.style.opacity = '0'; }, 1500);
+}
 function save() {
   if (!db || !APP) return;
   db.collection('patients').doc(APP.id).set(APP)
-    .catch(e => console.error('Save failed:', e));
+    .then(() => showSaved())
+    .catch(e => {
+      console.error('Save failed:', e);
+      let el = document.getElementById('save-toast');
+      if (!el) { el = document.createElement('div'); el.id = 'save-toast'; el.style.cssText = 'position:fixed;bottom:24px;right:24px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.2s;pointer-events:none;'; document.body.appendChild(el); }
+      el.style.background = '#ef4444'; el.style.color = '#fff'; el.textContent = '✕ Save failed — check connection'; el.style.opacity = '1';
+      if (_saveToast) clearTimeout(_saveToast);
+      _saveToast = setTimeout(() => { el.style.opacity = '0'; }, 3000);
+    });
 }
 function saveTaxonomy() {
   if (!db) return;
@@ -1595,7 +1618,10 @@ function renderEdit(){
     <button class="btn ${i===editPhaseIdx?'btn-primary':'btn-ghost'} btn-sm" onclick="editPhaseIdx=${i};renderEdit();">${ph.name}</button>`).join('');
   const ph=APP.phases[editPhaseIdx];
   document.getElementById('edit-phase-meta').innerHTML=`
-    <div class="card-title" style="margin-bottom:14px;">Phase Settings — ${ph.name}</div>
+    <div style="display:flex;align-items:center;margin-bottom:14px;">
+      <div class="card-title" style="margin:0;flex:1;">Phase Settings — ${ph.name}</div>
+      <button class="btn btn-danger btn-sm" onclick="deletePhase()" ${APP.phases.length<=1?'disabled':''}>🗑 Delete Phase</button>
+    </div>
     <div class="form-row">
       <div class="field"><label>Phase Name</label><input type="text" value="${ph.name}" onchange="ph_field('name',this.value)"></div>
       <div class="field" style="max-width:90px;"><label>Week Start</label><input type="number" value="${ph.weekStart}" onchange="ph_field('weekStart',+this.value)"></div>
@@ -1656,6 +1682,26 @@ function delEx(wi,ei){if(!confirm('Delete this exercise?'))return;APP.phases[edi
 function delWorkout(wi){if(!confirm(`Delete "${APP.phases[editPhaseIdx].workouts[wi].name}"?`))return;APP.phases[editPhaseIdx].workouts.splice(wi,1);save();renderEdit();}
 function addWorkout(){
   APP.phases[editPhaseIdx].workouts.push({id:genId(),name:'New Workout',description:'',type:'strength',exercises:[{order:'A1',name:'',equipment:'Bodyweight',sets:3,reps:'10-12',rest:'60sec',load:'',intent:''}]});
+  save();renderEdit();
+}
+const PHASE_COLORS=['#3b82f6','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#84cc16','#f97316'];
+function addPhase(){
+  const last=APP.phases[APP.phases.length-1];
+  const colorIdx=APP.phases.length % PHASE_COLORS.length;
+  APP.phases.push({
+    id:genId(),name:'Phase '+(APP.phases.length+1),
+    weekStart:last?last.weekEnd+1:1,weekEnd:last?last.weekEnd+4:4,
+    color:PHASE_COLORS[colorIdx],rehabIntent:'',intensity:'Moderate',
+    cardioOptions:[],goals:'',difficulties:'',rules:'',workouts:[]
+  });
+  editPhaseIdx=APP.phases.length-1;
+  save();renderEdit();
+}
+function deletePhase(){
+  if(APP.phases.length<=1){alert('Cannot delete the only phase.');return;}
+  if(!confirm('Delete "'+APP.phases[editPhaseIdx].name+'"? All workouts and exercises in this phase will be permanently removed.'))return;
+  APP.phases.splice(editPhaseIdx,1);
+  editPhaseIdx=Math.min(editPhaseIdx,APP.phases.length-1);
   save();renderEdit();
 }
 let _exWi=0;
