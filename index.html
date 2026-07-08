@@ -1704,7 +1704,7 @@ function deletePhase(){
   save();renderEdit();
 }
 let _exWi=0;
-function openAddEx(wi){_exWi=wi;['em-order','em-name','em-load','em-rest','em-intent'].forEach(id=>document.getElementById(id).value='');document.getElementById('em-sets').value='3';document.getElementById('em-reps').value='';document.getElementById('em-modal-title').textContent='Add Exercise';openModal('ex-modal');}
+function openAddEx(wi){_exWi=wi;['em-order','em-name','em-load','em-rest','em-intent'].forEach(id=>document.getElementById(id).value='');document.getElementById('em-sets').value='3';document.getElementById('em-reps').value='';document.getElementById('ex-modal-title').textContent='Add Exercise';openModal('ex-modal');}
 function saveExercise(){
   const ex={order:document.getElementById('em-order').value,name:document.getElementById('em-name').value,equipment:document.getElementById('em-equip').value,sets:document.getElementById('em-sets').value,reps:document.getElementById('em-reps').value,load:document.getElementById('em-load').value,rest:document.getElementById('em-rest').value,intent:document.getElementById('em-intent').value};
   if(!ex.name){alert('Exercise name required');return;}
